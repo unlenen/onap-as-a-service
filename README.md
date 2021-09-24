@@ -11,9 +11,16 @@ This project is targeting to call ONAP complex APIs easily with converting them 
 
 ## RUN
 ```
-    java -jar target/onap_service_manager-1.0.jar --onap.ip=<ONAP_IP>
+    java -jar target/onap_service_manager-1.0.jar --onap.ip=<ONAP_IP> --server.port=8080
 ```
 
+## USAGE Example
+```
+    curl http://localhost:8080/<API_URL>
+    ex: get cloud regins : 
+        curl http://localhost:8080/cloud/regions  | jq
+```
+  
 
 ## CLOUD
 
