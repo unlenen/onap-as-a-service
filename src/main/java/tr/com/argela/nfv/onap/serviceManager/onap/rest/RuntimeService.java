@@ -44,7 +44,7 @@ public class RuntimeService {
     OnapAdaptor adaptor;
 
     @GetMapping(path = "/runtime/service-instances/{customerName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getServiceInstances(@PathVariable String customerName) throws IOException {
+    public ResponseEntity getServiceInstances(@PathVariable(required = true) String customerName) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_NAME.name(), customerName);
         JSONArray data = (JSONArray) adaptor.call(OnapRequest.RUNTIME_SERVICE_INSTANCES, parameters);
@@ -53,7 +53,7 @@ public class RuntimeService {
     }
 
     @GetMapping(path = "/runtime/service-instance/{serviceInstanceId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getServiceInstanceDetails(@PathVariable String serviceInstanceId) throws IOException {
+    public ResponseEntity getServiceInstanceDetails(@PathVariable(required = true) String serviceInstanceId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID.name(), serviceInstanceId);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_SERVICE_INSTANCE_DETAIL, parameters);

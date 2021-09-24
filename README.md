@@ -2,6 +2,19 @@
 
 This project is targeting to call ONAP complex APIs easily with converting them basic rest APIs.
 
+
+## COMPILE
+```
+    mvn clean install
+```
+    
+
+## RUN
+```
+    java -jar target/onap_service_manager-1.0.jar --onap.ip=<ONAP_IP>
+```
+
+
 ## CLOUD
 
 - List of Complexs: 
