@@ -33,7 +33,7 @@ public class CloudService {
     @Autowired
     OnapAdaptor onapUtil;
 
-    @GetMapping(path = "/cloud/complex", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/cloud/complexs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getCloudComplex() throws IOException {
         JSONObject data = (JSONObject) onapUtil.call(OnapRequest.CLOUD_COMPLEX);
         log.info("[Cloud][Complex][Get] size:" + onapUtil.getResponseSize(data, "complex"));
