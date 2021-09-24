@@ -14,15 +14,16 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import okhttp3.MediaType;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 
 import okhttp3.Request;
 import okhttp3.Request.Builder;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.OnapRequestFailedException;
 
@@ -30,6 +31,8 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.OnapRequestF
  *
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
+@Component
+@Slf4j
 public class URLConnectionService {
 
     SSLSocketFactory socketFactory;
@@ -68,49 +71,6 @@ public class URLConnectionService {
         return builder;
     }
 
-    public URLResponse call(String url, String type, String token, String log, int expectedResponseCode, boolean toJSON, String jsonArrayKey) throws IOException {
-        OkHttpClient client = getHttpsBuilder().build();
-        String logText = " url:" + url;
-        System.out.println("[OpenstackService][" + log + "][Start] " + logText + " , token:" + token);
-        Request request = new Request.Builder()
-                .url(url)
-                .method(type, null)
-                .addHeader("X-Auth-Token", token)
-                .build();
-        Response response = client.newCall(request).execute();
-        ResponseBody responseBody = response.body();
-        if (expectedResponseCode > 0) {
-            if (response.code() != expectedResponseCode) {
-                throw new IOException(responseBody.string());
-            }
-        }
-
-        String responseStr = responseBody.string();
-        int responseArraySize = -1;
-        JSONObject root = null;
-        if (toJSON) {
-            root = new JSONObject(responseStr);
-            if (jsonArrayKey != null && root.has(jsonArrayKey)) {
-                responseArraySize = root.getJSONArray(jsonArrayKey).length();
-            }
-        }
-
-        URLResponse urlResponse = new URLResponse(response.code(), responseStr, root);
-        System.out.println("[OpenstackService][" + log + "][Complete] " + logText + " respSize:" + responseStr.length() + ", size:" + responseArraySize);
-        return urlResponse;
-    }
-
-    public Response post(String url, String data, String type) throws IOException {
-        OkHttpClient client = getHttpsBuilder().build();
-        RequestBody body = RequestBody.create(data, MediaType.parse(type));
-        Request request = new Request.Builder()
-                .url(url)
-                .method("POST", body)
-                .addHeader("Content-Type", type)
-                .build();
-        return client.newCall(request).execute();
-    }
-
     public Response get(String url, Map<String, String> headers) throws IOException {
         OkHttpClient client = getHttpsBuilder().build();
 
@@ -132,8 +92,11 @@ public class URLConnectionService {
         String data = responseBody.string();
 
         switch (onapRequest.getResponseType()) {
-            case JSON: {
+            case JSONObject: {
                 return new JSONObject(data);
+            }
+            case JSONArray: {
+                return new JSONArray(data);
             }
             case STRING: {
                 return data;

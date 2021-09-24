@@ -24,7 +24,8 @@ public class OnapAdaptor {
     @Autowired
     OnapConfig onapConfig;
 
-    URLConnectionService urlConnectionService = new URLConnectionService();
+    @Autowired
+    URLConnectionService urlConnectionService;
 
     public Object call(OnapRequest request) throws IOException {
         return call(request, new HashMap<>());

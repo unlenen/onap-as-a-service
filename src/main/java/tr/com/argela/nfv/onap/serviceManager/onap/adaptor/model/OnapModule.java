@@ -20,7 +20,21 @@ public enum OnapModule {
         {"Accept", "application/json"},
         {"X-TransactionId", "get_aai_subscr"},
         {"Content-Type", "application/json"}
-    });
+    }),
+    SDC_CATALOG("https://${ONAPIP}:30204/sdc/v1/catalog", new String[][]{
+        {"Content-Type", "application/json"},
+        {"Accept", "application/json"},
+        {"X-TransactionId", "ONAP-Test"},
+        {"USER_ID", "cs0008"},
+        {"X-FromAppId", "ONAP-Test"},
+        {"Authorization", "Basic YWFpOktwOGJKNFNYc3pNMFdYbGhhazNlSGxjc2UyZ0F3ODR2YW9HR21KdlV5MlU="},
+        {"x-ecomp-instanceid", "ONAP-Test"},}),
+    SDC_FeProxy("https://${ONAPIP}:30207/sdc1/feProxy", new String[][]{
+        {"Content-Type", "application/json"},
+        {"Accept", "application/json"},
+        {"X-TransactionId", "ONAP-Test"},
+        {"USER_ID", "cs0008"},
+        {"X-FromAppId", "ONAP-Test"}});
 
     private OnapModule(String api, String[][] data) {
         this.apiURL = api;

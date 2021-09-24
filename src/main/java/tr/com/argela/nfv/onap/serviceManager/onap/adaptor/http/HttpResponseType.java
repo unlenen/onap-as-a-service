@@ -10,7 +10,8 @@ package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http;
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
 public enum HttpResponseType {
-    JSON,
+    JSONObject,
+    JSONArray,
     STRING,
     NONE;
 }
