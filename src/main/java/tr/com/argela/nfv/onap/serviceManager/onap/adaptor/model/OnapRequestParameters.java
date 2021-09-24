@@ -27,6 +27,7 @@ public enum OnapRequestParameters {
     RUNTIME_VNF_ID,
     RUNTIME_VF_MODULE_ID,
     DESIGN_VENDOR_NAME,
+    DESIGN_VENDOR_DESC,
     DESIGN_VENDOR_ID,
     DESIGN_VENDOR_VERSION_ID,;
 }

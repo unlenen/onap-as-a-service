@@ -66,10 +66,11 @@ public class DesignService {
         return ResponseEntity.ok(data.toString());
     }
 
-    @PutMapping(path = "/design/vendor/{vendorName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity setVendor(@PathVariable String vendorName) throws IOException {
+    @PutMapping(path = "/design/vendor/{vendorName}/{vendorDescription}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity setVendor(@PathVariable String vendorName, @PathVariable(required = false) String vendorDescription) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.DESIGN_VENDOR_NAME.name(), vendorName);
+        parameters.put(OnapRequestParameters.DESIGN_VENDOR_DESC.name(), vendorDescription);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VENDOR_CREATE, parameters);
         log.info("[Design][Vendor][Set] vendorName:" + vendorName + ", id:" + adaptor.getResponseItem(data, "itemId"));
         return ResponseEntity.ok(data.toString());

@@ -1,5 +1,5 @@
 {
     "iconRef": "icon",
     "vendorName": "${DESIGN_VENDOR_NAME}",
-    "description": "Vendor"
+    "description": "${DESIGN_VENDOR_DESC}"
 }

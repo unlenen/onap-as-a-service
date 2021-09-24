@@ -82,7 +82,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 
 - Create New Vendor
 ```
-    /design/vendor/{vendorName}
+    /design/vendor/{vendorName}/{vendorDescription}
 ```
 
 - Submit New Vendor
