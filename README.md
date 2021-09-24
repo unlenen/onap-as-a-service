@@ -1,13 +1,37 @@
-"# Cloud"
+# ONAP API Basics
 
-Complex:	/cloud/complexs
-Regions:	/cloud/regions
-Tenants:	/cloud/tenants/{cloudOwner}/{cloudRegion}
-Availability-Zone: 	/cloud/availability-zones/{cloudOwner}/{cloudRegion}
+This project is targeting to call ONAP complex APIs easily with converting them basic rest APIs
+
+## CLOUD
+
+- List of Complexs: 
+    /cloud/complexs
+- List of Regions:
+    /cloud/regions
+- List of Tenants:
+    /cloud/tenants/{cloudOwner}/{cloudRegion}
+- List of Availability Zones
+    /cloud/availability-zones/{cloudOwner}/{cloudRegion}
 
 
+## BUSINESS
 
-"# Business"
+- List of Customers
+    /business/customers
+- List of Owning Entities
+    /business/owning-entities
+- List of Platforms
+    /business/platforms
+- List of Projects
+    /business/projects
 
-Customer:	/business/customers
-OwningEntities:	  /business/owning-entities
+## DESIGN
+
+- List of Vendors
+    /design/vendors
+- List of VSPs
+    /design/vsps
+- List of VFs
+    /design/vfs
+- List of Service Models
+    /design/service-models
