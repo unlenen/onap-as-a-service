@@ -16,6 +16,7 @@
 package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
@@ -25,15 +26,18 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 
 import okhttp3.Request;
 import okhttp3.Request.Builder;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
+import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.OnapRequestFailedException;
 
@@ -93,10 +97,44 @@ public class URLConnectionService {
         return client.newCall(request).execute();
     }
 
+    public Response call(String methodType, String url, Map<String, String> headers, String data, String type) throws IOException {
+        OkHttpClient client = getHttpsBuilder().build();
+
+        Builder builder = new Request.Builder()
+                .url(url);
+
+        if (data != null) {
+            RequestBody body = RequestBody.create(data, MediaType.parse(type));
+            builder
+                    .method(methodType, body)
+                    .addHeader("Content-Type", type);
+        }
+
+        for (String header : headers.keySet()) {
+            builder.addHeader(header, headers.get(header));
+        }
+
+        Request request = builder.build();
+        return client.newCall(request).execute();
+    }
+
     public Object call(OnapRequest onapRequest, Map<String, String> parameters) throws IOException {
+
         String url = onapRequest.getEndpoint(parameters);
-        log.info("[ONAP][APICALL] url : " + url);
-        Response response = get(url, onapRequest.getOnapModule().getHeaders());
+        log.info("[ONAP][APICALL][" + onapRequest.getCallType() + "] url : " + url);
+        Response response = null;
+        switch (onapRequest.getCallType()) {
+            case GET: {
+                response = get(url, onapRequest.getOnapModule().getHeaders());
+                break;
+            }
+            case PUT:
+            case POST: {
+                response = call(onapRequest.getCallType().name(), url, onapRequest.getOnapModule().getHeaders(), enrichPayloadData(readResourceFileToString(onapRequest.getPayloadFilePath()), parameters), onapRequest.getPayloadFileType());
+                break;
+            }
+        }
+
         ResponseBody responseBody = response.body();
         int responseCode = response.code();
         if (responseCode != onapRequest.getValidReturnCode()) {
@@ -116,6 +154,39 @@ public class URLConnectionService {
             }
         }
         return null;
+    }
+
+    private String enrichPayloadData(String payloadData, Map<String, String> parameters) {
+        for (String key : parameters.keySet()) {
+            payloadData = payloadData.replaceAll("\\$\\{" + key + "\\}", parameters.get(key));
+        }
+        return payloadData;
+    }
+
+    private String readResourceFileToString(String path) throws IOException {
+        if (path == null) {
+            return null;
+        }
+        return copyStreamToString(getResourceStream(path));
+    }
+
+    private InputStream getResourceStream(String payloadFilePath) {
+        InputStream is = OnapAdaptor.class.getClassLoader().getResourceAsStream(payloadFilePath);
+        return is;
+    }
+
+    private String copyStreamToString(InputStream stream) throws IOException {
+        StringBuilder str = new StringBuilder();
+        while (true) {
+            byte[] data = new byte[4096];
+
+            int count = stream.read(data);
+            if (count < 0) {
+                break;
+            }
+            str.append(new String(data, 0, count));
+        }
+        return str.toString();
     }
 
 }

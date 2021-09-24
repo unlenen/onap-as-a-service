@@ -34,7 +34,7 @@ public enum OnapModule {
     SDC_CATALOG("https://${ONAPIP}:30204/sdc/v1/catalog", new String[][]{
         {"Content-Type", "application/json"},
         {"Accept", "application/json"},
-        {"X-TransactionId", "ONAP-Test"},
+        {"X-TransactionId", "robot-ete-ba84612d-c1c6-4c53-9967-7b1dff276c7a"},
         {"USER_ID", "cs0008"},
         {"X-FromAppId", "ONAP-Test"},
         {"Authorization", "Basic YWFpOktwOGJKNFNYc3pNMFdYbGhhazNlSGxjc2UyZ0F3ODR2YW9HR21KdlV5MlU="},

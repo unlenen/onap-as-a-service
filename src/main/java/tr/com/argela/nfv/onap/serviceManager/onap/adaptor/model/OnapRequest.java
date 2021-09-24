@@ -15,6 +15,9 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http.HttpCallType;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http.HttpResponseType;
@@ -36,6 +39,8 @@ public enum OnapRequest {
     SDC_SERVICE_MODELS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/services", 200, HttpResponseType.JSONArray),
     SDC_VFS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/resources?resourceType=VF", 200, HttpResponseType.JSONArray),
     SDC_VENDORS(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models", 200, HttpResponseType.JSONObject),
+    SDC_VENDOR_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models", 200, HttpResponseType.JSONObject, "payloads/design/vendor/create.json", "application/json"),
+    SDC_VENDOR_SUBMIT(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models/${" + OnapRequestParameters.DESIGN_VENDOR_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VENDOR_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vendor/submit.json", "application/json"),
     SDC_VSPS(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products", 200, HttpResponseType.JSONObject),
     RUNTIME_SERVICE_INSTANCES(HttpCallType.GET, OnapModule.NBI, "/service?relatedParty.id=${" + OnapRequestParameters.BUSINESS_CUSTOMER_NAME + "}", 200, HttpResponseType.JSONArray),
     RUNTIME_SERVICE_INSTANCE_DETAIL(HttpCallType.GET, OnapModule.NBI, "/service/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}", 200, HttpResponseType.JSONObject),
@@ -54,11 +59,23 @@ public enum OnapRequest {
         this.responseType = responseType;
     }
 
+    private OnapRequest(HttpCallType callType, OnapModule onapModule, String url, int validReturnCode, HttpResponseType responseType, String payloadFilePath, String payloadFileType) {
+        this.callType = callType;
+        this.onapModule = onapModule;
+        this.url = url;
+        this.validReturnCode = validReturnCode;
+        this.responseType = responseType;
+        this.payloadFilePath = payloadFilePath;
+        this.payloadFileType = payloadFileType;
+    }
+
     HttpCallType callType;
     OnapModule onapModule;
     String url;
     int validReturnCode;
     HttpResponseType responseType;
+    String payloadFilePath;
+    String payloadFileType;
 
     public HttpCallType getCallType() {
         return callType;
@@ -78,6 +95,14 @@ public enum OnapRequest {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getPayloadFilePath() {
+        return payloadFilePath;
+    }
+
+    public String getPayloadFileType() {
+        return payloadFileType;
     }
 
     public String getEndpoint(Map<String, String> parameters) {

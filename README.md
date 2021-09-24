@@ -13,7 +13,7 @@ Written By: Nebi Volkan UNLENEN ( unlenen@gmail.com )
 ```
 
 
-This project is targeting to call ONAP complex APIs easily with converting them basic rest APIs.
+This project aims to call ONAP complex APIs easily with converting them basic rest APIs.
 
 
 ## COMPILE
@@ -79,6 +79,17 @@ This project is targeting to call ONAP complex APIs easily with converting them 
 ```
     /design/vendors
 ```
+
+- Create New Vendor
+```
+    /design/vendor/{vendorName}
+```
+
+- Submit New Vendor
+```
+    /design/vendor-submit/{vendorId}/{vendorVersionId}
+```
+
 - List of VSPs
 ```
     /design/vsps

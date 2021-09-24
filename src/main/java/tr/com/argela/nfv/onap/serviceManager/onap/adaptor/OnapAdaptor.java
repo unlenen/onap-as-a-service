@@ -12,12 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-*/
+ */
 package tr.com.argela.nfv.onap.serviceManager.onap.adaptor;
 
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http.URLConnectionService;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONObject;
@@ -46,10 +47,18 @@ public class OnapAdaptor {
         return urlConnectionService.call(request, parameters);
     }
 
+    public Object getResponseItem(JSONObject data, String item) {
+        if (data == null || !data.has(item)) {
+            return null;
+        }
+        return data.get(item);
+    }
+
     public int getResponseSize(JSONObject data, String item) {
         if (data == null || !data.has(item)) {
             return 0;
         }
         return data.getJSONArray(item).length();
     }
+
 }

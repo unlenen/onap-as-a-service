@@ -12,10 +12,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-*/
+ */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,9 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
+import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParameters;
 
 /**
  *
@@ -57,6 +63,25 @@ public class DesignService {
     public ResponseEntity getVendors() throws IOException {
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VENDORS);
         log.info("[Design][Vendors][Get] size:" + adaptor.getResponseSize(data, "results"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/vendor/{vendorName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity setVendor(@PathVariable String vendorName) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_VENDOR_NAME.name(), vendorName);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VENDOR_CREATE, parameters);
+        log.info("[Design][Vendor][Set] vendorName:" + vendorName + ", id:" + adaptor.getResponseItem(data, "itemId"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/vendor-submit/{vendorId}/{vendorVersionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity submitVendor(@PathVariable String vendorId, @PathVariable String vendorVersionId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_VENDOR_ID.name(), vendorId);
+        parameters.put(OnapRequestParameters.DESIGN_VENDOR_VERSION_ID.name(), vendorVersionId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VENDOR_SUBMIT, parameters);
+        log.info("[Design][Vendor][Submit] vendorId:" + vendorId + " ,vendorVersionId:" + vendorVersionId);
         return ResponseEntity.ok(data.toString());
     }
 
