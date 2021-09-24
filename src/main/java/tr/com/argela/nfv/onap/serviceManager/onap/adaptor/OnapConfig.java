@@ -26,6 +26,6 @@ import org.springframework.stereotype.Component;
 public class OnapConfig {
 
     @Value("${onap.ip}")
-    String onapIPAddress;
+    public String onapIPAddress;
     
 }
