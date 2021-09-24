@@ -1,8 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+# Copyright © 2021 Argela Technologies
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+*/
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
 import java.io.IOException;
@@ -27,33 +37,33 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
 public class DesignService {
 
     @Autowired
-    OnapAdaptor onapUtil;
+    OnapAdaptor adaptor;
 
     @GetMapping(path = "/design/service-models", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getServiceModels() throws IOException {
-        JSONArray data = (JSONArray) onapUtil.call(OnapRequest.SDC_SERVICE_MODELS);
+        JSONArray data = (JSONArray) adaptor.call(OnapRequest.SDC_SERVICE_MODELS);
         log.info("[Design][ServiceModels][Get] size:" + data.length());
         return ResponseEntity.ok(data.toString());
     }
 
     @GetMapping(path = "/design/vfs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVFs() throws IOException {
-        JSONArray data = (JSONArray) onapUtil.call(OnapRequest.SDC_SERVICE_MODELS);
+        JSONArray data = (JSONArray) adaptor.call(OnapRequest.SDC_SERVICE_MODELS);
         log.info("[Design][VFs][Get] size:" + data.length());
         return ResponseEntity.ok(data.toString());
     }
 
     @GetMapping(path = "/design/vendors", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVendors() throws IOException {
-        JSONObject data = (JSONObject) onapUtil.call(OnapRequest.SDC_VENDORS);
-        log.info("[Design][Vendors][Get] size:" + onapUtil.getResponseSize(data, "results"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VENDORS);
+        log.info("[Design][Vendors][Get] size:" + adaptor.getResponseSize(data, "results"));
         return ResponseEntity.ok(data.toString());
     }
 
     @GetMapping(path = "/design/vsps", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVSPs() throws IOException {
-        JSONObject data = (JSONObject) onapUtil.call(OnapRequest.SDC_VSPS);
-        log.info("[Design][VSPs][Get] size:" + onapUtil.getResponseSize(data, "results"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VSPS);
+        log.info("[Design][VSPs][Get] size:" + adaptor.getResponseSize(data, "results"));
         return ResponseEntity.ok(data.toString());
     }
 }

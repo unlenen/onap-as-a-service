@@ -1,8 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+# Copyright © 2021 Argela Technologies
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+*/
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
 import java.io.IOException;
@@ -31,19 +41,19 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParam
 public class CloudService {
 
     @Autowired
-    OnapAdaptor onapUtil;
+    OnapAdaptor adaptor;
 
     @GetMapping(path = "/cloud/complexs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getCloudComplex() throws IOException {
-        JSONObject data = (JSONObject) onapUtil.call(OnapRequest.CLOUD_COMPLEX);
-        log.info("[Cloud][Complex][Get] size:" + onapUtil.getResponseSize(data, "complex"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_COMPLEX);
+        log.info("[Cloud][Complex][Get] size:" + adaptor.getResponseSize(data, "complex"));
         return ResponseEntity.ok(data.toString());
     }
 
     @GetMapping(path = "/cloud/regions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getCloudRegions() throws IOException {
-        JSONObject data = (JSONObject) onapUtil.call(OnapRequest.CLOUD_REGION);
-        log.info("[Cloud][Region][Get] size:" + onapUtil.getResponseSize(data, "cloud-region"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_REGION);
+        log.info("[Cloud][Region][Get] size:" + adaptor.getResponseSize(data, "cloud-region"));
         return ResponseEntity.ok(data.toString());
     }
 
@@ -52,8 +62,8 @@ public class CloudService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
-        JSONObject data = (JSONObject) onapUtil.call(OnapRequest.CLOUD_TENANT, parameters);
-        log.info("[Cloud][Tenant][Get] size:" + onapUtil.getResponseSize(data, "tenant"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_TENANT, parameters);
+        log.info("[Cloud][Tenant][Get] size:" + adaptor.getResponseSize(data, "tenant"));
         return ResponseEntity.ok(data.toString());
     }
 
@@ -62,8 +72,8 @@ public class CloudService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
-        JSONObject data = (JSONObject) onapUtil.call(OnapRequest.CLOUD_AVAILABILITY_ZONE, parameters);
-        log.info("[Cloud][AvailabilityZone][Get] size:" + onapUtil.getResponseSize(data, "availability-zone"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_AVAILABILITY_ZONE, parameters);
+        log.info("[Cloud][AvailabilityZone][Get] size:" + adaptor.getResponseSize(data, "availability-zone"));
         return ResponseEntity.ok(data.toString());
     }
 }
