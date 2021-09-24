@@ -44,7 +44,17 @@ public enum OnapModule {
         {"Accept", "application/json"},
         {"X-TransactionId", "ONAP-Test"},
         {"USER_ID", "cs0008"},
-        {"X-FromAppId", "ONAP-Test"}});
+        {"X-FromAppId", "ONAP-Test"}}),
+    NBI("https://${ONAPIP}:30274/nbi/api/v4", new String[][]{
+        {"Content-Type", "application/json"},
+        {"Accept", "application/json"}}),
+    SO("http://${ONAPIP}:30277/onap/so", new String[][]{
+        {"Content-Type", "application/json"},
+        {"Accept", "application/json"},
+        {"X-FromAppId", "AAI"},
+        {"X-TransactionId", "get_aai_subscr"},
+        {"Authorization", "Basic SW5mcmFQb3J0YWxDbGllbnQ6cGFzc3dvcmQxJA=="},
+        {"Cookie", "JSESSIONID=AE7FF0DB42F6852AED6AE5A9C398CFEE"},}),;
 
     private OnapModule(String api, String[][] data) {
         this.apiURL = api;

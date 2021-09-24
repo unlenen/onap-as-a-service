@@ -1,6 +1,6 @@
 # ONAP API Basics
 
-This project is targeting to call ONAP complex APIs easily with converting them basic rest APIs
+This project is targeting to call ONAP complex APIs easily with converting them basic rest APIs.
 
 ## CLOUD
 
@@ -57,4 +57,41 @@ This project is targeting to call ONAP complex APIs easily with converting them 
 - List of Service Models
 ```
     /design/service-models
+```
+
+## RUNTIME
+
+- List of Service Instances
+```
+    /runtime/service-instances/{customerName}
+```
+
+- Detail of  Service Instance
+```
+    /runtime/service-instance/{serviceInstanceId}
+```
+
+- List of VNFS
+```
+    /runtime/vnfs
+```
+
+- Detail of VNF
+```
+    /runtime/vnf/{vnfId}
+```
+
+- List of VF-Modules
+```
+    /runtime/vf-modules/{vnfId}
+```
+
+- Detail of VF-Module
+```
+    /runtime/vf-module/{vnfId}/{vfModuleId}
+```
+
+- Instantiation Detail of VF-Module
+```
+    /runtime/vf-module-properties/{vfModuleId}
 ```

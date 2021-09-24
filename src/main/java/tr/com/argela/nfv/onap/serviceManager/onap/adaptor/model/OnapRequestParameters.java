@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-*/
+ */
 package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model;
 
 /**
@@ -21,5 +21,9 @@ package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model;
  */
 public enum OnapRequestParameters {
     CLOUD_OWNER,
-    CLOUD_REGION;
+    CLOUD_REGION,
+    BUSINESS_CUSTOMER_NAME,
+    RUNTIME_SERVICE_INSTANCE_ID,
+    RUNTIME_VNF_ID,
+    RUNTIME_VF_MODULE_ID,;
 }

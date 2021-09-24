@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-*/
+ */
 package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http;
 
 import java.io.IOException;
@@ -94,10 +94,13 @@ public class URLConnectionService {
     }
 
     public Object call(OnapRequest onapRequest, Map<String, String> parameters) throws IOException {
-        Response response = get(onapRequest.getEndpoint(parameters), onapRequest.getOnapModule().getHeaders());
+        String url = onapRequest.getEndpoint(parameters);
+        log.info("[ONAP][APICALL] url : " + url);
+        Response response = get(url, onapRequest.getOnapModule().getHeaders());
         ResponseBody responseBody = response.body();
-        if (response.code() != onapRequest.getValidReturnCode()) {
-            throw new OnapRequestFailedException(onapRequest, responseBody.string());
+        int responseCode = response.code();
+        if (responseCode != onapRequest.getValidReturnCode()) {
+            throw new OnapRequestFailedException(onapRequest, url, responseCode, responseBody.string());
         }
         String data = responseBody.string();
 
