@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-*/
+ */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
 import java.io.IOException;
@@ -49,6 +49,20 @@ public class BusinessService {
     public ResponseEntity getBusinessOwningEntities() throws IOException {
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_OWNING_ENTITY);
         log.info("[Business][OwningEntity][Get] size:" + adaptor.getResponseSize(data, "owning-entity"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/business/platforms", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getPlatforms() throws IOException {
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_PLATFORM);
+        log.info("[Business][Platforms][Get] size:" + adaptor.getResponseSize(data, "platform"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/business/projects", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getProjects() throws IOException {
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_PROJECT);
+        log.info("[Business][Projects][Get] size:" + adaptor.getResponseSize(data, "project"));
         return ResponseEntity.ok(data.toString());
     }
 
