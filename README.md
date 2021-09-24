@@ -115,3 +115,8 @@ This project is targeting to call ONAP complex APIs easily with converting them 
 ```
     /runtime/vf-module-properties/{vfModuleId}
 ```
+
+- VF-Module Topology
+```
+    /runtime/vf-module-topology/{serviceInstanceId}/{vnfId}/{vfModuleId}
+```
