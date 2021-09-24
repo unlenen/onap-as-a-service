@@ -54,7 +54,13 @@ public enum OnapModule {
         {"X-FromAppId", "AAI"},
         {"X-TransactionId", "get_aai_subscr"},
         {"Authorization", "Basic SW5mcmFQb3J0YWxDbGllbnQ6cGFzc3dvcmQxJA=="},
-        {"Cookie", "JSESSIONID=AE7FF0DB42F6852AED6AE5A9C398CFEE"},}),;
+        {"Cookie", "JSESSIONID=AE7FF0DB42F6852AED6AE5A9C398CFEE"},}),
+    SDNC("https://${ONAPIP}:30267", new String[][]{
+        {"Content-Type", "application/json"},
+        {"Accept", "application/json"},
+        {"X-FromAppId", "client"},
+        {"X-TransactionId", "0a3f6713-ba96-4971-a6f8-c2da85a3176e"},
+        {"Authorization", "Basic YWRtaW46S3A4Yko0U1hzek0wV1hsaGFrM2VIbGNzZTJnQXc4NHZhb0dHbUp2VXkyVQ=="},}),;
 
     private OnapModule(String api, String[][] data) {
         this.apiURL = api;
