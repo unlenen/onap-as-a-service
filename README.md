@@ -94,6 +94,12 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 ```
     /design/vsps
 ```
+
+- Create New VSP
+```
+    /design/vsp/{vendorId}/{vendorName}/{vspName}/{vspDescription}
+```
+
 - List of VFs
 ```
     /design/vfs

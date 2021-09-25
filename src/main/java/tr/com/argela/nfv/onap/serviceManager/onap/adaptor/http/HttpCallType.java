@@ -22,5 +22,6 @@ package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http;
 public enum HttpCallType {
     POST,
     GET,
-    PUT
+    PUT,
+    POST_FILE;
 }

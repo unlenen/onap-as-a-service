@@ -42,9 +42,11 @@ public enum OnapModule {
     SDC_FeProxy("https://${ONAPIP}:30207/sdc1/feProxy", new String[][]{
         {"Content-Type", "application/json"},
         {"Accept", "application/json"},
-        {"X-TransactionId", "ONAP-Test"},
+        {"X-TransactionId", "robot-ete-ba84612d-c1c6-4c53-9967-7b1dff276c7a"},
         {"USER_ID", "cs0008"},
-        {"X-FromAppId", "ONAP-Test"}}),
+        {"X-FromAppId", "robot-ete"},
+        {"Cookie", "JSESSIONID=node01w0clju3fse7818yffifda06aw27.node0"}
+    }),
     NBI("https://${ONAPIP}:30274/nbi/api/v4", new String[][]{
         {"Content-Type", "application/json"},
         {"Accept", "application/json"}}),

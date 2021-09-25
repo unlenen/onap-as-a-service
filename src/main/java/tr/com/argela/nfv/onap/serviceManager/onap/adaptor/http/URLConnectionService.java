@@ -15,6 +15,7 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -27,6 +28,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 
 import okhttp3.Request;
@@ -40,6 +42,7 @@ import org.springframework.stereotype.Component;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.OnapRequestFailedException;
+import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParameters;
 
 /**
  *
@@ -118,6 +121,27 @@ public class URLConnectionService {
         return client.newCall(request).execute();
     }
 
+    public Response postFile(String url, Map<String, String> headers, String fileName, String paramName, String filePath) throws IOException {
+        OkHttpClient client = getHttpsBuilder().build();
+
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM).
+                addFormDataPart(paramName, fileName,
+                        RequestBody.create(new File(filePath), MediaType.parse("application/octet-stream"))
+                ).build();
+
+        Builder builder = new Request.Builder()
+                .url(url)
+                .method("POST", body);
+
+        headers.put("Content-Type", "multipart/form-data");
+        for (String header : headers.keySet()) {
+            builder.addHeader(header, headers.get(header));
+        }
+
+        Request request = builder.build();
+        return client.newCall(request).execute();
+    }
+
     public Object call(OnapRequest onapRequest, Map<String, String> parameters) throws IOException {
 
         String url = onapRequest.getEndpoint(parameters);
@@ -131,6 +155,10 @@ public class URLConnectionService {
             case PUT:
             case POST: {
                 response = call(onapRequest.getCallType().name(), url, onapRequest.getOnapModule().getHeaders(), enrichPayloadData(readResourceFileToString(onapRequest.getPayloadFilePath()), parameters), onapRequest.getPayloadFileType());
+                break;
+            }
+            case POST_FILE: {
+                response = postFile(url, onapRequest.getOnapModule().getHeaders(), parameters.get(OnapRequestParameters.FILE_PARAM_NAME.name()), parameters.get(OnapRequestParameters.FILE_NAME.name()), parameters.get(OnapRequestParameters.FILE_PATH.name()));
                 break;
             }
         }

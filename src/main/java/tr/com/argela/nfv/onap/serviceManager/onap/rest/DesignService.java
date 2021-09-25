@@ -15,6 +15,7 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
@@ -90,6 +90,31 @@ public class DesignService {
     public ResponseEntity getVSPs() throws IOException {
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VSPS);
         log.info("[Design][VSPs][Get] size:" + adaptor.getResponseSize(data, "results"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/vsp/{vendorId}/{vendorName}/{vspName}/{vspDescription}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity setVsp(@PathVariable String vendorId, @PathVariable String vendorName, @PathVariable String vspName, @PathVariable String vspDescription) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_VENDOR_ID.name(), vendorId);
+        parameters.put(OnapRequestParameters.DESIGN_VENDOR_NAME.name(), vendorName);
+        parameters.put(OnapRequestParameters.DESIGN_VSP_NAME.name(), vspName);
+        parameters.put(OnapRequestParameters.DESIGN_VSP_DESC.name(), vspDescription);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VSP_CREATE, parameters);
+        log.info("[Design][Vsp][Set] vendorId:" + vendorId + " , vendorName:" + vendorName + ", vspName:" + vspName + ", id:" + adaptor.getResponseItem(data, "itemId"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/vsp-file/{vspId}/{vspVersionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity uploadVSPFile(@PathVariable String vspId, @PathVariable String vspVersionId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_VSP_ID.name(), vspId);
+        parameters.put(OnapRequestParameters.DESIGN_VSP_VERSION_ID.name(), vspVersionId);
+        parameters.put(OnapRequestParameters.FILE_PARAM_NAME.name(), "upload");
+        parameters.put(OnapRequestParameters.FILE_NAME.name(), "vspFile.zip");
+        parameters.put(OnapRequestParameters.FILE_PATH.name(), new File("d:\\ArgelaHelloWorld.zip").getPath());
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VSP_UPLOAD_FILE, parameters);
+        log.info("[Design][Vsp][FileUpload] vspId:" + vspId + " , vspVersionId:" + vspVersionId);
         return ResponseEntity.ok(data.toString());
     }
 }
