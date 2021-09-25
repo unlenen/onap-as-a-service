@@ -100,6 +100,26 @@ This project aims to call ONAP complex APIs easily with converting them basic re
     /design/vsp/{vendorId}/{vendorName}/{vspName}/{vspDescription}
 ```
 
+- Get VSP Version
+```
+    /design/vsp-versions/{vspId}
+```
+
+- Upload VSP File
+```
+    /design/vsp-file-upload/{vspId}/{vspVersionId}/{vspFileLocalPath}
+```
+
+- Process VSP File
+```
+    /design/vsp-file-process/{vspId}/{vspVersionId}
+```
+
+- Submit VSP
+```
+    /design/vsp-submit/{vspId}/{vspVersionId}
+```
+
 - List of VFs
 ```
     /design/vfs

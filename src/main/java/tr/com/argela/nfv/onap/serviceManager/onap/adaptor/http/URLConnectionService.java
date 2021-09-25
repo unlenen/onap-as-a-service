@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.Map;
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
@@ -28,7 +29,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 
 import okhttp3.Request;
@@ -38,7 +38,14 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.OnapRequestFailedException;
@@ -79,6 +86,12 @@ public class URLConnectionService {
             HttpsURLConnection.setDefaultSSLSocketFactory(socketFactory);
         } catch (GeneralSecurityException e) {
         }
+
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
     }
 
     public OkHttpClient.Builder getHttpsBuilder() {
@@ -121,25 +134,40 @@ public class URLConnectionService {
         return client.newCall(request).execute();
     }
 
-    public Response postFile(String url, Map<String, String> headers, String fileName, String paramName, String filePath) throws IOException {
-        OkHttpClient client = getHttpsBuilder().build();
+    public Object postFile(OnapRequest onapRequest, String url, String paramName, String filePath) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
 
-        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM).
-                addFormDataPart(paramName, fileName,
-                        RequestBody.create(new File(filePath), MediaType.parse("application/octet-stream"))
-                ).build();
+        for (String header : onapRequest.getOnapModule().getHeaders().keySet()) {
+            headers.add(header, onapRequest.getOnapModule().getHeaders().get(header));
+        }
+        headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
-        Builder builder = new Request.Builder()
-                .url(url)
-                .method("POST", body);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add(paramName, new FileSystemResource(new File(filePath)));
 
-        headers.put("Content-Type", "multipart/form-data");
-        for (String header : headers.keySet()) {
-            builder.addHeader(header, headers.get(header));
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
+
+        int responseCode = response.getStatusCodeValue();
+        if (responseCode != onapRequest.getValidReturnCode()) {
+            throw new OnapRequestFailedException(onapRequest, url, responseCode, response.getBody());
         }
 
-        Request request = builder.build();
-        return client.newCall(request).execute();
+        String data = response.getBody();
+        switch (onapRequest.getResponseType()) {
+            case JSONObject: {
+                return new JSONObject(data);
+            }
+            case JSONArray: {
+                return new JSONArray(data);
+            }
+            case STRING: {
+                return data;
+            }
+        }
+        return null;
     }
 
     public Object call(OnapRequest onapRequest, Map<String, String> parameters) throws IOException {
@@ -158,8 +186,7 @@ public class URLConnectionService {
                 break;
             }
             case POST_FILE: {
-                response = postFile(url, onapRequest.getOnapModule().getHeaders(), parameters.get(OnapRequestParameters.FILE_PARAM_NAME.name()), parameters.get(OnapRequestParameters.FILE_NAME.name()), parameters.get(OnapRequestParameters.FILE_PATH.name()));
-                break;
+                return postFile(onapRequest, url, parameters.get(OnapRequestParameters.FILE_PARAM_NAME.name()), parameters.get(OnapRequestParameters.FILE_PATH.name()));
             }
         }
 
