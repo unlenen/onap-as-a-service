@@ -43,7 +43,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Complexs: 
 ```
     (GET)   /cloud/complexs
-    curl -sX GET 'http://192.168.1.20:8080/cloud/complexs' | jq
+    curl -sX GET 'http://localhost:8080/cloud/complexs' | jq
 ```
 
 ### Region
@@ -51,7 +51,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Regions:
 ```
     (GET)   /cloud/regions
-    curl -sX GET 'http://192.168.1.20:8080/cloud/regions' | jq
+    curl -sX GET 'http://localhost:8080/cloud/regions' | jq
 ```
 
 ### Tenant
@@ -59,7 +59,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Tenants:
 ```
     (GET)   /cloud/tenants/{cloudOwner}/{cloudRegion}
-    curl -sX GET 'http://192.168.1.20:8080/cloud/tenants/<CloudOwnerName>/<RegionName>' | jq
+    curl -sX GET 'http://localhost:8080/cloud/tenants/<CloudOwnerName>/<RegionName>' | jq
 ```
 
 ### Availability Zone
@@ -67,7 +67,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Availability Zones
 ```
     (GET)   /cloud/availability-zones/{cloudOwner}/{cloudRegion}
-    curl -sX GET 'http://192.168.1.20:8080/cloud/availability-zones/<CloudOwnerName>/<RegionName>' | jq
+    curl -sX GET 'http://localhost:8080/cloud/availability-zones/<CloudOwnerName>/<RegionName>' | jq
 ```
 
 ## BUSINESS
@@ -77,7 +77,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Customers
 ```
     (GET)   /business/customers
-    curl -sX GET 'http://192.168.1.20:8080/business/customers' | jq
+    curl -sX GET 'http://localhost:8080/business/customers' | jq
 ```
 
 ### Owning Entity
@@ -85,7 +85,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Owning Entities
 ```
     (GET)   /business/owning-entities
-    curl -sX GET 'http://192.168.1.20:8080/business/owning-entities' | jq
+    curl -sX GET 'http://localhost:8080/business/owning-entities' | jq
 ```
 
 ### Platforms
@@ -93,7 +93,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Platforms
 ```
     (GET)   /business/platforms
-    curl -sX GET 'http://192.168.1.20:8080/business/platforms' | jq
+    curl -sX GET 'http://localhost:8080/business/platforms' | jq
 ```
 
 ### Projects
@@ -101,7 +101,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Projects
 ```
     (GET)   /business/projects
-    curl -sX GET 'http://192.168.1.20:8080/business/projects' | jq
+    curl -sX GET 'http://localhost:8080/business/projects' | jq
 ```
 
 ## DESIGN
@@ -111,19 +111,19 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Vendors
 ```
     (GET)   /design/vendors
-    curl -sX GET 'http://192.168.1.20:8080/design/vendors' | jq
+    curl -sX GET 'http://localhost:8080/design/vendors' | jq
 ```
 
 - Create New Vendor
 ```
     (PUT)   /design/vendor/{vendorName}/{vendorDescription}
-     curl -sX PUT 'http://192.168.1.20:8080/design/vendor/<Vendor Name>/<Vendor Description>' | jq
+     curl -sX PUT 'http://localhost:8080/design/vendor/<Vendor Name>/<Vendor Description>' | jq
 ```
 
 - Submit New Vendor
 ```
     (PUT)   /design/vendor-submit/{vendorId}/{vendorVersionId}
-    curl -sX PUT 'http://192.168.1.20:8080/design/vendor-submit/<Vendor ID>/<Vendor Version>' | jq
+    curl -sX PUT 'http://localhost:8080/design/vendor-submit/<Vendor ID>/<Vendor Version>' | jq
 ```
 
 ### Vendor Software Product (VSP)
@@ -131,37 +131,37 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of VSPs
 ```
     (GET)   /design/vsps
-    curl -sX GET 'http://192.168.1.20:8080/design/vsps' | jq
+    curl -sX GET 'http://localhost:8080/design/vsps' | jq
 ```
 
 - Create New VSP
 ```
     (PUT)   /design/vsp/{vendorId}/{vendorName}/{vspName}/{vspDescription}
-    curl -sX PUT 'http://192.168.1.20:8080/design/vsp/<Vendor ID>/<Vendor Name>/<New VSP Name>/New VSP Description' | jq
+    curl -sX PUT 'http://localhost:8080/design/vsp/<Vendor ID>/<Vendor Name>/<New VSP Name>/New VSP Description' | jq
 ```
 
 - Get VSP Version
 ```
     (GET)   /design/vsp-versions/{vspId}
-    curl -sX GET 'http://192.168.1.20:8080/design/vsp-versions/<VSP ID>' | jq
+    curl -sX GET 'http://localhost:8080/design/vsp-versions/<VSP ID>' | jq
 ```
 
 - Upload VSP File
 ```
     (PUT)   /design/vsp-file-upload/{vspId}/{vspVersionId}/{vspFileLocalPath}
-    curl -sX PUT 'http://192.168.1.20:8080/design/vsp-file-upload/<VSP ID>/<VSP Version>/<VSP Artifact File Local Path>' | jq
+    curl -sX PUT 'http://localhost:8080/design/vsp-file-upload/<VSP ID>/<VSP Version>/<VSP Artifact File Local Path>' | jq
 ```
 
 - Process VSP File
 ```
     (PUT)   /design/vsp-file-process/{vspId}/{vspVersionId}
-    curl -sX PUT 'http://192.168.1.20:8080/design/vsp-file-process/<VSP ID>/<VSP Version>' | jq
+    curl -sX PUT 'http://localhost:8080/design/vsp-file-process/<VSP ID>/<VSP Version>' | jq
 ```
 
 - Submit VSP
 ```
     (PUT)   /design/vsp-submit/{vspId}/{vspVersionId}
-    curl -sX PUT 'http://192.168.1.20:8080/design/vsp-submit/<VSP ID>/<VSP Version>' | jq
+    curl -sX PUT 'http://localhost:8080/design/vsp-submit/<VSP ID>/<VSP Version>' | jq
 ```
 
 ### Virtual Function (VF)
@@ -169,7 +169,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of VFs
 ```
     (GET)   /design/vfs
-    curl -sX GET 'http://192.168.1.20:8080/design/vfs' | jq
+    curl -sX GET 'http://localhost:8080/design/vfs' | jq
 ```
 
 ### Service Model
@@ -177,7 +177,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Service Models
 ```
     (GET)   /design/service-models
-    curl -sX GET 'http://192.168.1.20:8080/design/service-models' | jq
+    curl -sX GET 'http://localhost:8080/design/service-models' | jq
 ```
 
 ## RUNTIME
@@ -187,13 +187,13 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of Service Instances
 ```
     (GET)   /runtime/service-instances/{customerName}
-    curl -sX GET 'http://192.168.1.20:8080/runtime/service-instances/<CUSTOMER NAME>' | jq
+    curl -sX GET 'http://localhost:8080/runtime/service-instances/<CUSTOMER NAME>' | jq
 ```
 
 - Detail of  Service Instance
 ```
     (GET)   /runtime/service-instance/{serviceInstanceId}' | jq
-    curl -sX GET 'http://192.168.1.20:8080/runtime/service-instance/<SERVICE INSTANCE ID>' | jq
+    curl -sX GET 'http://localhost:8080/runtime/service-instance/<SERVICE INSTANCE ID>' | jq
 ```
 
 ### Virtual Network Function (VNF)
@@ -201,13 +201,13 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of VNFS
 ```
     (GET)   /runtime/vnfs
-    curl -sX GET 'http://192.168.1.20:8080/runtime/vnfs' | jq
+    curl -sX GET 'http://localhost:8080/runtime/vnfs' | jq
 ```
 
 - Detail of VNF
 ```
     (GET)   /runtime/vnf/{vnfId}
-    curl -sX GET 'http://192.168.1.20:8080/runtime/vnf/<VNF ID>' | jq
+    curl -sX GET 'http://localhost:8080/runtime/vnf/<VNF ID>' | jq
 ```
 
 ### Virtual Function Module (VF-Module)
@@ -215,23 +215,23 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 - List of VF-Modules
 ```
     (GET)   /runtime/vf-modules/{vnfId}
-    curl -sX GET 'http://192.168.1.20:8080/runtime/vf-modules/<VNF ID>' | jq
+    curl -sX GET 'http://localhost:8080/runtime/vf-modules/<VNF ID>' | jq
 ```
 
 - Detail of VF-Module
 ```
     (GET)   /runtime/vf-module/{vnfId}/{vfModuleId}
-    curl -sX GET 'http://192.168.1.20:8080/runtime/vf-module/<VNF ID>/<VNF MODULE ID>' | jq
+    curl -sX GET 'http://localhost:8080/runtime/vf-module/<VNF ID>/<VNF MODULE ID>' | jq
 ```
 
 - Instantiation Detail of VF-Module
 ```
     (GET)   /runtime/vf-module-properties/{vfModuleId}
-    curl -sX GET 'http://192.168.1.20:8080//runtime/vf-module-properties/<VNF MODULE ID>' | jq
+    curl -sX GET 'http://localhost:8080//runtime/vf-module-properties/<VNF MODULE ID>' | jq
 ```
 
 - VF-Module Topology
 ```
     (GET)   /runtime/vf-module-topology/{serviceInstanceId}/{vnfId}/{vfModuleId}
-    curl -sX GET 'http://192.168.1.20:8080/runtime/vf-module-topology/<SERVICE INSTANCE ID>/<VNF ID>/<VF MODULE ID>' | jq
+    curl -sX GET 'http://localhost:8080/runtime/vf-module-topology/<SERVICE INSTANCE ID>/<VNF ID>/<VF MODULE ID>' | jq
 ```
