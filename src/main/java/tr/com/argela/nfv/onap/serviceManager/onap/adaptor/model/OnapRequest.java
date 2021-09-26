@@ -39,7 +39,7 @@ public enum OnapRequest {
     SDC_VENDOR_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models", 200, HttpResponseType.JSONObject, "payloads/design/vendor/create.json", "application/json"),
     SDC_VENDOR_SUBMIT(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models/${" + OnapRequestParameters.DESIGN_VENDOR_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VENDOR_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vendor/submit.json", "application/json"),
     SDC_VSPS(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products", 200, HttpResponseType.JSONObject),
-    SDC_VSP_VERSION(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api//v1.0/items/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions", 200, HttpResponseType.JSONObject),
+    SDC_VSP_VERSION(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/items/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions", 200, HttpResponseType.JSONObject),
     SDC_VSP_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products", 200, HttpResponseType.JSONObject, "payloads/design/vsp/create.json", "application/json"),
     SDC_VSP_UPLOAD_FILE(HttpCallType.POST_FILE, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/orchestration-template-candidate", 200, HttpResponseType.JSONObject),
     SDC_VSP_PROCESS_FILE(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/orchestration-template-candidate/process", 200, HttpResponseType.JSONObject, "payloads/design/vsp/process.json", "application/json"),
@@ -114,4 +114,10 @@ public enum OnapRequest {
         }
         return mainURL;
     }
+
+    @Override
+    public String toString() {
+        return "["+this.name()+"]";
+    }
+
 }

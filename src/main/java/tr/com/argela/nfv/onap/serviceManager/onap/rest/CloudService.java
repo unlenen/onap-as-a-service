@@ -12,14 +12,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-*/
+ */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -36,11 +37,12 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParam
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
 @RestController
-@Slf4j
 public class CloudService {
 
     @Autowired
     OnapAdaptor adaptor;
+
+    Logger log = LoggerFactory.getLogger(CloudService.class);
 
     @GetMapping(path = "/cloud/complexs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getCloudComplex() throws IOException {

@@ -18,9 +18,10 @@ package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -38,11 +39,13 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParam
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
 @RestController
-@Slf4j
+
 public class DesignService {
 
     @Autowired
     OnapAdaptor adaptor;
+
+    Logger log = LoggerFactory.getLogger(DesignService.class);
 
     @GetMapping(path = "/design/service-models", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getServiceModels() throws IOException {

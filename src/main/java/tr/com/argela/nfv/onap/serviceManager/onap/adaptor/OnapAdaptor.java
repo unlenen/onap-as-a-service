@@ -18,12 +18,17 @@ package tr.com.argela.nfv.onap.serviceManager.onap.adaptor;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http.URLConnectionService;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.OnapRequestFailedException;
 
 /**
  *
@@ -38,13 +43,66 @@ public class OnapAdaptor {
     @Autowired
     URLConnectionService urlConnectionService;
 
+    Logger log = LoggerFactory.getLogger(OnapAdaptor.class);
+
     public Object call(OnapRequest request) throws IOException {
         return call(request, new HashMap<>());
     }
 
-    public Object call(OnapRequest request, Map<String, String> parameters) throws IOException {
+    public Object call(OnapRequest request, Map<String, String> parameters) {
         parameters.put("ONAPIP", onapConfig.onapIPAddress);
-        return urlConnectionService.call(request, parameters);
+        String url = request.getEndpoint(parameters);
+        try {
+
+            return urlConnectionService.call(request, url, parameters);
+        } catch (Throwable ex) {
+            return handleError(request, ex, url, parameters);
+        }
+    }
+
+    private Object handleError(OnapRequest request, Throwable ex, String url, Map<String, String> parameters) throws JSONException {
+        log.error("[Error][CallingOnapAPI] " + request + " , msg : " + ex.getMessage(), ex);
+        String responseCode = "<NONE>";
+        JSONObject detailObj = new JSONObject();
+        if (ex instanceof OnapRequestFailedException) {
+            OnapRequestFailedException onapEx = (OnapRequestFailedException) ex;
+            url = onapEx.getUrl();
+            responseCode = onapEx.getResponseCode() + "";
+        } else if (ex instanceof org.springframework.web.client.HttpClientErrorException) {
+            org.springframework.web.client.HttpClientErrorException httpEx = (org.springframework.web.client.HttpClientErrorException) ex;
+            responseCode = httpEx.getStatusCode() + "";
+            detailObj = new JSONObject(httpEx.getResponseBodyAsString());
+        }
+
+        JSONObject error = new JSONObject();
+        error.put("msg-type", request.name());
+        error.put("url", url);
+        error.put("responseCode", responseCode);
+        error.put("msg", ex.getMessage());
+        error.put("details", detailObj);
+
+        JSONObject reqParameters = new JSONObject();
+        error.put("request-parameters", reqParameters);
+        for (String key : parameters.keySet()) {
+            reqParameters.put(key, parameters.get(key));
+        }
+
+        switch (request.getResponseType()) {
+            case JSONObject: {
+                JSONObject root = new JSONObject();
+                root.put("error", error);
+                return root;
+            }
+            case JSONArray: {
+                JSONArray root = new JSONArray();
+                root.put(error);
+                return root;
+            }
+            default:
+            case STRING: {
+                return error.toString();
+            }
+        }
     }
 
     public Object getResponseItem(JSONObject data, String item) {

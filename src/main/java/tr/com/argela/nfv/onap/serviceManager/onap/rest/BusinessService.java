@@ -16,8 +16,9 @@
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
 import java.io.IOException;
-import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,11 +33,13 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
 @RestController
-@Slf4j
+
 public class BusinessService {
 
     @Autowired
     OnapAdaptor adaptor;
+
+    Logger log = LoggerFactory.getLogger(BusinessService.class);
 
     @GetMapping(path = "/business/customers", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getBusinessCostumers() throws IOException {

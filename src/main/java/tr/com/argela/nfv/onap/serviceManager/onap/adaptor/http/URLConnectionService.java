@@ -27,20 +27,14 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-import lombok.extern.slf4j.Slf4j;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-
-import okhttp3.Request;
-import okhttp3.Request.Builder;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -56,8 +50,10 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParam
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
 @Component
-@Slf4j
+
 public class URLConnectionService {
+
+    Logger log = LoggerFactory.getLogger(URLConnectionService.class);
 
     SSLSocketFactory socketFactory;
     X509TrustManager x509TrustManager;
@@ -94,47 +90,34 @@ public class URLConnectionService {
         });
     }
 
-    public OkHttpClient.Builder getHttpsBuilder() {
-        OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-        builder.sslSocketFactory(socketFactory, x509TrustManager);
-        builder.hostnameVerifier((String hostname, SSLSession session) -> true);
-        return builder;
-    }
+    public ResponseEntity get(String url, Map<String, String> headerMap) {
+        HttpHeaders headers = new HttpHeaders();
 
-    public Response get(String url, Map<String, String> headers) throws IOException {
-        OkHttpClient client = getHttpsBuilder().build();
-
-        Builder builder = new Request.Builder().url(url);
-        for (String header : headers.keySet()) {
-            builder.addHeader(header, headers.get(header));
+        for (String header : headerMap.keySet()) {
+            headers.add(header, headerMap.get(header));
         }
 
-        Request request = builder.build();
-        return client.newCall(request).execute();
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+        return response;
     }
 
-    public Response call(String methodType, String url, Map<String, String> headers, String data, String type) throws IOException {
-        OkHttpClient client = getHttpsBuilder().build();
+    public ResponseEntity push(String methodType, String url, Map<String, String> headerMap, String data, String type) {
 
-        Builder builder = new Request.Builder()
-                .url(url);
+        HttpHeaders headers = new HttpHeaders();
 
-        if (data != null) {
-            RequestBody body = RequestBody.create(data, MediaType.parse(type));
-            builder
-                    .method(methodType, body)
-                    .addHeader("Content-Type", type);
+        for (String header : headerMap.keySet()) {
+            headers.add(header, headerMap.get(header));
         }
-
-        for (String header : headers.keySet()) {
-            builder.addHeader(header, headers.get(header));
-        }
-
-        Request request = builder.build();
-        return client.newCall(request).execute();
+        headers.setContentType(org.springframework.http.MediaType.parseMediaType(type));
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> requestEntity = new HttpEntity<>(data, headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.valueOf(methodType), requestEntity, String.class);
+        return response;
     }
 
-    public Object postFile(OnapRequest onapRequest, String url, String paramName, String filePath) throws IOException {
+    public ResponseEntity postFile(OnapRequest onapRequest, String url, String paramName, String filePath) {
         HttpHeaders headers = new HttpHeaders();
 
         for (String header : onapRequest.getOnapModule().getHeaders().keySet()) {
@@ -150,52 +133,34 @@ public class URLConnectionService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 
-        int responseCode = response.getStatusCodeValue();
-        if (responseCode != onapRequest.getValidReturnCode()) {
-            throw new OnapRequestFailedException(onapRequest, url, responseCode, response.getBody());
-        }
-
-        String data = response.getBody();
-        switch (onapRequest.getResponseType()) {
-            case JSONObject: {
-                return new JSONObject(data);
-            }
-            case JSONArray: {
-                return new JSONArray(data);
-            }
-            case STRING: {
-                return data;
-            }
-        }
-        return null;
+        return response;
     }
 
-    public Object call(OnapRequest onapRequest, Map<String, String> parameters) throws IOException {
+    public Object call(OnapRequest onapRequest, String url, Map<String, String> parameters) throws IOException {
 
-        String url = onapRequest.getEndpoint(parameters);
         log.info("[ONAP][APICALL][" + onapRequest.getCallType() + "] url : " + url);
-        Response response = null;
+        ResponseEntity<String> response = null;
         switch (onapRequest.getCallType()) {
+            default:
             case GET: {
                 response = get(url, onapRequest.getOnapModule().getHeaders());
                 break;
             }
             case PUT:
             case POST: {
-                response = call(onapRequest.getCallType().name(), url, onapRequest.getOnapModule().getHeaders(), enrichPayloadData(readResourceFileToString(onapRequest.getPayloadFilePath()), parameters), onapRequest.getPayloadFileType());
+                response = push(onapRequest.getCallType().name(), url, onapRequest.getOnapModule().getHeaders(), enrichPayloadData(readResourceFileToString(onapRequest.getPayloadFilePath()), parameters), onapRequest.getPayloadFileType());
                 break;
             }
             case POST_FILE: {
-                return postFile(onapRequest, url, parameters.get(OnapRequestParameters.FILE_PARAM_NAME.name()), parameters.get(OnapRequestParameters.FILE_PATH.name()));
+                response = postFile(onapRequest, url, parameters.get(OnapRequestParameters.FILE_PARAM_NAME.name()), parameters.get(OnapRequestParameters.FILE_PATH.name()));
             }
         }
 
-        ResponseBody responseBody = response.body();
-        int responseCode = response.code();
+        int responseCode = response.getStatusCodeValue();
         if (responseCode != onapRequest.getValidReturnCode()) {
-            throw new OnapRequestFailedException(onapRequest, url, responseCode, responseBody.string());
+            throw new OnapRequestFailedException(onapRequest, url, responseCode, response.getBody());
         }
-        String data = responseBody.string();
+        String data = response.getBody();
 
         switch (onapRequest.getResponseType()) {
             case JSONObject: {

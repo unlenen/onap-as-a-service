@@ -1,6 +1,7 @@
 # Argela ONAP API
 
-```                          _           ____  _   _          _____             _____ _____ 
+```
+                          _           ____  _   _          _____             _____ _____ 
      /\                  | |         / __ \| \ | |   /\   |  __ \      /\   |  __ \_   _|
     /  \   _ __ __ _  ___| | __ _   | |  | |  \| |  /  \  | |__) |    /  \  | |__) || |  
    / /\ \ | '__/ _` |/ _ \ |/ _` |  | |  | | . ` | / /\ \ |  ___/    / /\ \ |  ___/ | |  
@@ -27,146 +28,210 @@ This project aims to call ONAP complex APIs easily with converting them basic re
     java -jar target/onap_service_manager-1.0.jar --onap.ip=<ONAP_IP> --server.port=8080
 ```
 
-## USAGE Example
+## USAGE 
 ```
     curl http://localhost:8080/<API_URL>
-    ex: get cloud regins : 
+    ex: get cloud regions : 
         curl http://localhost:8080/cloud/regions  | jq
 ```
   
 
 ## CLOUD
 
+### Complex
+
 - List of Complexs: 
 ```
-    /cloud/complexs
+    (GET)   /cloud/complexs
+    curl -sX GET 'http://192.168.1.20:8080/cloud/complexs' | jq
 ```
+
+### Region
+
 - List of Regions:
 ```
-    /cloud/regions
+    (GET)   /cloud/regions
+    curl -sX GET 'http://192.168.1.20:8080/cloud/regions' | jq
 ```
+
+### Tenant
+
 - List of Tenants:
 ```
-    /cloud/tenants/{cloudOwner}/{cloudRegion}
+    (GET)   /cloud/tenants/{cloudOwner}/{cloudRegion}
+    curl -sX GET 'http://192.168.1.20:8080/cloud/tenants/<CloudOwnerName>/<RegionName>' | jq
 ```
+
+### Availability Zone
+
 - List of Availability Zones
 ```
-    /cloud/availability-zones/{cloudOwner}/{cloudRegion}
+    (GET)   /cloud/availability-zones/{cloudOwner}/{cloudRegion}
+    curl -sX GET 'http://192.168.1.20:8080/cloud/availability-zones/<CloudOwnerName>/<RegionName>' | jq
 ```
 
 ## BUSINESS
 
+### Customer
+
 - List of Customers
 ```
-    /business/customers
+    (GET)   /business/customers
+    curl -sX GET 'http://192.168.1.20:8080/business/customers' | jq
 ```
+
+### Owning Entity
+
 - List of Owning Entities
 ```
-    /business/owning-entities
+    (GET)   /business/owning-entities
+    curl -sX GET 'http://192.168.1.20:8080/business/owning-entities' | jq
 ```
+
+### Platforms
+
 - List of Platforms
 ```
-    /business/platforms
+    (GET)   /business/platforms
+    curl -sX GET 'http://192.168.1.20:8080/business/platforms' | jq
 ```
+
+### Projects
+
 - List of Projects
 ```
-    /business/projects
+    (GET)   /business/projects
+    curl -sX GET 'http://192.168.1.20:8080/business/projects' | jq
 ```
 
 ## DESIGN
 
+### VENDOR
+
 - List of Vendors
 ```
-    /design/vendors
+    (GET)   /design/vendors
+    curl -sX GET 'http://192.168.1.20:8080/design/vendors' | jq
 ```
 
 - Create New Vendor
 ```
-    /design/vendor/{vendorName}/{vendorDescription}
+    (PUT)   /design/vendor/{vendorName}/{vendorDescription}
+     curl -sX PUT 'http://192.168.1.20:8080/design/vendor/<Vendor Name>/<Vendor Description>' | jq
 ```
 
 - Submit New Vendor
 ```
-    /design/vendor-submit/{vendorId}/{vendorVersionId}
+    (PUT)   /design/vendor-submit/{vendorId}/{vendorVersionId}
+    curl -sX PUT 'http://192.168.1.20:8080/design/vendor-submit/<Vendor ID>/<Vendor Version>' | jq
 ```
+
+### Vendor Software Product (VSP)
 
 - List of VSPs
 ```
-    /design/vsps
+    (GET)   /design/vsps
+    curl -sX GET 'http://192.168.1.20:8080/design/vsps' | jq
 ```
 
 - Create New VSP
 ```
-    /design/vsp/{vendorId}/{vendorName}/{vspName}/{vspDescription}
+    (PUT)   /design/vsp/{vendorId}/{vendorName}/{vspName}/{vspDescription}
+    curl -sX PUT 'http://192.168.1.20:8080/design/vsp/<Vendor ID>/<Vendor Name>/<New VSP Name>/New VSP Description' | jq
 ```
 
 - Get VSP Version
 ```
-    /design/vsp-versions/{vspId}
+    (GET)   /design/vsp-versions/{vspId}
+    curl -sX GET 'http://192.168.1.20:8080/design/vsp-versions/<VSP ID>' | jq
 ```
 
 - Upload VSP File
 ```
-    /design/vsp-file-upload/{vspId}/{vspVersionId}/{vspFileLocalPath}
+    (PUT)   /design/vsp-file-upload/{vspId}/{vspVersionId}/{vspFileLocalPath}
+    curl -sX PUT 'http://192.168.1.20:8080/design/vsp-file-upload/<VSP ID>/<VSP Version>/<VSP Artifact File Local Path>' | jq
 ```
 
 - Process VSP File
 ```
-    /design/vsp-file-process/{vspId}/{vspVersionId}
+    (PUT)   /design/vsp-file-process/{vspId}/{vspVersionId}
+    curl -sX PUT 'http://192.168.1.20:8080/design/vsp-file-process/<VSP ID>/<VSP Version>' | jq
 ```
 
 - Submit VSP
 ```
-    /design/vsp-submit/{vspId}/{vspVersionId}
+    (PUT)   /design/vsp-submit/{vspId}/{vspVersionId}
+    curl -sX PUT 'http://192.168.1.20:8080/design/vsp-submit/<VSP ID>/<VSP Version>' | jq
 ```
+
+### Virtual Function (VF)
 
 - List of VFs
 ```
-    /design/vfs
+    (GET)   /design/vfs
+    curl -sX GET 'http://192.168.1.20:8080/design/vfs' | jq
 ```
+
+### Service Model
+
 - List of Service Models
 ```
-    /design/service-models
+    (GET)   /design/service-models
+    curl -sX GET 'http://192.168.1.20:8080/design/service-models' | jq
 ```
 
 ## RUNTIME
 
+### Service Instance
+
 - List of Service Instances
 ```
-    /runtime/service-instances/{customerName}
+    (GET)   /runtime/service-instances/{customerName}
+    curl -sX GET 'http://192.168.1.20:8080/runtime/service-instances/<CUSTOMER NAME>' | jq
 ```
 
 - Detail of  Service Instance
 ```
-    /runtime/service-instance/{serviceInstanceId}
+    (GET)   /runtime/service-instance/{serviceInstanceId}' | jq
+    curl -sX GET 'http://192.168.1.20:8080/runtime/service-instance/<SERVICE INSTANCE ID>' | jq
 ```
+
+### Virtual Network Function (VNF)
 
 - List of VNFS
 ```
-    /runtime/vnfs
+    (GET)   /runtime/vnfs
+    curl -sX GET 'http://192.168.1.20:8080/runtime/vnfs' | jq
 ```
 
 - Detail of VNF
 ```
-    /runtime/vnf/{vnfId}
+    (GET)   /runtime/vnf/{vnfId}
+    curl -sX GET 'http://192.168.1.20:8080/runtime/vnf/<VNF ID>' | jq
 ```
+
+### Virtual Function Module (VF-Module)
 
 - List of VF-Modules
 ```
-    /runtime/vf-modules/{vnfId}
+    (GET)   /runtime/vf-modules/{vnfId}
+    curl -sX GET 'http://192.168.1.20:8080/runtime/vf-modules/<VNF ID>' | jq
 ```
 
 - Detail of VF-Module
 ```
-    /runtime/vf-module/{vnfId}/{vfModuleId}
+    (GET)   /runtime/vf-module/{vnfId}/{vfModuleId}
+    curl -sX GET 'http://192.168.1.20:8080/runtime/vf-module/<VNF ID>/<VNF MODULE ID>' | jq
 ```
 
 - Instantiation Detail of VF-Module
 ```
-    /runtime/vf-module-properties/{vfModuleId}
+    (GET)   /runtime/vf-module-properties/{vfModuleId}
+    curl -sX GET 'http://192.168.1.20:8080//runtime/vf-module-properties/<VNF MODULE ID>' | jq
 ```
 
 - VF-Module Topology
 ```
-    /runtime/vf-module-topology/{serviceInstanceId}/{vnfId}/{vfModuleId}
+    (GET)   /runtime/vf-module-topology/{serviceInstanceId}/{vnfId}/{vfModuleId}
+    curl -sX GET 'http://192.168.1.20:8080/runtime/vf-module-topology/<SERVICE INSTANCE ID>/<VNF ID>/<VF MODULE ID>' | jq
 ```

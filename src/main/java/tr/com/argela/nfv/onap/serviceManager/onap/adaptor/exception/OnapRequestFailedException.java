@@ -25,14 +25,18 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 public class OnapRequestFailedException extends IOException {
 
     OnapRequest onapRequest;
+    String url;
+    int responseCode;
 
     public OnapRequestFailedException(OnapRequest onapRequest) {
         this.onapRequest = onapRequest;
     }
 
-    public OnapRequestFailedException(OnapRequest onapRequest, String url, int responseCode, String string) {
-        super("request:" + onapRequest + ",url:" + url + ",responseCode:" + responseCode + " , msg:" + string);
+    public OnapRequestFailedException(OnapRequest onapRequest, String url, int responseCode, String msg) {
+        super("request:" + onapRequest + ",url:" + url + ",responseCode:" + responseCode + " , msg:" + msg);
         this.onapRequest = onapRequest;
+        this.url = url;
+        this.responseCode = responseCode;
     }
 
     public OnapRequestFailedException(OnapRequest onapRequest, String string, Throwable thrwbl) {
@@ -42,6 +46,14 @@ public class OnapRequestFailedException extends IOException {
 
     public OnapRequest getOnapRequest() {
         return onapRequest;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public int getResponseCode() {
+        return responseCode;
     }
 
 }
