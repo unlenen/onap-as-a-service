@@ -36,7 +36,7 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 
 ## Swagger Rest UI
 ```
-    http://localhost:8080/swagger-ui
+    http://localhost:8080/swagger-ui/
 ```  
 
 
