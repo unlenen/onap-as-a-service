@@ -13,7 +13,6 @@
 Written By: Nebi Volkan UNLENEN ( unlenen@gmail.com ) 
 ```
 
-
 This project aims to call ONAP complex APIs easily with converting them basic rest APIs.
 
 
@@ -34,7 +33,14 @@ This project aims to call ONAP complex APIs easily with converting them basic re
     ex: get cloud regions : 
         curl http://localhost:8080/cloud/regions  | jq
 ```
-  
+
+## Swagger Rest UI
+```
+    http://localhost:8080/swagger-ui
+```  
+
+
+
 
 ## CLOUD
 
