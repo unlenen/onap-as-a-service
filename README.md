@@ -60,6 +60,12 @@ This project aims to call ONAP complex APIs easily with converting them basic re
     curl -sX GET 'http://localhost:8080/cloud/regions' | jq
 ```
 
+- Add Openstack Cloud:
+```
+    (PUT)   /cloud/openstack/{name}/{cloudOwner}/{complexName}/{osDomain}/{osDefaultProject}?keystoneURL=&user=&password
+    curl -X PUT "http://localhost:8080/cloud/openstack/<OS_NAME>/<CloudOwnerName>/<ComplexName>/<DOMAIN NAME>/<Default Project>>?keystoneURL=https%3A%2F%2Flocalhost%3A5000%2Fv3&password=<OPENSTACK PASSWORD>&user=<OPENSTACK USER>" -H  "accept: application/json"
+```
+
 ### Tenant
 
 - List of Tenants:
