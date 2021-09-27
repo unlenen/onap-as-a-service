@@ -80,6 +80,12 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 
 ### Customer
 
+- Create Customers
+```
+    (PUT)   /business/customer/{customerId}/{customerName}
+    curl -sX PUT "http://localhost:8080/business/customer/<Customer ID>/<Customer Name>" | jq
+```
+
 - List of Customers
 ```
     (GET)   /business/customers

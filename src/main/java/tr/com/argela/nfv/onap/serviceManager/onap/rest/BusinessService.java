@@ -16,6 +16,8 @@
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +26,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
+import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParameters;
 
 /**
  *
@@ -42,14 +47,24 @@ public class BusinessService {
     Logger log = LoggerFactory.getLogger(BusinessService.class);
 
     @GetMapping(path = "/business/customers", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getBusinessCostumers() throws IOException {
+    public ResponseEntity getCostumers() throws IOException {
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_CUSTOMER);
         log.info("[Business][Customer][Get] size:" + adaptor.getResponseSize(data, "customer"));
         return ResponseEntity.ok(data.toString());
     }
 
+    @PutMapping(path = "/business/customer/{customerId}/{customerName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createCostumer(@PathVariable String customerId, @PathVariable String customerName) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_ID.name(), customerId);
+        parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_NAME.name(), customerName);
+        String data = (String) adaptor.call(OnapRequest.BUSINESS_CUSTOMER_CREATE, parameters);
+        log.info("[Business][Customer][Create] customerId:" + customerId + " , customerName:" + customerName);
+        return ResponseEntity.ok(data);
+    }
+
     @GetMapping(path = "/business/owning-entities", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getBusinessOwningEntities() throws IOException {
+    public ResponseEntity getOwningEntities() throws IOException {
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_OWNING_ENTITY);
         log.info("[Business][OwningEntity][Get] size:" + adaptor.getResponseSize(data, "owning-entity"));
         return ResponseEntity.ok(data.toString());
