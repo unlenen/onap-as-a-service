@@ -160,7 +160,7 @@ public class DesignService {
         return ResponseEntity.ok(data.toString());
     }
 
-    @GetMapping(path = "/design/vf/{DESIGN_VENDOR_NAME}/{DESIGN_VSP_ID}/{DESIGN_VSP_VERSION_NAME}/{DESIGN_VF_NAME}/{DESIGN_VF_DESCRIPTION}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/design/vf/{vendorName}/{vspId}/{vspVersionName}/{vfName}/{vfDescription}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createVF(@PathVariable String vendorName, String vspId, String vspVersionName, String vfName, String vfDescription) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.DESIGN_VENDOR_NAME.name(), vendorName);
