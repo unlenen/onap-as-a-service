@@ -24,17 +24,19 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http.HttpResponseType;
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
 public enum OnapRequest {
-
+    /*CLOUD*/
     CLOUD_REGION(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions", 200, HttpResponseType.JSONObject),
     CLOUD_OS_CREATE(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_OS_NAME + "}", 201, HttpResponseType.STRING, "payloads/cloud/region_openstack_create.json", "application/json"),
     CLOUD_COMPLEX(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/complexes", 200, HttpResponseType.JSONObject),
     CLOUD_TENANT(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants", 200, HttpResponseType.JSONObject),
     CLOUD_AVAILABILITY_ZONE(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/availability-zones", 200, HttpResponseType.JSONObject),
+    /*BUSINESS*/
     BUSINESS_CUSTOMER(HttpCallType.GET, OnapModule.AAI, "/business/customers", 200, HttpResponseType.JSONObject),
     BUSINESS_CUSTOMER_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}", 201, HttpResponseType.STRING, "payloads/business/customer/create.json", "application/json"),
     BUSINESS_OWNING_ENTITY(HttpCallType.GET, OnapModule.AAI, "/business/owning-entities", 200, HttpResponseType.JSONObject),
     BUSINESS_PLATFORM(HttpCallType.GET, OnapModule.AAI, "/business/platforms", 200, HttpResponseType.JSONObject),
     BUSINESS_PROJECT(HttpCallType.GET, OnapModule.AAI, "/business/projects", 200, HttpResponseType.JSONObject),
+    /*SDC*/
     SDC_SERVICE_MODELS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/services", 200, HttpResponseType.JSONArray),
     SDC_VFS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/resources?resourceType=VF", 200, HttpResponseType.JSONArray),
     SDC_VENDORS(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models", 200, HttpResponseType.JSONObject),
@@ -46,6 +48,9 @@ public enum OnapRequest {
     SDC_VSP_UPLOAD_FILE(HttpCallType.POST_FILE, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/orchestration-template-candidate", 200, HttpResponseType.JSONObject),
     SDC_VSP_PROCESS_FILE(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/orchestration-template-candidate/process", 200, HttpResponseType.JSONObject, "payloads/design/vsp/process.json", "application/json"),
     SDC_VSP_SUBMIT(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vsp/submit.json", "application/json"),
+    SDC_VSP_CSAR(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vsp/csar.json", "application/json"),
+    SDC_VF_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/resources", 201, HttpResponseType.JSONObject, "payloads/design/vf/create.json", "application/json"),
+    /*RUNTIME*/
     RUNTIME_SERVICE_INSTANCES(HttpCallType.GET, OnapModule.NBI, "/service?relatedParty.id=${" + OnapRequestParameters.BUSINESS_CUSTOMER_NAME + "}", 200, HttpResponseType.JSONArray),
     RUNTIME_SERVICE_INSTANCE_DETAIL(HttpCallType.GET, OnapModule.NBI, "/service/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}", 200, HttpResponseType.JSONObject),
     RUNTIME_VNFS(HttpCallType.GET, OnapModule.AAI, "/network/generic-vnfs", 200, HttpResponseType.JSONObject),

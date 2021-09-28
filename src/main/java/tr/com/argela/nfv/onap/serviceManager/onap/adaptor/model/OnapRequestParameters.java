@@ -43,10 +43,10 @@ public enum OnapRequestParameters {
     DESIGN_VSP_NAME,
     DESIGN_VSP_DESC,
     DESIGN_VSP_VERSION_ID,
-    
+    DESIGN_VSP_VERSION_NAME,
+    DESIGN_VF_NAME,
+    DESIGN_VF_DESCRIPTION,
     FILE_PARAM_NAME,
     FILE_NAME,
-    FILE_PATH
-    
-    ;
+    FILE_PATH;
 }

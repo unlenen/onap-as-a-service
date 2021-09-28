@@ -182,12 +182,24 @@ This project aims to call ONAP complex APIs easily with converting them basic re
     curl -sX PUT 'http://localhost:8080/design/vsp-submit/<VSP ID>/<VSP Version>' | jq
 ```
 
+- Create CSAR
+```
+    (PUT)   /design/vsp-csar/{vspId}/{vspVersionId}
+    curl -sX PUT 'http://localhost:8080/design/vsp-csar/<VSP ID>/<VSP Version>' | jq
+```
+
 ### Virtual Function (VF)
 
 - List of VFs
 ```
     (GET)   /design/vfs
     curl -sX GET 'http://localhost:8080/design/vfs' | jq
+```
+
+- Create VFs
+```
+    (PUT)   /design/vf/{DESIGN_VENDOR_NAME}/{DESIGN_VSP_ID}/{DESIGN_VSP_VERSION_NAME}/{DESIGN_VF_NAME}/{DESIGN_VF_DESCRIPTION}
+    curl -sX PUT 'http://localhost:8080/design/vfs' | jq
 ```
 
 ### Service Model
