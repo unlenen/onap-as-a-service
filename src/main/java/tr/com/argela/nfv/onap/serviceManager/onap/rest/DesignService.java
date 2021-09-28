@@ -47,20 +47,6 @@ public class DesignService {
 
     Logger log = LoggerFactory.getLogger(DesignService.class);
 
-    @GetMapping(path = "/design/service-models", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getServiceModels() throws IOException {
-        JSONArray data = (JSONArray) adaptor.call(OnapRequest.SDC_SERVICE_MODELS);
-        log.info("[Design][ServiceModels][Get] size:" + data.length());
-        return ResponseEntity.ok(data.toString());
-    }
-
-    @GetMapping(path = "/design/vfs", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getVFs() throws IOException {
-        JSONArray data = (JSONArray) adaptor.call(OnapRequest.SDC_SERVICE_MODELS);
-        log.info("[Design][VFs][Get] size:" + data.length());
-        return ResponseEntity.ok(data.toString());
-    }
-
     @GetMapping(path = "/design/vendors", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVendors() throws IOException {
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VENDORS);
@@ -160,6 +146,13 @@ public class DesignService {
         return ResponseEntity.ok(data.toString());
     }
 
+    @GetMapping(path = "/design/vfs", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getVFs() throws IOException {
+        JSONArray data = (JSONArray) adaptor.call(OnapRequest.SDC_VFS);
+        log.info("[Design][VFs][Get] size:" + data.length());
+        return ResponseEntity.ok(data.toString());
+    }
+
     @PutMapping(path = "/design/vf/{vendorName}/{vspId}/{vspVersionName}/{vfName}/{vfDescription}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createVF(@PathVariable String vendorName, String vspId, String vspVersionName, String vfName, String vfDescription) throws IOException {
         Map<String, String> parameters = new HashMap<>();
@@ -170,6 +163,31 @@ public class DesignService {
         parameters.put(OnapRequestParameters.DESIGN_VF_DESCRIPTION.name(), vfDescription);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VF_CREATE, parameters);
         log.info("[Design][VF][Create] " + parameters + " ,response:" + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/vf-checkIn/{vfId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity checkInVF(@PathVariable String vfId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_VF_ID.name(), vfId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VF_CHECKIN, parameters);
+        log.info("[Design][VF][CheckIn] " + parameters + " ,response:" + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/vf-certify/{vfId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity certifyVF(@PathVariable String vfId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_VF_ID.name(), vfId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VF_CERTIFY, parameters);
+        log.info("[Design][VF][Certify] " + parameters + " ,response:" + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/design/service-models", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getServiceModels() throws IOException {
+        JSONArray data = (JSONArray) adaptor.call(OnapRequest.SDC_SERVICE_MODELS);
+        log.info("[Design][ServiceModels][Get] size:" + data.length());
         return ResponseEntity.ok(data.toString());
     }
 }

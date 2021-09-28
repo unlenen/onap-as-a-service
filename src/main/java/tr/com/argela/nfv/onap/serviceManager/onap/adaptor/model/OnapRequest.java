@@ -50,6 +50,8 @@ public enum OnapRequest {
     SDC_VSP_SUBMIT(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vsp/submit.json", "application/json"),
     SDC_VSP_CSAR(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vsp/csar.json", "application/json"),
     SDC_VF_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/resources", 201, HttpResponseType.JSONObject, "payloads/design/vf/create.json", "application/json"),
+    SDC_VF_CHECKIN(HttpCallType.POST, OnapModule.SDC_CATALOG, "/resources/${" + OnapRequestParameters.DESIGN_VF_ID + "}/lifecycleState/checkin", 201, HttpResponseType.JSONObject, "payloads/design/vf/checkin.json", "application/json"),
+    SDC_VF_CERTIFY(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/resources/${" + OnapRequestParameters.DESIGN_VF_ID + "}/lifecycleState/certify", 200, HttpResponseType.JSONObject, "payloads/design/vf/certify.json", "application/json"),
     /*RUNTIME*/
     RUNTIME_SERVICE_INSTANCES(HttpCallType.GET, OnapModule.NBI, "/service?relatedParty.id=${" + OnapRequestParameters.BUSINESS_CUSTOMER_NAME + "}", 200, HttpResponseType.JSONArray),
     RUNTIME_SERVICE_INSTANCE_DETAIL(HttpCallType.GET, OnapModule.NBI, "/service/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}", 200, HttpResponseType.JSONObject),

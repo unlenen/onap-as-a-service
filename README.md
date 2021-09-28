@@ -196,10 +196,22 @@ This project aims to call ONAP complex APIs easily with converting them basic re
     curl -sX GET 'http://localhost:8080/design/vfs' | jq
 ```
 
-- Create VFs
+- Create VF
 ```
     (PUT)  /design/vf/{vendorName}/{vspId}/{vspVersionName}/{vfName}/{vfDescription}
-    curl -sX PUT 'http://localhost:8080//design/vf/<Vendor Name>/<VSP ID>/<VSP Version Name(1.0)/<VF Name>/<VF Description>' | jq
+    curl -sX PUT 'http://localhost:8080/design/vf/<Vendor Name>/<VSP ID>/<VSP Version Name(1.0)/<VF Name>/<VF Description>' | jq
+```
+
+- CheckIn VF
+```
+    (PUT)  /design/vf-checkIn/{vfId}
+    curl -sX PUT 'http://localhost:8080/design/vf-checkIn/<VF UUID>' | jq
+```
+
+- Certify VF
+```
+    (PUT)  /design/vf-certify/{vfId}
+    curl -sX PUT 'http://localhost:8080/design/vf-certify/<VF UUID>' | jq
 ```
 
 ### Service Model
