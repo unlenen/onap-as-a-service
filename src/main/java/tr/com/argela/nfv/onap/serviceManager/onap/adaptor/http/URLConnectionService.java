@@ -138,7 +138,15 @@ public class URLConnectionService {
 
     public Object call(OnapRequest onapRequest, String url, Map<String, String> parameters) throws IOException {
 
-        log.info("[ONAP][APICALL][" + onapRequest.getCallType() + "] url : " + url);
+        String data = "";
+        switch (onapRequest.getCallType()) {
+            case PUT:
+            case POST: {
+                data = enrichPayloadData(readResourceFileToString(onapRequest.getPayloadFilePath()), parameters);
+            }
+        }
+
+        log.info("[ONAP][APICALL][" + onapRequest.getCallType() + "] url : " + url + " , data: " + data.replaceAll("\n", " "));
         ResponseEntity<String> response = null;
         switch (onapRequest.getCallType()) {
             default:
@@ -148,7 +156,7 @@ public class URLConnectionService {
             }
             case PUT:
             case POST: {
-                response = push(onapRequest.getCallType().name(), url, onapRequest.getOnapModule().getHeaders(), enrichPayloadData(readResourceFileToString(onapRequest.getPayloadFilePath()), parameters), onapRequest.getPayloadFileType());
+                response = push(onapRequest.getCallType().name(), url, onapRequest.getOnapModule().getHeaders(), data, onapRequest.getPayloadFileType());
                 break;
             }
             case POST_FILE: {
@@ -160,17 +168,17 @@ public class URLConnectionService {
         if (responseCode != onapRequest.getValidReturnCode()) {
             throw new OnapRequestFailedException(onapRequest, url, responseCode, response.getBody());
         }
-        String data = response.getBody();
+        String responseBody = response.getBody();
 
         switch (onapRequest.getResponseType()) {
             case JSONObject: {
-                return new JSONObject(data);
+                return new JSONObject(responseBody);
             }
             case JSONArray: {
-                return new JSONArray(data);
+                return new JSONArray(responseBody);
             }
             case STRING: {
-                return data;
+                return responseBody;
             }
         }
         return null;

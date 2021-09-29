@@ -1,0 +1,16 @@
+vendor:
+  name: NebiVendor51
+  description: NebiVendor51
+  vsps:
+  - name: NebiVsp51
+    description: NebiVsp51
+    file: d:\\ArgelaHelloWorld.zip
+
+service:
+  name: NebiService51
+  description: NebiService51
+  vfs:
+  - name: NebiVF51
+    description: NebiVF51
+    vsp:
+      name: NebiVsp51

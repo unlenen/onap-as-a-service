@@ -37,21 +37,29 @@ public enum OnapRequest {
     BUSINESS_PLATFORM(HttpCallType.GET, OnapModule.AAI, "/business/platforms", 200, HttpResponseType.JSONObject),
     BUSINESS_PROJECT(HttpCallType.GET, OnapModule.AAI, "/business/projects", 200, HttpResponseType.JSONObject),
     /*SDC*/
-    SDC_SERVICE_MODELS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/services", 200, HttpResponseType.JSONArray),
-    SDC_VFS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/resources?resourceType=VF", 200, HttpResponseType.JSONArray),
+    /*SDC VENDOR*/
     SDC_VENDORS(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models", 200, HttpResponseType.JSONObject),
+    SDC_VENDOR_VERSION(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/items/${" + OnapRequestParameters.DESIGN_VENDOR_ID + "}/versions/", 200, HttpResponseType.JSONObject),
     SDC_VENDOR_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models", 200, HttpResponseType.JSONObject, "payloads/design/vendor/create.json", "application/json"),
     SDC_VENDOR_SUBMIT(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models/${" + OnapRequestParameters.DESIGN_VENDOR_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VENDOR_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vendor/submit.json", "application/json"),
+    /*SDC VSP*/
     SDC_VSPS(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products", 200, HttpResponseType.JSONObject),
     SDC_VSP_VERSION(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/items/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions", 200, HttpResponseType.JSONObject),
     SDC_VSP_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products", 200, HttpResponseType.JSONObject, "payloads/design/vsp/create.json", "application/json"),
     SDC_VSP_UPLOAD_FILE(HttpCallType.POST_FILE, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/orchestration-template-candidate", 200, HttpResponseType.JSONObject),
     SDC_VSP_PROCESS_FILE(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/orchestration-template-candidate/process", 200, HttpResponseType.JSONObject, "payloads/design/vsp/process.json", "application/json"),
+    SDC_VSP_COMMIT(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vsp/commit.json", "application/json"),
     SDC_VSP_SUBMIT(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vsp/submit.json", "application/json"),
     SDC_VSP_CSAR(HttpCallType.PUT, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-software-products/${" + OnapRequestParameters.DESIGN_VSP_ID + "}/versions/${" + OnapRequestParameters.DESIGN_VSP_VERSION_ID + "}/actions", 200, HttpResponseType.JSONObject, "payloads/design/vsp/csar.json", "application/json"),
+    /*SDC VF*/
+    SDC_VFS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/resources?resourceType=VF", 200, HttpResponseType.JSONArray),
     SDC_VF_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/resources", 201, HttpResponseType.JSONObject, "payloads/design/vf/create.json", "application/json"),
-    SDC_VF_CHECKIN(HttpCallType.POST, OnapModule.SDC_CATALOG, "/resources/${" + OnapRequestParameters.DESIGN_VF_ID + "}/lifecycleState/checkin", 201, HttpResponseType.JSONObject, "payloads/design/vf/checkin.json", "application/json"),
-    SDC_VF_CERTIFY(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/resources/${" + OnapRequestParameters.DESIGN_VF_ID + "}/lifecycleState/certify", 200, HttpResponseType.JSONObject, "payloads/design/vf/certify.json", "application/json"),
+    SDC_VF_CHECKIN(HttpCallType.POST, OnapModule.SDC_CATALOG, "/resources/${" + OnapRequestParameters.DESIGN_VF_UUID + "}/lifecycleState/checkin", 201, HttpResponseType.JSONObject, "payloads/design/vf/checkin.json", "application/json"),
+    SDC_VF_CERTIFY(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/resources/${" + OnapRequestParameters.DESIGN_VF_UNIQUE_ID + "}/lifecycleState/certify", 200, HttpResponseType.JSONObject, "payloads/design/vf/certify.json", "application/json"),
+    /*SDC SERVICE MODEL*/
+    SDC_SERVICE_MODELS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/services", 200, HttpResponseType.JSONArray),
+    SDC_SERVICE_MODEL_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services", 201, HttpResponseType.JSONObject, "payloads/design/service/create.json", "application/json"),
+    SDC_SERVICE_MODEL_ADD_VF(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID + "}/resourceInstance", 201, HttpResponseType.JSONObject, "payloads/design/service/vfAdd.json", "application/json"),
     /*RUNTIME*/
     RUNTIME_SERVICE_INSTANCES(HttpCallType.GET, OnapModule.NBI, "/service?relatedParty.id=${" + OnapRequestParameters.BUSINESS_CUSTOMER_NAME + "}", 200, HttpResponseType.JSONArray),
     RUNTIME_SERVICE_INSTANCE_DETAIL(HttpCallType.GET, OnapModule.NBI, "/service/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}", 200, HttpResponseType.JSONObject),

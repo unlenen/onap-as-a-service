@@ -29,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
@@ -61,6 +62,16 @@ public class DesignService {
         parameters.put(OnapRequestParameters.DESIGN_VENDOR_DESC.name(), vendorDescription);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VENDOR_CREATE, parameters);
         log.info("[Design][Vendor][Create] " + parameters + ", response --> id:" + adaptor.getResponseItem(data, "itemId"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/design/vendor-version/{vendorId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getVendorVersion(@PathVariable String vendorId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_VENDOR_ID.name(), vendorId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VENDOR_VERSION, parameters);
+
+        log.info("[Design][Vendor][Version] " + parameters + ", response : " + data);
         return ResponseEntity.ok(data.toString());
     }
 
@@ -102,8 +113,8 @@ public class DesignService {
         return ResponseEntity.ok(data.toString());
     }
 
-    @PutMapping(path = "/design/vsp-file-upload/{vspId}/{vspVersionId}/{vspFileLocalPath}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity uploadVSPFile(@PathVariable String vspId, @PathVariable String vspVersionId, @PathVariable String vspFileLocalPath) throws IOException {
+    @PutMapping(path = "/design/vsp-file-upload/{vspId}/{vspVersionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity uploadVSPFile(@PathVariable String vspId, @PathVariable String vspVersionId, @RequestParam(name = "vspFileLocalPath") String vspFileLocalPath) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.DESIGN_VSP_ID.name(), vspId);
         parameters.put(OnapRequestParameters.DESIGN_VSP_VERSION_ID.name(), vspVersionId);
@@ -122,6 +133,17 @@ public class DesignService {
 
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VSP_PROCESS_FILE, parameters);
         log.info("[Design][Vsp][FileProcess] " + parameters + " ,response:" + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/vsp-commit/{vspId}/{vspVersionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity commitVSP(@PathVariable String vspId, @PathVariable String vspVersionId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_VSP_ID.name(), vspId);
+        parameters.put(OnapRequestParameters.DESIGN_VSP_VERSION_ID.name(), vspVersionId);
+
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VSP_COMMIT, parameters);
+        log.info("[Design][Vsp][Commit] " + parameters + ",response:" + data);
         return ResponseEntity.ok(data.toString());
     }
 
@@ -162,23 +184,25 @@ public class DesignService {
         parameters.put(OnapRequestParameters.DESIGN_VF_NAME.name(), vfName);
         parameters.put(OnapRequestParameters.DESIGN_VF_DESCRIPTION.name(), vfDescription);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VF_CREATE, parameters);
-        log.info("[Design][VF][Create] " + parameters + " ,response:" + data);
+        log.info("[Design][VF][Create] " + parameters + " ,response-->    invariantUUID :" + adaptor.getResponseItem(data, "invariantUUID")
+                + ", uuid:" + adaptor.getResponseItem(data, "uuid")
+                + ", uniqueId:" + adaptor.getResponseItem(data, "uniqueId"));
         return ResponseEntity.ok(data.toString());
     }
 
-    @PutMapping(path = "/design/vf-checkIn/{vfId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity checkInVF(@PathVariable String vfId) throws IOException {
+    @PutMapping(path = "/design/vf-checkIn/{vfUUID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity checkInVF(@PathVariable String vfUUID) throws IOException {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(OnapRequestParameters.DESIGN_VF_ID.name(), vfId);
+        parameters.put(OnapRequestParameters.DESIGN_VF_UUID.name(), vfUUID);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VF_CHECKIN, parameters);
         log.info("[Design][VF][CheckIn] " + parameters + " ,response:" + data);
         return ResponseEntity.ok(data.toString());
     }
 
-    @PutMapping(path = "/design/vf-certify/{vfId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity certifyVF(@PathVariable String vfId) throws IOException {
+    @PutMapping(path = "/design/vf-certify/{vfUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity certifyVF(@PathVariable String vfUniqueId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(OnapRequestParameters.DESIGN_VF_ID.name(), vfId);
+        parameters.put(OnapRequestParameters.DESIGN_VF_UNIQUE_ID.name(), vfUniqueId);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VF_CERTIFY, parameters);
         log.info("[Design][VF][Certify] " + parameters + " ,response:" + data);
         return ResponseEntity.ok(data.toString());
@@ -188,6 +212,30 @@ public class DesignService {
     public ResponseEntity getServiceModels() throws IOException {
         JSONArray data = (JSONArray) adaptor.call(OnapRequest.SDC_SERVICE_MODELS);
         log.info("[Design][ServiceModels][Get] size:" + data.length());
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/service-model/{serviceName}/{serviceDescription}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createServiceModel(@PathVariable String serviceName, @PathVariable String serviceDescription) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME.name(), serviceName);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_DESCRIPTION.name(), serviceDescription);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_SERVICE_MODEL_CREATE, parameters);
+        log.info("[Design][ServiceModel][Create] " + parameters + " ,response-->    invariantUUID :" + adaptor.getResponseItem(data, "invariantUUID")
+                + ", uuid:" + adaptor.getResponseItem(data, "uuid")
+                + ", uniqueId:" + adaptor.getResponseItem(data, "uniqueId"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/service-model/{serviceUniqueId}/{vfUniqueId}/{vfName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addVFtoServiceModel(@PathVariable String serviceUniqueId, @PathVariable String vfUniqueId, @PathVariable String vfName) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+        parameters.put(OnapRequestParameters.DESIGN_VF_UNIQUE_ID.name(), vfUniqueId);
+        parameters.put(OnapRequestParameters.DESIGN_VF_NAME.name(), vfName);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_SERVICE_MODEL_ADD_VF, parameters);
+        log.info("[Design][ServiceModel][AddVF] " + parameters + " ,response-->    name :" + adaptor.getResponseItem(data, "name")
+                + ", customizationUUID:" + adaptor.getResponseItem(data, "customizationUUID"));
         return ResponseEntity.ok(data.toString());
     }
 }
