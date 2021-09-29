@@ -40,6 +40,45 @@ This project aims to call ONAP complex APIs easily with converting them basic re
 ```  
 
 
+## Scenario
+
+Scenario Service allows to create ONAP resource automaticaly from a yaml file
+
+## Scenario Load Call
+
+
+```
+vendor:
+  name: Argela
+  description: Argela
+  vsps:
+  - name: ArgelaApp1
+    description: ArgelaApp1
+    file: d:\\ArgelaHelloWorld.zip
+  - name: ArgelaApp2
+    description: ArgelaApp2
+    file: d:\\ArgelaHelloWorld.zip
+    
+service:
+  name: ArgelaAppService
+  description: ArgelaApp1Service
+  vfs:
+  - name: ArgelaApp1
+    description: ArgelaApp1
+    vsp:
+      name: ArgelaApp1
+  - name: ArgelaApp2
+    description: ArgelaApp2
+    vsp:
+      name: ArgelaApp2
+
+```  
+
+![Scenario Load](docs/images/scenario-load.jpg)
+
+
+![ONAP SDC](docs/images/onap-sdc.jpg)
+
 
 
 ## CLOUD
