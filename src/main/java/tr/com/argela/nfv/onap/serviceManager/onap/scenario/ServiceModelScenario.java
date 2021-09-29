@@ -51,7 +51,10 @@ public class ServiceModelScenario extends CommonScenario {
             createService(service);
         }
 
-        addVfsToService(service);
+        if (service.getDistributionStatus() != DistributionStatus.DISTRIBUTED || service.getVersionStatus() != EntityStatus.CERTIFIED) {
+            addVfsToService(service);
+        }
+
         if (service.getVersionStatus() == EntityStatus.NOT_CERTIFIED_CHECKOUT) {
             certifyService(service);
         }

@@ -35,6 +35,7 @@ public class Service {
     List<VF> vfs;
     EntityStatus versionStatus;
     DistributionStatus distributionStatus;
+    List<Customer> customers;
 
     @JsonIgnore
     Map<String, VF> vfMapByModelName = new HashMap<>();
@@ -111,6 +112,14 @@ public class Service {
         this.distributionStatus = distributionStatus;
     }
 
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
+    }
+
     public void mapVfs() {
         vfs.forEach((vf) -> {
             vfMapByModelName.put(vf.getModelName(), vf);
@@ -120,4 +129,11 @@ public class Service {
     public VF getVFByModelName(String modelName) {
         return vfMapByModelName.get(modelName);
     }
+
+    @Override
+    public String toString() {
+        return "Service{" + "uuid=" + uuid + ", uniqueId=" + uniqueId + ", invariantUUID=" + invariantUUID + ", name=" + name + '}';
+    }
+    
+    
 }

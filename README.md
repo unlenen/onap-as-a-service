@@ -47,7 +47,7 @@ Scenario Service allows to create ONAP resource automaticaly from a yaml file
 ## Scenario Load Call
 
 
-```
+```yaml
 vendor:
   name: Argela
   description: Argela
@@ -62,6 +62,18 @@ vendor:
 service:
   name: ArgelaAppService
   description: ArgelaApp1Service
+  customers:
+  - id: nebi.unlenen
+    name: Nebi Unlenen
+  - id: defne.unlenen
+    name: Defne Unlenen
+  - id: caner.turkaslan
+    name: Muhammed Caner Turkaslan
+  - id: hilal.alsac
+    name: Feyza Hilal Alsac
+  - id: erol.ozcan
+    name: Erol Ozcan
+
   vfs:
   - name: ArgelaApp1
     description: ArgelaApp1
@@ -71,7 +83,6 @@ service:
     description: ArgelaApp2
     vsp:
       name: ArgelaApp2
-
 ```  
 
 ![Scenario Load](docs/images/scenario-load.jpg)

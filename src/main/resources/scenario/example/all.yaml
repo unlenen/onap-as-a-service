@@ -1,16 +1,35 @@
 vendor:
-  name: NebiVendor51
-  description: NebiVendor51
+  name: Argela
+  description: Argela
   vsps:
-  - name: NebiVsp51
-    description: NebiVsp51
+  - name: ArgelaApp1
+    description: ArgelaApp1
     file: d:\\ArgelaHelloWorld.zip
-
+  - name: ArgelaApp2
+    description: ArgelaApp2
+    file: d:\\ArgelaHelloWorld.zip
+    
 service:
-  name: NebiService51
-  description: NebiService51
+  name: ArgelaAppService
+  description: ArgelaApp1Service
+  customers:
+  - id: nebi.unlenen
+    name: Nebi Unlenen
+  - id: defne.unlenen
+    name: Defne Unlenen
+  - id: caner.turkaslan
+    name: Muhammed Caner Turkaslan
+  - id: hilal.alsac
+    name: Feyza Hilal Alsac
+  - id: erol.ozcan
+    name: Erol Ozcan
+
   vfs:
-  - name: NebiVF51
-    description: NebiVF51
+  - name: ArgelaApp1
+    description: ArgelaApp1
     vsp:
-      name: NebiVsp51
+      name: ArgelaApp1
+  - name: ArgelaApp2
+    description: ArgelaApp2
+    vsp:
+      name: ArgelaApp2

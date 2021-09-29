@@ -44,14 +44,24 @@ public class CommonScenario {
     }
 
     protected String readResponse(ResponseEntity responseEntity) throws Exception {
+        return readResponseValidateOption(responseEntity, true);
+    }
+
+    protected String readResponseValidateOption(ResponseEntity responseEntity, boolean validate) throws Exception {
         String data = responseEntity.getBody() + "";
-        validateResponse(data);
+        if (validate) {
+            validateResponse(data);
+        }
         return data;
     }
 
     protected String readResponse(ResponseEntity responseEntity, boolean isArray) throws Exception {
         String data = responseEntity.getBody() + "";
-        validateResponseArray(data);
+        if (isArray) {
+            validateResponseArray(data);
+        } else {
+            validateResponse(data);
+        }
         return data;
     }
 
