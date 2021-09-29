@@ -27,7 +27,7 @@ public class VF {
     String uuid;
     String uniqueId;
     String invariantUUID;
-    String name, description;
+    String name, description, versionName, customizationUUID, modelName, modelType, customizationName, modelUUID, modelInvariantUUID, modelCustomizationUUID;
     VSP vsp;
     @JsonIgnore
     Service service;
@@ -73,6 +73,70 @@ public class VF {
         this.description = description;
     }
 
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
+    public String getCustomizationUUID() {
+        return customizationUUID;
+    }
+
+    public void setCustomizationUUID(String customizationUUID) {
+        this.customizationUUID = customizationUUID;
+    }
+
+    public String getCustomizationName() {
+        return customizationName;
+    }
+
+    public void setCustomizationName(String customizationName) {
+        this.customizationName = customizationName;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public String getModelUUID() {
+        return modelUUID;
+    }
+
+    public void setModelUUID(String modelUUID) {
+        this.modelUUID = modelUUID;
+    }
+
+    public String getModelCustomizationUUID() {
+        return modelCustomizationUUID;
+    }
+
+    public void setModelCustomizationUUID(String modelCustomizationUUID) {
+        this.modelCustomizationUUID = modelCustomizationUUID;
+    }
+
+    public String getModelInvariantUUID() {
+        return modelInvariantUUID;
+    }
+
+    public void setModelInvariantUUID(String modelInvariantUUID) {
+        this.modelInvariantUUID = modelInvariantUUID;
+    }
+
+    public String getModelType() {
+        return modelType;
+    }
+
+    public void setModelType(String modelType) {
+        this.modelType = modelType;
+    }
+
     public VSP getVsp() {
         return vsp;
     }
@@ -97,4 +161,10 @@ public class VF {
         this.versionStatus = versionStatus;
     }
 
+    @Override
+    public String toString() {
+        return "VF{" + "uuid=" + uuid + ", uniqueId=" + uniqueId + ", invariantUUID=" + invariantUUID + ", name=" + name + ", versionName=" + versionName + ", customizationUUID=" + customizationUUID + ", modelName=" + modelName + ", modelType=" + modelType + ", versionStatus=" + versionStatus + '}';
+    }
+
+    
 }

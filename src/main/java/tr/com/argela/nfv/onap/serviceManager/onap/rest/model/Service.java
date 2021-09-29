@@ -15,7 +15,11 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.DistributionStatus;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.EntityStatus;
 
 /**
@@ -27,9 +31,13 @@ public class Service {
     String uuid;
     String uniqueId;
     String invariantUUID;
-    String name, description;
+    String name, description, versionName;
     List<VF> vfs;
     EntityStatus versionStatus;
+    DistributionStatus distributionStatus;
+
+    @JsonIgnore
+    Map<String, VF> vfMapByModelName = new HashMap<>();
 
     public String getUuid() {
         return uuid;
@@ -71,6 +79,14 @@ public class Service {
         this.description = description;
     }
 
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
     public List<VF> getVfs() {
         return vfs;
     }
@@ -87,4 +103,21 @@ public class Service {
         this.versionStatus = versionStatus;
     }
 
+    public DistributionStatus getDistributionStatus() {
+        return distributionStatus;
+    }
+
+    public void setDistributionStatus(DistributionStatus distributionStatus) {
+        this.distributionStatus = distributionStatus;
+    }
+
+    public void mapVfs() {
+        vfs.forEach((vf) -> {
+            vfMapByModelName.put(vf.getModelName(), vf);
+        });
+    }
+
+    public VF getVFByModelName(String modelName) {
+        return vfMapByModelName.get(modelName);
+    }
 }

@@ -78,11 +78,11 @@ public class ScenarioService {
     }
 
     private void runScenario(Scenario scenario) throws Exception {
-        serviceModelScenario.processService(scenario.getService());
+
         vendorScenario.processVendor(scenario.getVendor());
         vspScenario.processVSPs(scenario.getVendor());
         vfScenario.processVFs(scenario);
-        serviceModelScenario.addVfsToService(scenario.getService());
+        serviceModelScenario.processService(scenario.getService());
     }
 
 }

@@ -275,14 +275,35 @@ public class DesignService {
     }
 
     @PutMapping(path = "/design/service-model/{serviceUniqueId}/{vfUniqueId}/{vfName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addVFtoServiceModel(@PathVariable String serviceUniqueId, @PathVariable String vfUniqueId, @PathVariable String vfName) throws IOException {
+    public ResponseEntity addVFtoServiceModel(@PathVariable String serviceUniqueId, @PathVariable String vfUniqueId, @PathVariable String vfName, @RequestParam(name = "index", defaultValue = "1") int index) throws IOException {
         Map<String, String> parameters = new HashMap<>();
+
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
         parameters.put(OnapRequestParameters.DESIGN_VF_UNIQUE_ID.name(), vfUniqueId);
         parameters.put(OnapRequestParameters.DESIGN_VF_NAME.name(), vfName);
+        parameters.put(OnapRequestParameters.DESIGN_VF_POSX.name(), (100 * index) + "");
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_SERVICE_MODEL_ADD_VF, parameters);
         log.info("[Design][ServiceModel][AddVF] " + parameters + " ,response-->    name :" + adaptor.getResponseItem(data, "name")
                 + ", customizationUUID:" + adaptor.getResponseItem(data, "customizationUUID"));
         return ResponseEntity.ok(data.toString());
     }
+
+    @PutMapping(path = "/design/service-model-certify/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity certifyServiceModel(@PathVariable String serviceUniqueId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_SERVICE_MODEL_CERTIFY, parameters);
+        log.info("[Design][ServiceModel][Certify] " + parameters + " ,response:" + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/design/service-model-distribute/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity distributeServiceModel(@PathVariable String serviceUniqueId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_SERVICE_MODEL_DISTRIBUTE, parameters);
+        log.info("[Design][ServiceModel][Distribute] " + parameters);
+        return ResponseEntity.ok(data.toString());
+    }
+
 }

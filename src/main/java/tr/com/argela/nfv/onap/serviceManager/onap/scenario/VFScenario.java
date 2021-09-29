@@ -103,8 +103,9 @@ public class VFScenario extends CommonScenario {
     protected void readVFUniqueId(VF vf) throws Exception {
         JSONObject root = new JSONObject(readResponse(designService.getVFUniqueId(vf.getUuid())));
         vf.setUniqueId(root.getString("uniqueId"));
+        vf.setVersionName(root.getString("version"));
         vf.setVersionStatus(EntityStatus.valueOf(root.getString("lifecycleState").toUpperCase(Locale.ENGLISH)));
-        log.info("[Scenario][VF][Exists][UniqueId] vf:" + vf.getName() + " , uuid : " + vf.getUuid() + " , invariantUUID :" + vf.getInvariantUUID() + " , uniqueId:" + vf.getUniqueId());
+        log.info("[Scenario][VF][Exists][UniqueId] vf:" + vf.getName() + " , uuid : " + vf.getUuid() + " , invariantUUID :" + vf.getInvariantUUID() + " , uniqueId:" + vf.getUniqueId() + " , version:" + vf.getVersionName());
     }
 
     private void checkInVf(VF vf) throws Exception {
@@ -116,6 +117,7 @@ public class VFScenario extends CommonScenario {
         String data = readResponse(designService.certifyVF(vf.getUniqueId()));
         vf.setVersionStatus(EntityStatus.CERTIFIED);
         log.info("[Scenario][VF][Certify] vf:" + vf.getName() + " , uuid : " + vf.getUuid() + " , invariantUUID :" + vf.getInvariantUUID() + " , uniqueId:" + vf.getUniqueId() + ",vfStatus:" + vf.getVersionStatus());
+        readVFUniqueId(vf);
     }
 
 }

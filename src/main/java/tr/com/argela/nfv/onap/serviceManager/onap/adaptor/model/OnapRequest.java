@@ -61,6 +61,8 @@ public enum OnapRequest {
     SDC_SERVICE_MODELS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/services", 200, HttpResponseType.JSONArray),
     SDC_SERVICE_MODEL_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services", 201, HttpResponseType.JSONObject, "payloads/design/service/create.json", "application/json"),
     SDC_SERVICE_MODEL_ADD_VF(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID + "}/resourceInstance", 201, HttpResponseType.JSONObject, "payloads/design/service/vfAdd.json", "application/json"),
+    SDC_SERVICE_MODEL_CERTIFY(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID + "}/lifecycleState/certify", 200, HttpResponseType.JSONObject, "payloads/design/service/certify.json", "application/json"),
+    SDC_SERVICE_MODEL_DISTRIBUTE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID + "}/distribution/PROD/activate", 200, HttpResponseType.JSONObject, "payloads/design/service/distribute.json", "application/json"),
     /*RUNTIME*/
     RUNTIME_SERVICE_INSTANCES(HttpCallType.GET, OnapModule.NBI, "/service?relatedParty.id=${" + OnapRequestParameters.BUSINESS_CUSTOMER_NAME + "}", 200, HttpResponseType.JSONArray),
     RUNTIME_SERVICE_INSTANCE_DETAIL(HttpCallType.GET, OnapModule.NBI, "/service/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}", 200, HttpResponseType.JSONObject),
