@@ -20,8 +20,7 @@ package tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant;
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
 public enum EntityStatus {
-
-    Certified,
-    Draft,
+    CERTIFIED,
+    DRAFT,
     NOT_CERTIFIED_CHECKOUT;
 }

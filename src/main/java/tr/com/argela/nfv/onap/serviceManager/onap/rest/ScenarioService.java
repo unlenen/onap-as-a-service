@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Scenario;
+import tr.com.argela.nfv.onap.serviceManager.onap.scenario.ServiceModelScenario;
 import tr.com.argela.nfv.onap.serviceManager.onap.scenario.VFScenario;
 import tr.com.argela.nfv.onap.serviceManager.onap.scenario.VSPScenario;
 import tr.com.argela.nfv.onap.serviceManager.onap.scenario.VendorScenario;
@@ -53,6 +54,9 @@ public class ScenarioService {
     @Autowired
     VFScenario vfScenario;
 
+    @Autowired
+    ServiceModelScenario serviceModelScenario;
+
     Logger log = LoggerFactory.getLogger(ScenarioService.class);
 
     ObjectMapper mapper;
@@ -63,10 +67,10 @@ public class ScenarioService {
     }
 
     @PostMapping(path = "/scenario/load", consumes = "application/x-yaml", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity loadScenario(@RequestBody String yaml) throws Exception {
+    public ResponseEntity<Scenario> loadScenario(@RequestBody String yaml) throws Exception {
         Scenario scenario = convertToYaml(yaml);
         runScenario(scenario);
-        return ResponseEntity.ok(scenario.toString());
+        return ResponseEntity.ok(scenario);
     }
 
     private Scenario convertToYaml(String yaml) throws JsonProcessingException {
@@ -78,6 +82,7 @@ public class ScenarioService {
         vendorScenario.processVendor(scenario.getVendor());
         vspScenario.processVSPs(scenario.getVendor());
         vfScenario.processVFs(scenario);
+        serviceModelScenario.processService(scenario.getService());
     }
 
 }

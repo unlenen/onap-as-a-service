@@ -20,6 +20,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class VendorScenario extends CommonScenario {
             createVendor(vendor);
         }
 
-        if (vendor.getVersionStatus() != EntityStatus.Certified) {
+        if (vendor.getVersionStatus() != EntityStatus.CERTIFIED) {
             submitVendor(vendor);
         }
     }
@@ -70,7 +71,7 @@ public class VendorScenario extends CommonScenario {
         DocumentContext rootContext = JsonPath.parse(root);
 
         vendor.setVersionId(rootContext.read("$['results'][0]['id']"));
-        vendor.setVersionStatus(EntityStatus.valueOf(rootContext.read("$['results'][0]['status']")));
+        vendor.setVersionStatus(EntityStatus.valueOf((rootContext.read("$['results'][0]['status']") + "").toUpperCase(Locale.ENGLISH)));
         log.info("[Scenario][Vendor][Exists][FindVersion] name:" + vendor.getName() + " , id : " + vendor.getId() + " , versionId:" + vendor.getVersionId() + ", versionStatus:" + vendor.getVersionStatus());
     }
 
@@ -79,13 +80,13 @@ public class VendorScenario extends CommonScenario {
         vendor.setId(root.getString("itemId"));
         JSONObject version = root.getJSONObject("version");
         vendor.setVersionId(version.getString("id"));
-        vendor.setVersionStatus(EntityStatus.valueOf(version.getString("status")));
+        vendor.setVersionStatus(EntityStatus.valueOf(version.getString("status").toUpperCase(Locale.ENGLISH)));
         log.info("[Scenario][Vendor][New] name:" + vendor.getName() + " , id : " + vendor.getId() + " , versionId:" + vendor.getVersionId() + ", versionStatus:" + vendor.getVersionStatus());
     }
 
     private void submitVendor(Vendor vendor) throws Exception {
         readResponse(designService.submitVendor(vendor.getId(), vendor.getVersionId()));
-        vendor.setVersionStatus(EntityStatus.Certified);
+        vendor.setVersionStatus(EntityStatus.CERTIFIED);
         log.info("[Scenario][Vendor][Submit] name:" + vendor.getName() + " , id : " + vendor.getId() + " , versionId:" + vendor.getVersionId() + ", versionStatus:" + vendor.getVersionStatus());
     }
 }

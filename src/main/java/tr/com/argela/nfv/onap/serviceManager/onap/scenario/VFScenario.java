@@ -21,6 +21,7 @@ import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +67,7 @@ public class VFScenario extends CommonScenario {
             createVF(vf);
         }
 
-        if (vf.getVersionStatus() != EntityStatus.Certified) {
+        if (vf.getVersionStatus() != EntityStatus.CERTIFIED) {
             if (vf.getVersionStatus() == EntityStatus.NOT_CERTIFIED_CHECKOUT) {
                 checkInVf(vf);
             }
@@ -84,7 +85,7 @@ public class VFScenario extends CommonScenario {
             LinkedHashMap<String, String> vfObject = (LinkedHashMap<String, String>) vfs.get(0);
             vf.setUuid(vfObject.get("uuid"));
             vf.setInvariantUUID(vfObject.get("invariantUUID"));
-            vf.setVersionStatus(EntityStatus.valueOf(vfObject.get("lifecycleState")));
+            vf.setVersionStatus(EntityStatus.valueOf(vfObject.get("lifecycleState").toUpperCase(Locale.ENGLISH)));
             log.info("[Scenario][VF][Exists] vf:" + vf.getName() + " , uuid : " + vf.getUuid() + " , invariantUUID :" + vf.getInvariantUUID() + " , vfStatus:" + vf.getVersionStatus());
         }
         return !vfs.isEmpty();
@@ -95,14 +96,14 @@ public class VFScenario extends CommonScenario {
         vf.setInvariantUUID(root.getString("invariantUUID"));
         vf.setUniqueId(root.getString("uniqueId"));
         vf.setUuid(root.getString("uuid"));
-        vf.setVersionStatus(EntityStatus.valueOf(root.getString("lifecycleState")));
+        vf.setVersionStatus(EntityStatus.valueOf(root.getString("lifecycleState").toUpperCase(Locale.ENGLISH)));
         log.info("[Scenario][VF][New] vf:" + vf.getName() + " , uuid : " + vf.getUuid() + " , invariantUUID :" + vf.getInvariantUUID() + " , vfStatus:" + vf.getVersionStatus());
     }
 
     private void readVFUniqueId(VF vf) throws Exception {
         JSONObject root = new JSONObject(readResponse(designService.getVFUniqueId(vf.getUuid())));
         vf.setUniqueId(root.getString("uniqueId"));
-        vf.setVersionStatus(EntityStatus.valueOf(root.getString("lifecycleState")));
+        vf.setVersionStatus(EntityStatus.valueOf(root.getString("lifecycleState").toUpperCase(Locale.ENGLISH)));
         log.info("[Scenario][VF][Exists][UniqueId] vf:" + vf.getName() + " , uuid : " + vf.getUuid() + " , invariantUUID :" + vf.getInvariantUUID() + " , uniqueId:" + vf.getUniqueId());
     }
 
@@ -113,7 +114,7 @@ public class VFScenario extends CommonScenario {
 
     private void certifyVf(VF vf) throws Exception {
         String data = readResponse(designService.certifyVF(vf.getUniqueId()));
-        vf.setVersionStatus(EntityStatus.Certified);
+        vf.setVersionStatus(EntityStatus.CERTIFIED);
         log.info("[Scenario][VF][Certify] vf:" + vf.getName() + " , uuid : " + vf.getUuid() + " , invariantUUID :" + vf.getInvariantUUID() + " , uniqueId:" + vf.getUniqueId() + ",vfStatus:" + vf.getVersionStatus());
     }
 

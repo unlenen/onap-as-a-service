@@ -16,6 +16,7 @@
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
 import java.util.List;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.EntityStatus;
 
 /**
  *
@@ -28,6 +29,7 @@ public class Service {
     String invariantUUID;
     String name, description;
     List<VF> vfs;
+    EntityStatus versionStatus;
 
     public String getUuid() {
         return uuid;
@@ -75,6 +77,14 @@ public class Service {
 
     public void setVfs(List<VF> vfs) {
         this.vfs = vfs;
+    }
+
+    public EntityStatus getVersionStatus() {
+        return versionStatus;
+    }
+
+    public void setVersionStatus(EntityStatus versionStatus) {
+        this.versionStatus = versionStatus;
     }
 
 }

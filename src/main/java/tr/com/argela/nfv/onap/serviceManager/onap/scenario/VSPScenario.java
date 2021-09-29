@@ -20,6 +20,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +56,7 @@ public class VSPScenario extends CommonScenario {
             createVSP(vsp);
         }
 
-        if (vsp.getVersionStatus() != EntityStatus.Certified) {
+        if (vsp.getVersionStatus() != EntityStatus.CERTIFIED) {
             uploadFile(vsp);
             processFile(vsp);
             submitVsp(vsp);
@@ -82,7 +83,7 @@ public class VSPScenario extends CommonScenario {
 
         vsp.setVersionId(rootContext.read("$['results'][0]['id']"));
         vsp.setVersionName(rootContext.read("$['results'][0]['name']"));
-        vsp.setVersionStatus(EntityStatus.valueOf(rootContext.read("$['results'][0]['status']")));
+        vsp.setVersionStatus(EntityStatus.valueOf((rootContext.read("$['results'][0]['status']") + "").toUpperCase(Locale.ENGLISH)));
         log.info("[Scenario][VSP][Exists][FindVersion] vspName:" + vsp.getName() + " , vendorName:" + vsp.getVendor().getName() + " , vspId:" + vsp.getId() + " , vspVersionId:" + vsp.getVersionId() + ", vspVersionStatus:" + vsp.getVersionStatus());
     }
 
@@ -92,7 +93,7 @@ public class VSPScenario extends CommonScenario {
         JSONObject version = root.getJSONObject("version");
         vsp.setVersionId(version.getString("id"));
         vsp.setVersionName(version.getString("name"));
-        vsp.setVersionStatus(EntityStatus.valueOf(version.getString("status")));
+        vsp.setVersionStatus(EntityStatus.valueOf(version.getString("status").toUpperCase(Locale.ENGLISH)));
         log.info("[Scenario][VSP][New] vspName:" + vsp.getName() + " , vendorName:" + vsp.getVendor().getName() + " , vspId:" + vsp.getId() + " , vspVersionId:" + vsp.getVersionId() + ", vspVersionStatus:" + vsp.getVersionStatus());
     }
 
@@ -109,7 +110,7 @@ public class VSPScenario extends CommonScenario {
 
     private void submitVsp(VSP vsp) throws Exception {
         readResponse(designService.submitVSP(vsp.getId(), vsp.getVersionId()));
-        vsp.setVersionStatus(EntityStatus.Certified);
+        vsp.setVersionStatus(EntityStatus.CERTIFIED);
         log.info("[Scenario][VSP][Submit] vspName:" + vsp.getName() + " , vendorName:" + vsp.getVendor().getName() + " , vspId:" + vsp.getId() + " , vspVersionId:" + vsp.getVersionId() + ", vspVersionStatus:" + vsp.getVersionStatus());
     }
 

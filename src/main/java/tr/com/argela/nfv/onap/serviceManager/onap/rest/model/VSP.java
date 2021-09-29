@@ -15,6 +15,7 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.EntityStatus;
 
 /**
@@ -29,6 +30,7 @@ public class VSP {
     String name, description;
     String file;
     String fileWarnings;
+    @JsonIgnore
     Vendor vendor;
 
     public String getId() {

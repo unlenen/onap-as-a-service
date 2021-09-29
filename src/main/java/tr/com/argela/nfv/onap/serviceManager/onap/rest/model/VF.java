@@ -15,6 +15,7 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.EntityStatus;
 
 /**
@@ -28,6 +29,7 @@ public class VF {
     String invariantUUID;
     String name, description;
     VSP vsp;
+    @JsonIgnore
     Service service;
     EntityStatus versionStatus;
 
