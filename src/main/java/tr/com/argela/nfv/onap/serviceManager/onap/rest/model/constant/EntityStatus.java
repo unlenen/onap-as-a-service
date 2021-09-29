@@ -22,5 +22,6 @@ package tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant;
 public enum EntityStatus {
 
     Certified,
-    Draft;
+    Draft,
+    NOT_CERTIFIED_CHECKOUT;
 }

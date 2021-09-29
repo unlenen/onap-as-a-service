@@ -15,8 +15,13 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
+import com.jayway.jsonpath.Criteria;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.Filter;
+import com.jayway.jsonpath.JsonPath;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -188,6 +193,27 @@ public class DesignService {
                 + ", uuid:" + adaptor.getResponseItem(data, "uuid")
                 + ", uniqueId:" + adaptor.getResponseItem(data, "uniqueId"));
         return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/design/vf-uniqueId/{vfUUID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getVFUniqueId(@PathVariable String vfUUID) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_VF_UUID.name(), vfUUID);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VF_UNIQUE_ID, parameters);
+
+        Filter vfUUIDFilter = Filter.filter(Criteria.where("uuid").eq(vfUUID));
+        DocumentContext rootContext = JsonPath.parse(data.toString());
+        net.minidev.json.JSONArray vfs = rootContext.read("$['resources'][?]", vfUUIDFilter);
+        JSONObject response = new JSONObject();
+        if (!vfs.isEmpty()) {
+            LinkedHashMap<String, String> vfData = (LinkedHashMap<String, String>) vfs.get(0);
+            for (String key : vfData.keySet()) {
+                response.put(key, vfData.get(key));
+            }
+
+        }
+        log.info("[Design][VF][UniqueId] " + parameters + " ,response:" + response);
+        return ResponseEntity.ok(response.toString());
     }
 
     @PutMapping(path = "/design/vf-checkIn/{vfUUID}", produces = MediaType.APPLICATION_JSON_VALUE)

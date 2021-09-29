@@ -81,6 +81,7 @@ public class VSPScenario extends CommonScenario {
         DocumentContext rootContext = JsonPath.parse(root);
 
         vsp.setVersionId(rootContext.read("$['results'][0]['id']"));
+        vsp.setVersionName(rootContext.read("$['results'][0]['name']"));
         vsp.setVersionStatus(EntityStatus.valueOf(rootContext.read("$['results'][0]['status']")));
         log.info("[Scenario][VSP][Exists][FindVersion] vspName:" + vsp.getName() + " , vendorName:" + vsp.getVendor().getName() + " , vspId:" + vsp.getId() + " , vspVersionId:" + vsp.getVersionId() + ", vspVersionStatus:" + vsp.getVersionStatus());
     }
@@ -90,6 +91,7 @@ public class VSPScenario extends CommonScenario {
         vsp.setId(root.getString("itemId"));
         JSONObject version = root.getJSONObject("version");
         vsp.setVersionId(version.getString("id"));
+        vsp.setVersionName(version.getString("name"));
         vsp.setVersionStatus(EntityStatus.valueOf(version.getString("status")));
         log.info("[Scenario][VSP][New] vspName:" + vsp.getName() + " , vendorName:" + vsp.getVendor().getName() + " , vspId:" + vsp.getId() + " , vspVersionId:" + vsp.getVersionId() + ", vspVersionStatus:" + vsp.getVersionStatus());
     }

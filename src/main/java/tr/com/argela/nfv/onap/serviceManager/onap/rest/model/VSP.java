@@ -24,7 +24,7 @@ import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.EntityStat
 public class VSP {
 
     String id;
-    String versionId;
+    String versionId, versionName;
     EntityStatus versionStatus;
     String name, description;
     String file;
@@ -45,6 +45,14 @@ public class VSP {
 
     public void setVersionId(String versionId) {
         this.versionId = versionId;
+    }
+
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
     }
 
     public EntityStatus getVersionStatus() {

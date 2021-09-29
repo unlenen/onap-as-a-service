@@ -15,6 +15,7 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.scenario;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +36,22 @@ public class CommonScenario {
         }
     }
 
+    protected void validateResponseArray(String json) throws Exception {
+        JSONArray obj = new JSONArray(json);
+        if (!obj.isEmpty() && obj.getJSONObject(0).has("msg-type")) {
+            throw new Exception("Unvalid response , msg :" + json);
+        }
+    }
+
     protected String readResponse(ResponseEntity responseEntity) throws Exception {
         String data = responseEntity.getBody() + "";
         validateResponse(data);
+        return data;
+    }
+
+    protected String readResponse(ResponseEntity responseEntity, boolean isArray) throws Exception {
+        String data = responseEntity.getBody() + "";
+        validateResponseArray(data);
         return data;
     }
 

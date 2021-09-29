@@ -15,6 +15,8 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.EntityStatus;
+
 /**
  *
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
@@ -26,6 +28,8 @@ public class VF {
     String invariantUUID;
     String name, description;
     VSP vsp;
+    Service service;
+    EntityStatus versionStatus;
 
     public String getUuid() {
         return uuid;
@@ -73,6 +77,22 @@ public class VF {
 
     public void setVsp(VSP vsp) {
         this.vsp = vsp;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public EntityStatus getVersionStatus() {
+        return versionStatus;
+    }
+
+    public void setVersionStatus(EntityStatus versionStatus) {
+        this.versionStatus = versionStatus;
     }
 
 }
