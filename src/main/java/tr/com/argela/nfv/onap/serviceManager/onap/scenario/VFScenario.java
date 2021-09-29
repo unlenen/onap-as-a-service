@@ -100,7 +100,7 @@ public class VFScenario extends CommonScenario {
         log.info("[Scenario][VF][New] vf:" + vf.getName() + " , uuid : " + vf.getUuid() + " , invariantUUID :" + vf.getInvariantUUID() + " , vfStatus:" + vf.getVersionStatus());
     }
 
-    private void readVFUniqueId(VF vf) throws Exception {
+    protected void readVFUniqueId(VF vf) throws Exception {
         JSONObject root = new JSONObject(readResponse(designService.getVFUniqueId(vf.getUuid())));
         vf.setUniqueId(root.getString("uniqueId"));
         vf.setVersionStatus(EntityStatus.valueOf(root.getString("lifecycleState").toUpperCase(Locale.ENGLISH)));

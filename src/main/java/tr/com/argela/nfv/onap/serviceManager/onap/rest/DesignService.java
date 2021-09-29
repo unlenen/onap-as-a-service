@@ -201,7 +201,7 @@ public class DesignService {
         parameters.put(OnapRequestParameters.DESIGN_VF_UUID.name(), vfUUID);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_UNIQUE_ID, parameters);
 
-        Filter vfUUIDFilter = Filter.filter(Criteria.where("uuid").eq(vfUUID));
+        Filter vfUUIDFilter = Filter.filter(Criteria.where("uuid").eq(vfUUID).and("isHighestVersion").eq(Boolean.TRUE));
         DocumentContext rootContext = JsonPath.parse(data.toString());
         net.minidev.json.JSONArray vfs = rootContext.read("$['resources'][?]", vfUUIDFilter);
         JSONObject response = new JSONObject();
@@ -259,7 +259,7 @@ public class DesignService {
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUUID);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_UNIQUE_ID, parameters);
 
-        Filter serviceUUIDFilter = Filter.filter(Criteria.where("uuid").eq(serviceUUID));
+        Filter serviceUUIDFilter = Filter.filter(Criteria.where("uuid").eq(serviceUUID).and("isHighestVersion").eq(Boolean.TRUE));
         DocumentContext rootContext = JsonPath.parse(data.toString());
         net.minidev.json.JSONArray services = rootContext.read("$['services'][?]", serviceUUIDFilter);
         JSONObject response = new JSONObject();

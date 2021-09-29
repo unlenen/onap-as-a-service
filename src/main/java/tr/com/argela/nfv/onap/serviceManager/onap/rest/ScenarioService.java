@@ -39,7 +39,6 @@ import tr.com.argela.nfv.onap.serviceManager.onap.scenario.VendorScenario;
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
 @RestController
-
 public class ScenarioService {
 
     @Autowired
@@ -79,10 +78,11 @@ public class ScenarioService {
     }
 
     private void runScenario(Scenario scenario) throws Exception {
+        serviceModelScenario.processService(scenario.getService());
         vendorScenario.processVendor(scenario.getVendor());
         vspScenario.processVSPs(scenario.getVendor());
         vfScenario.processVFs(scenario);
-        serviceModelScenario.processService(scenario.getService());
+        serviceModelScenario.addVfsToService(scenario.getService());
     }
 
 }

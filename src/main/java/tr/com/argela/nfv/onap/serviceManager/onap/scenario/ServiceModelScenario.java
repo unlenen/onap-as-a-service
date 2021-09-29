@@ -38,8 +38,12 @@ import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.EntityStat
 public class ServiceModelScenario extends CommonScenario {
 
     Logger log = LoggerFactory.getLogger(ServiceModelScenario.class);
+
     @Autowired
     DesignService designService;
+
+    @Autowired
+    VFScenario vfScenario;
 
     public void processService(Service service) throws Exception {
         if (serviceExists(service)) {
@@ -47,7 +51,9 @@ public class ServiceModelScenario extends CommonScenario {
         } else {
             createService(service);
         }
+    }
 
+    public void addVfsToService(Service service) throws Exception {
         for (VF vf : service.getVfs()) {
             addVfToService(vf);
         }
@@ -79,12 +85,13 @@ public class ServiceModelScenario extends CommonScenario {
 
     private void addVfToService(VF vf) throws Exception {
         Service service = vf.getService();
+        vfScenario.readVFUniqueId(vf);
         log.info("[Scenario][Service][AddVf] service:" + service.getName() + " , uuid : " + service.getUuid() + " , invariantUUID :" + service.getInvariantUUID() + " , uniqueId:" + service.getUniqueId() + " , serviceStatus:" + service.getVersionStatus() + " , vf:" + vf.getName() + " , vfUniqueId:" + vf.getUniqueId());
         String root = readResponse(designService.addVFtoServiceModel(vf.getService().getUniqueId(), vf.getUniqueId(), vf.getName()));
         System.out.println(root);
     }
 
-    private void readServiceUniqueId(Service service) throws Exception {
+    protected void readServiceUniqueId(Service service) throws Exception {
         JSONObject root = new JSONObject(readResponse(designService.getServiceModelUniqueId(service.getUuid())));
         service.setUniqueId(root.getString("uniqueId"));
         service.setVersionStatus(EntityStatus.valueOf(root.getString("lifecycleState").toUpperCase(Locale.ENGLISH)));
