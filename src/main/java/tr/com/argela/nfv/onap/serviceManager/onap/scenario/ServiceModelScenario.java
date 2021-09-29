@@ -42,8 +42,14 @@ public class ServiceModelScenario extends CommonScenario {
     DesignService designService;
 
     public void processService(Service service) throws Exception {
-        if (!serviceExists(service)) {
+        if (serviceExists(service)) {
+            readServiceUniqueId(service);
+        } else {
             createService(service);
+        }
+
+        for (VF vf : service.getVfs()) {
+            addVfToService(vf);
         }
     }
 
@@ -68,7 +74,21 @@ public class ServiceModelScenario extends CommonScenario {
         service.setUniqueId(root.getString("uniqueId"));
         service.setUuid(root.getString("uuid"));
         service.setVersionStatus(EntityStatus.valueOf(root.getString("lifecycleState").toUpperCase(Locale.ENGLISH)));
-        log.info("[Scenario][Service][New] vf:" + service.getName() + " , uuid : " + service.getUuid() + " , invariantUUID :" + service.getInvariantUUID() + " , serviceStatus:" + service.getVersionStatus());
+        log.info("[Scenario][Service][New] service:" + service.getName() + " , uuid : " + service.getUuid() + " , invariantUUID :" + service.getInvariantUUID() + " , uniqueId:" + service.getUniqueId() + " , serviceStatus:" + service.getVersionStatus());
+    }
+
+    private void addVfToService(VF vf) throws Exception {
+        Service service = vf.getService();
+        log.info("[Scenario][Service][AddVf] service:" + service.getName() + " , uuid : " + service.getUuid() + " , invariantUUID :" + service.getInvariantUUID() + " , uniqueId:" + service.getUniqueId() + " , serviceStatus:" + service.getVersionStatus() + " , vf:" + vf.getName() + " , vfUniqueId:" + vf.getUniqueId());
+        String root = readResponse(designService.addVFtoServiceModel(vf.getService().getUniqueId(), vf.getUniqueId(), vf.getName()));
+        System.out.println(root);
+    }
+
+    private void readServiceUniqueId(Service service) throws Exception {
+        JSONObject root = new JSONObject(readResponse(designService.getServiceModelUniqueId(service.getUuid())));
+        service.setUniqueId(root.getString("uniqueId"));
+        service.setVersionStatus(EntityStatus.valueOf(root.getString("lifecycleState").toUpperCase(Locale.ENGLISH)));
+        log.info("[Scenario][VF][Exists][UniqueId] service:" + service.getName() + " , uuid : " + service.getUuid() + " , invariantUUID :" + service.getInvariantUUID() + " , uniqueId:" + service.getUniqueId());
     }
 
 }

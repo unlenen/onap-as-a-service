@@ -199,7 +199,7 @@ public class DesignService {
     public ResponseEntity getVFUniqueId(@PathVariable String vfUUID) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.DESIGN_VF_UUID.name(), vfUUID);
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VF_UNIQUE_ID, parameters);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_UNIQUE_ID, parameters);
 
         Filter vfUUIDFilter = Filter.filter(Criteria.where("uuid").eq(vfUUID));
         DocumentContext rootContext = JsonPath.parse(data.toString());
@@ -251,6 +251,27 @@ public class DesignService {
                 + ", uuid:" + adaptor.getResponseItem(data, "uuid")
                 + ", uniqueId:" + adaptor.getResponseItem(data, "uniqueId"));
         return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/design/service-uniqueId/{serviceUUID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getServiceModelUniqueId(@PathVariable String serviceUUID) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUUID);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_UNIQUE_ID, parameters);
+
+        Filter serviceUUIDFilter = Filter.filter(Criteria.where("uuid").eq(serviceUUID));
+        DocumentContext rootContext = JsonPath.parse(data.toString());
+        net.minidev.json.JSONArray services = rootContext.read("$['services'][?]", serviceUUIDFilter);
+        JSONObject response = new JSONObject();
+        if (!services.isEmpty()) {
+            LinkedHashMap<String, String> serviceData = (LinkedHashMap<String, String>) services.get(0);
+            for (String key : serviceData.keySet()) {
+                response.put(key, serviceData.get(key));
+            }
+
+        }
+        log.info("[Design][Service][UniqueId] " + parameters + " ,response:" + response);
+        return ResponseEntity.ok(response.toString());
     }
 
     @PutMapping(path = "/design/service-model/{serviceUniqueId}/{vfUniqueId}/{vfName}", produces = MediaType.APPLICATION_JSON_VALUE)
