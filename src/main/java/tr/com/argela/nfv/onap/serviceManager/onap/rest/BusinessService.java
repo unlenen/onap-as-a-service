@@ -73,30 +73,30 @@ public class BusinessService {
         return ResponseEntity.ok(data.toString());
     }
 
-    @GetMapping(path = "/business/customer-subscribe/{customerId}/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getCustomerServiceSubscription(@PathVariable String customerId, @PathVariable String serviceUniqueId) throws IOException {
+    @GetMapping(path = "/business/customer-subscribe/{customerId}/{serviceName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getCustomerServiceSubscription(@PathVariable String customerId, @PathVariable String serviceName) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_ID.name(), customerId);
-        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME.name(), serviceName);
 
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_CUSTOMER_SERVICE_SUBSCRIPTION, parameters);
-        log.info("[Business][Customer][Subscription][Service][Get] customerId:" + customerId + ",serviceUniqueId:" + serviceUniqueId + " , data:" + data);
+        log.info("[Business][Customer][Subscription][Service][Get] customerId:" + customerId + ",serviceName:" + serviceName + " , data:" + data);
         return ResponseEntity.ok(data.toString());
     }
 
-    @PutMapping(path = "/business/customer-subscribe/{customerId}/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createCustomerServiceSubscription(@PathVariable String customerId, @PathVariable String serviceUniqueId) throws IOException {
+    @PutMapping(path = "/business/customer-subscribe/{customerId}/{serviceName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createCustomerServiceSubscription(@PathVariable String customerId, @PathVariable String serviceName) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_ID.name(), customerId);
 
-        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME.name(), serviceName);
 
         String data = (String) adaptor.call(OnapRequest.BUSINESS_CUSTOMER_SUBSCRIPTION_CREATE, parameters);
-        log.info("[Business][Customer][Subscription][Service][Create] customerId:" + customerId + ",serviceUniqueId:" + serviceUniqueId + ", data:" + data);
+        log.info("[Business][Customer][Subscription][Service][Create] customerId:" + customerId + ",serviceName:" + serviceName + ", data:" + data);
         return ResponseEntity.ok("{}");
     }
 
-    @PutMapping(path = "/business/customer-subscribe-tenant/{customerId}/{cloudOwner}/{regionId}/{tenantId}/{tenantName}/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/business/customer-subscribe-tenant/{customerId}/{cloudOwner}/{regionId}/{tenantId}/{tenantName}/{serviceName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createCustomerTenantSubscription(@PathVariable String customerId, @PathVariable String cloudOwner, @PathVariable String regionId, @PathVariable String tenantId, @PathVariable String tenantName, @PathVariable String serviceUniqueId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_ID.name(), customerId);
@@ -104,31 +104,31 @@ public class BusinessService {
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), regionId);
         parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
         parameters.put(OnapRequestParameters.CLOUD_TENANT_NAME.name(), tenantName);
-        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME.name(), serviceUniqueId);
 
         String data = (String) adaptor.call(OnapRequest.BUSINESS_CUSTOMER_TENANT_SUBSCRIPTION_CREATE, parameters);
         log.info("[Business][Customer][Subscription][Tenant][Create] customerId:" + customerId + ",cloudOwner:" + cloudOwner + " ,regionId:" + regionId + ",tenantId:" + tenantId + ", serviceUniqueId:" + serviceUniqueId + ", data:" + data);
         return ResponseEntity.ok("{}");
     }
 
-    @GetMapping(path = "/business/service-subscribe/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getServiceSubscriptions(@PathVariable String serviceUniqueId) throws IOException {
+    @GetMapping(path = "/business/service-subscribe/{serviceInvariantUUID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getServiceSubscriptions(@PathVariable String serviceInvariantUUID) throws IOException {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID.name(), serviceInvariantUUID);
 
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.AAI_SERVICE_MODEL_SUBSCRIPTIONS, parameters);
-        log.info("[Business][Service][Subscriptions] serviceUniqueId: " + serviceUniqueId + " , data: " + data);
+        log.info("[Business][Service][Subscriptions] serviceInvariantUUID: " + serviceInvariantUUID + " , data: " + data);
         return ResponseEntity.ok(data.toString());
     }
 
-    @PutMapping(path = "/business/service-subscribe/{serviceUniqueId}/{serviceName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createServiceSubscription(@PathVariable String serviceUniqueId, @PathVariable String serviceName) throws IOException {
+    @PutMapping(path = "/business/service-subscribe/{serviceInvariantUUID}/{serviceName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createServiceSubscription(@PathVariable String serviceInvariantUUID, @PathVariable String serviceName) throws IOException {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID.name(), serviceInvariantUUID);
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME.name(), serviceName);
 
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.AAI_SERVICE_MODEL_SUBSCRIPTION_CREATE, parameters);
-        log.info("[Business][Service][Subscriptions] serviceUniqueId: " + serviceUniqueId + " ,serviceName:" + serviceName + ", data: " + data);
+        log.info("[Business][Service][Subscriptions] serviceInvariantUUID: " + serviceInvariantUUID + " ,serviceName:" + serviceName + ", data: " + data);
         return ResponseEntity.ok(data.toString());
     }
 

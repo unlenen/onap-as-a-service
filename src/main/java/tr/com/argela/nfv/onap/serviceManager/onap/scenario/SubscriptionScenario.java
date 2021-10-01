@@ -97,7 +97,7 @@ public class SubscriptionScenario extends CommonScenario {
 
     private void subscribeService(Service service) throws Exception {
 
-        JSONObject subscription = new JSONObject(readResponseValidateOption(businessService.getServiceSubscriptions(service.getUniqueId()), false));
+        JSONObject subscription = new JSONObject(readResponseValidateOption(businessService.getServiceSubscriptions(service.getInvariantUUID()), false));
         if (subscription.has("service-id")) {
             log.info("[Scenario][Subscription][Service][Exists] " + service);
         } else {
@@ -113,11 +113,11 @@ public class SubscriptionScenario extends CommonScenario {
     }
 
     private void subscribeConsumerToService(Customer customer) throws Exception {
-        JSONObject subscription = new JSONObject(readResponseValidateOption(businessService.getCustomerServiceSubscription(customer.getId(), customer.getService().getUniqueId()), false));
+        JSONObject subscription = new JSONObject(readResponseValidateOption(businessService.getCustomerServiceSubscription(customer.getId(), customer.getService().getName()), false));
         if (subscription.has("service-type")) {
             log.info("[Scenario][Subscription][Service][Exists] " + customer + " to " + customer.getService());
         } else {
-            businessService.createCustomerServiceSubscription(customer.getId(), customer.getService().getUniqueId());
+            businessService.createCustomerServiceSubscription(customer.getId(), customer.getService().getName());
             log.info("[Scenario][Subscription][Service][Create] " + customer + " to " + customer.getService());
         }
 
@@ -149,7 +149,7 @@ public class SubscriptionScenario extends CommonScenario {
 
     private void createTenantSubscription(Tenant tenant, Customer customer) throws Exception {
         Tenant tenantFull = tenantMapById.get(tenant.getId());
-        String result = readResponse(businessService.createCustomerTenantSubscription(customer.getId(), tenantFull.getCloudRegion().getCloudOwner(), tenantFull.getCloudRegion().getRegionName(), tenantFull.getId(), tenantFull.getName(), customer.getService().getUniqueId()));
+        String result = readResponse(businessService.createCustomerTenantSubscription(customer.getId(), tenantFull.getCloudRegion().getCloudOwner(), tenantFull.getCloudRegion().getRegionName(), tenantFull.getId(), tenantFull.getName(), customer.getService().getName()));
     }
 
     private void mapTenants(Scenario scenario) {
