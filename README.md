@@ -46,7 +46,7 @@ Scenario Service allows to create ONAP resource automaticaly from a yaml file
 
 ## Scenario Load Call
 
-
+### Scenario Load Example
 ```yaml
 vendor:
   name: Argela
@@ -63,15 +63,13 @@ service:
   name: ArgelaAppService
   description: ArgelaApp1Service
   customers:
-  - id: nebi.unlenen
-    name: Nebi Unlenen
-  - id: defne.unlenen
-    name: Defne Unlenen
-  - id: caner.turkaslan
+  - id: nebiunlenen
+    name: Nebi Volkan Unlenen
+  - id: canerturkaslan
     name: Muhammed Caner Turkaslan
-  - id: hilal.alsac
+  - id: hilalalsac
     name: Feyza Hilal Alsac
-  - id: erol.ozcan
+  - id: erolozcan
     name: Erol Ozcan
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
@@ -96,10 +94,39 @@ cloudRegions:
     name: onap_project
 ```  
 
+### Scenario Load Swagger Example
 ![Scenario Load](docs/images/scenario-load.jpg)
 
-
+### Service composition at ONAP SDC after scenario executed
 ![ONAP SDC](docs/images/onap-sdc.jpg)
+
+### Actions
+
+#### Vendor
+- Create or Use Existing Vendor
+- Submit Vendor if it is newly created
+#### VSP
+- Create or Use Existing VSPs
+- Upload artifacts if vsp is newly created
+- Process artifacts if vsp is newly created
+- Checkout if vsp is newly created
+- Submit if vsp is newly created
+- CSAR creation
+#### VF
+- Create or Use Existing VFs
+- Certify Vf if it is newly created
+#### ServiceModel
+- Create or Use Existing Service
+- Add VFs if service is not certified
+- Certify Service if it is not certified
+- Distribute Service if it is not distributed
+#### Customer
+- Create or Use Existing Customer
+#### Subscription
+- Subscribe service to AAI  if it is not exists
+- Subscribe service to all customers if it is not exists
+- Subscribe tenants to service and customers
+
 
 
 # REST APIs

@@ -13,15 +13,13 @@ service:
   name: ArgelaAppService
   description: ArgelaApp1Service
   customers:
-  - id: nebi.unlenen
-    name: Nebi Unlenen
-  - id: defne.unlenen
-    name: Defne Unlenen
-  - id: caner.turkaslan
+  - id: nebiunlenen
+    name: Nebi Volkan Unlenen
+  - id: canerturkaslan
     name: Muhammed Caner Turkaslan
-  - id: hilal.alsac
+  - id: hilalalsac
     name: Feyza Hilal Alsac
-  - id: erol.ozcan
+  - id: erolozcan
     name: Erol Ozcan
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
