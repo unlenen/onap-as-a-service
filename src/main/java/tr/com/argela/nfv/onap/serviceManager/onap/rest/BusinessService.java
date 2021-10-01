@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -48,8 +49,17 @@ public class BusinessService {
 
     @GetMapping(path = "/business/customers", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getCostumers() throws IOException {
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_CUSTOMER);
-        log.info("[Business][Customer][Get] size:" + adaptor.getResponseSize(data, "customer"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_CUSTOMERS);
+        log.info("[Business][Customers][Get] size:" + adaptor.getResponseSize(data, "customer"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/business/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getCostumer(@PathVariable String customerId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_ID.name(), customerId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_CUSTOMER, parameters);
+        log.info("[Business][Customer][Get] customerId:" + customerId + ", data: " + data);
         return ResponseEntity.ok(data.toString());
     }
 
@@ -60,6 +70,23 @@ public class BusinessService {
         parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_NAME.name(), customerName);
         String data = (String) adaptor.call(OnapRequest.BUSINESS_CUSTOMER_CREATE, parameters);
         log.info("[Business][Customer][Create] customerId:" + customerId + " , customerName:" + customerName);
+        return ResponseEntity.ok(data);
+    }
+
+    @DeleteMapping(path = "/business/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteCostumer(@PathVariable String customerId) throws IOException {
+
+        ResponseEntity responseEntity = getCostumer(customerId);
+        JSONObject obj = new JSONObject(responseEntity.getBody() + "");
+        if (!obj.has("resource-version")) {
+            return ResponseEntity.ok("{\"error\":{\"msg\":\"Customer Not Found\"}}");
+        }
+        String resourceVersion = obj.getString("resource-version");
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_ID.name(), customerId);
+        parameters.put(OnapRequestParameters.RESOURCE_VERSION.name(), resourceVersion);
+        String data = (String) adaptor.call(OnapRequest.BUSINESS_CUSTOMER_DELETE, parameters);
+        log.info("[Business][Customer][Delete] customerId:" + customerId);
         return ResponseEntity.ok(data);
     }
 

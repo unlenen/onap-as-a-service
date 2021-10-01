@@ -23,5 +23,6 @@ public enum HttpCallType {
     POST,
     GET,
     PUT,
-    POST_FILE;
+    POST_FILE,
+    DELETE;
 }

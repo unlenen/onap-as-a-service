@@ -20,6 +20,7 @@ package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model;
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
 public enum OnapRequestParameters {
+    RESOURCE_VERSION,
     CLOUD_OWNER,
     CLOUD_REGION,
     CLOUD_TENANT_ID,

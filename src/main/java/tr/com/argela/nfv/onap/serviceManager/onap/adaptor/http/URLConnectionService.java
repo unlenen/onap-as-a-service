@@ -103,6 +103,19 @@ public class URLConnectionService {
         return response;
     }
 
+    public ResponseEntity delete(String url, Map<String, String> headerMap) {
+        HttpHeaders headers = new HttpHeaders();
+
+        for (String header : headerMap.keySet()) {
+            headers.add(header, headerMap.get(header));
+        }
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, String.class);
+        return response;
+    }
+
     public ResponseEntity push(String methodType, String url, Map<String, String> headerMap, String data, String type) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -142,7 +155,9 @@ public class URLConnectionService {
         switch (onapRequest.getCallType()) {
             case PUT:
             case POST: {
-                data = enrichPayloadData(readResourceFileToString(onapRequest.getPayloadFilePath()), parameters);
+                if (onapRequest.getPayloadFilePath() != null) {
+                    data = enrichPayloadData(readResourceFileToString(onapRequest.getPayloadFilePath()), parameters);
+                }
             }
         }
 
@@ -152,6 +167,10 @@ public class URLConnectionService {
             default:
             case GET: {
                 response = get(url, onapRequest.getOnapModule().getHeaders());
+                break;
+            }
+            case DELETE: {
+                response = delete(url, onapRequest.getOnapModule().getHeaders());
                 break;
             }
             case PUT:

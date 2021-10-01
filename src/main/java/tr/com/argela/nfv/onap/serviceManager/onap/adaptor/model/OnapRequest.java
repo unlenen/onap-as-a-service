@@ -31,8 +31,10 @@ public enum OnapRequest {
     CLOUD_TENANT(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants", 200, HttpResponseType.JSONObject),
     CLOUD_AVAILABILITY_ZONE(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/availability-zones", 200, HttpResponseType.JSONObject),
     /*BUSINESS*/
-    BUSINESS_CUSTOMER(HttpCallType.GET, OnapModule.AAI, "/business/customers", 200, HttpResponseType.JSONObject),
+    BUSINESS_CUSTOMERS(HttpCallType.GET, OnapModule.AAI, "/business/customers", 200, HttpResponseType.JSONObject),
+    BUSINESS_CUSTOMER(HttpCallType.GET, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}", 200, HttpResponseType.JSONObject),
     BUSINESS_CUSTOMER_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}", 201, HttpResponseType.STRING, "payloads/business/customer/create.json", "application/json"),
+    BUSINESS_CUSTOMER_DELETE(HttpCallType.DELETE, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}?resource-version=${" + OnapRequestParameters.RESOURCE_VERSION + "}", 204, HttpResponseType.STRING),
     BUSINESS_CUSTOMER_SUBSCRIPTIONS(HttpCallType.GET, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}/service-subscriptions", 200, HttpResponseType.JSONObject),
     BUSINESS_CUSTOMER_SERVICE_SUBSCRIPTION(HttpCallType.GET, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}/service-subscriptions/service-subscription/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME + "}", 200, HttpResponseType.JSONObject),
     BUSINESS_CUSTOMER_SUBSCRIPTION_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}/service-subscriptions/service-subscription/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME + "}", 201, HttpResponseType.STRING, "payloads/business/subscription/customerToService.json", "application/json"),
