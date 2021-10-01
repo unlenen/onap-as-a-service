@@ -15,6 +15,10 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.scenario;
 
+import com.jayway.jsonpath.Criteria;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.Filter;
+import com.jayway.jsonpath.JsonPath;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONArray;
@@ -24,8 +28,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.BusinessService;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.DesignService;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.CloudRegion;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Customer;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Scenario;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Service;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Tenant;
 
 /**
  *
@@ -42,7 +49,12 @@ public class SubscriptionScenario extends CommonScenario {
     @Autowired
     BusinessService businessService;
 
+    Map<String, Tenant> tenantMapById = new HashMap();
+
     public void processSubscription(Service service) throws Exception {
+
+        mapTenants(service.getScenario());
+
         subscribeService(service);
         saveCustomers(service);
         subscribeConsumers(service);
@@ -79,7 +91,7 @@ public class SubscriptionScenario extends CommonScenario {
     }
 
     private void createCustomer(Customer customer) throws Exception {
-        readResponseValidateOption(businessService.createCostumer(customer.getId(), customer.getName()),false);
+        readResponseValidateOption(businessService.createCostumer(customer.getId(), customer.getName()), false);
         log.info("[Scenario][Subscription][Customer][New] " + customer);
     }
 
@@ -89,7 +101,7 @@ public class SubscriptionScenario extends CommonScenario {
         if (subscription.has("service-id")) {
             log.info("[Scenario][Subscription][Service][Exists] " + service);
         } else {
-            readResponse(businessService.createServiceSubscription(service.getUniqueId(),service.getName()));
+            readResponse(businessService.createServiceSubscription(service.getUniqueId(), service.getName()));
             log.info("[Scenario][Subscription][Service][Create] " + service);
         }
     }
@@ -107,6 +119,45 @@ public class SubscriptionScenario extends CommonScenario {
         } else {
             businessService.createCustomerServiceSubscription(customer.getId(), customer.getService().getUniqueId());
             log.info("[Scenario][Subscription][Service][Create] " + customer + " to " + customer.getService());
+        }
+
+        subscribeTenants(customer, subscription);
+    }
+
+    private void subscribeTenants(Customer customer, JSONObject subscription) throws Exception {
+        DocumentContext rootContext = JsonPath.parse(subscription.toString());
+
+        for (Tenant tenant : customer.getService().getTenants()) {
+            boolean subscriptionFound = false;
+            if (subscription.has("relationship-list")) {
+
+                Filter tenantId = Filter.filter(Criteria.where("related-link").contains(tenant.getId()));
+                net.minidev.json.JSONArray tenantFound = rootContext.read("$['relationship-list']['relationship'][?]", tenantId);
+                if (tenantFound.size() > 0) {
+                    log.info("[Scenario][Subscription][Service][Tenant][Exists] " + customer + " to " + customer.getService() + " on " + tenant);
+                    subscriptionFound = true;
+                }
+
+            }
+            if (!subscriptionFound) {
+                createTenantSubscription(tenant, customer);
+                log.info("[Scenario][Subscription][Service][Tenant][New] " + customer + " to " + customer.getService() + " on " + tenant);
+            }
+        }
+
+    }
+
+    private void createTenantSubscription(Tenant tenant, Customer customer) throws Exception {
+        Tenant tenantFull = tenantMapById.get(tenant.getId());
+        String result = readResponse(businessService.createCustomerTenantSubscription(customer.getId(), tenantFull.getCloudRegion().getCloudOwner(), tenantFull.getCloudRegion().getRegionName(), tenantFull.getId(), tenantFull.getName(), customer.getService().getUniqueId()));
+    }
+
+    private void mapTenants(Scenario scenario) {
+        for (CloudRegion cloudRegion : scenario.getCloudRegions()) {
+            for (Tenant tenant : cloudRegion.getTenants()) {
+                tenant.setCloudRegion(cloudRegion);
+                tenantMapById.put(tenant.getId(), tenant);
+            }
         }
     }
 

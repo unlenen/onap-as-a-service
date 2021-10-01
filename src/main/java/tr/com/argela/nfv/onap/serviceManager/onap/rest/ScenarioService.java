@@ -83,6 +83,7 @@ public class ScenarioService {
 
     private void runScenario(Scenario scenario) throws Exception {
 
+        scenario.getService().setScenario(scenario);
         vendorScenario.processVendor(scenario.getVendor());
         vspScenario.processVSPs(scenario.getVendor());
         vfScenario.processVFs(scenario);

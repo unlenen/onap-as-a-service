@@ -22,6 +22,8 @@ package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model;
 public enum OnapRequestParameters {
     CLOUD_OWNER,
     CLOUD_REGION,
+    CLOUD_TENANT_ID,
+    CLOUD_TENANT_NAME,
     CLOUD_ESR_UUID,
     CLOUD_OS_NAME,
     CLOUD_COMPLEX_NAME,

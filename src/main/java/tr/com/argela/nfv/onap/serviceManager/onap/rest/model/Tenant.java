@@ -15,40 +15,47 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
-public class Scenario {
+public class Tenant {
 
-    Vendor vendor;
-    Service service;
-    List<CloudRegion> cloudRegions;
+    String id;
+    String name;
 
-    public Vendor getVendor() {
-        return vendor;
+    @JsonIgnore
+    CloudRegion cloudRegion;
+
+    public String getId() {
+        return id;
     }
 
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Service getService() {
-        return service;
+    public String getName() {
+        return name;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<CloudRegion> getCloudRegions() {
-        return cloudRegions;
+    public CloudRegion getCloudRegion() {
+        return cloudRegion;
     }
 
-    public void setCloudRegions(List<CloudRegion> cloudRegions) {
-        this.cloudRegions = cloudRegions;
+    public void setCloudRegion(CloudRegion cloudRegion) {
+        this.cloudRegion = cloudRegion;
+    }
+
+    @Override
+    public String toString() {
+        return "Tenant{" + "id=" + id + ", name=" + name + '}';
     }
 
 }

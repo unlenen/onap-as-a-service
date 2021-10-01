@@ -23,7 +23,8 @@ service:
     name: Feyza Hilal Alsac
   - id: erol.ozcan
     name: Erol Ozcan
-
+  tenants:
+  - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
   vfs:
   - name: ArgelaApp1
     description: ArgelaApp1
@@ -33,3 +34,13 @@ service:
     description: ArgelaApp2
     vsp:
       name: ArgelaApp2
+      
+cloudRegions:
+- cloudOwner: CloudOwner
+  complexName: ArgelaIstKollaOS1
+  regionName: RegionOne
+  name: RegionOne
+  cloudType: OPENSTACK
+  tenants:
+  - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+    name: onap_project

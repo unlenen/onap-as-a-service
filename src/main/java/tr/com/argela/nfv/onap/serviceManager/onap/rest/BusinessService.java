@@ -91,9 +91,24 @@ public class BusinessService {
 
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
 
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_CUSTOMER_SUBSCRIPTION_CREATE, parameters);
+        String data = (String) adaptor.call(OnapRequest.BUSINESS_CUSTOMER_SUBSCRIPTION_CREATE, parameters);
         log.info("[Business][Customer][Subscription][Service][Create] customerId:" + customerId + ",serviceUniqueId:" + serviceUniqueId + ", data:" + data);
-        return ResponseEntity.ok(data.toString());
+        return ResponseEntity.ok("{}");
+    }
+
+    @PutMapping(path = "/business/customer-subscribe-tenant/{customerId}/{cloudOwner}/{regionId}/{tenantId}/{tenantName}/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createCustomerTenantSubscription(@PathVariable String customerId, @PathVariable String cloudOwner, @PathVariable String regionId, @PathVariable String tenantId, @PathVariable String tenantName, @PathVariable String serviceUniqueId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_ID.name(), customerId);
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), regionId);
+        parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
+        parameters.put(OnapRequestParameters.CLOUD_TENANT_NAME.name(), tenantName);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+
+        String data = (String) adaptor.call(OnapRequest.BUSINESS_CUSTOMER_TENANT_SUBSCRIPTION_CREATE, parameters);
+        log.info("[Business][Customer][Subscription][Tenant][Create] customerId:" + customerId + ",cloudOwner:" + cloudOwner + " ,regionId:" + regionId + ",tenantId:" + tenantId + ", serviceUniqueId:" + serviceUniqueId + ", data:" + data);
+        return ResponseEntity.ok("{}");
     }
 
     @GetMapping(path = "/business/service-subscribe/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
