@@ -61,6 +61,8 @@ public class ServiceModelScenario extends CommonScenario {
 
         if (service.getDistributionStatus() == DistributionStatus.DISTRIBUTION_NOT_APPROVED) {
             distributeService(service);
+        } else {
+            loadVFsModuleInfo(service);
         }
     }
 
@@ -149,6 +151,34 @@ public class ServiceModelScenario extends CommonScenario {
             }
         }
 
+    }
+
+    private void loadVFsModuleInfo(Service service) throws Exception {
+        JSONObject root = new JSONObject(readResponse(designService.getServiceModelDetail(service.getUniqueId(), "filteredDataByParams?include=componentInstances")));
+        log.info("[Scenario][Service][LoadVfInformation] service:" + service.getName() + " , uuid : " + service.getUuid() + " , invariantUUID :" + service.getInvariantUUID() + " , uniqueId:" + service.getUniqueId() + " , version:" + service.getVersionName());
+        service.mapVfs();
+        JSONArray components = root.getJSONArray("componentInstances");
+        for (int i = 0; i < components.length(); i++) {
+            JSONObject component = components.getJSONObject(i);
+            String name = component.getString("componentName");
+            String modelName = component.getString("name");
+            VF vf = service.getVFByName(name);
+            if (vf == null) {
+                continue;
+            }
+            vf.setModelName(modelName);
+            JSONArray groupInstances = component.getJSONArray("groupInstances");
+            for (int j = 0; j < groupInstances.length(); j++) {
+                JSONObject groupInstance = groupInstances.getJSONObject(j);
+
+                vf.setModelType(groupInstance.getString("groupName"));
+                vf.setCustomizationName(groupInstance.getString("groupName"));
+                vf.setModelUUID(groupInstance.getString("groupUUID"));
+                vf.setModelInvariantUUID(groupInstance.getString("invariantUUID"));
+                vf.setModelCustomizationUUID(groupInstance.getString("customizationUUID"));
+                log.info("[Scenario][Service][LoadVfInformation][VFModelUpdate] service:" + service.getName() + " ,  " + vf);
+            }
+        }
     }
 
 }

@@ -306,4 +306,14 @@ public class DesignService {
         return ResponseEntity.ok(data.toString());
     }
 
+    @GetMapping(path = "/design/service-model/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getServiceModelDetail(@PathVariable String serviceUniqueId, @RequestParam(name = "filter", required = false) String filter) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_FILTER.name(), filter);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_SERVICE_MODEL_DETAIL, parameters);
+        log.info("[Design][ServiceModel][Detail] " + parameters);
+        return ResponseEntity.ok(data.toString());
+    }
+
 }

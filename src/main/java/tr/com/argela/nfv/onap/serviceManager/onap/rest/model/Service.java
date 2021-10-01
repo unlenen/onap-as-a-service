@@ -40,6 +40,8 @@ public class Service {
 
     @JsonIgnore
     Map<String, VF> vfMapByModelName = new HashMap<>();
+    @JsonIgnore
+    Map<String, VF> vfMapByName = new HashMap<>();
 
     @JsonIgnore
     Scenario scenario;
@@ -135,11 +137,17 @@ public class Service {
     public void mapVfs() {
         vfs.forEach((vf) -> {
             vfMapByModelName.put(vf.getModelName(), vf);
+            vfMapByName.put(vf.getName(), vf);
         });
+
     }
 
     public VF getVFByModelName(String modelName) {
         return vfMapByModelName.get(modelName);
+    }
+
+    public VF getVFByName(String name) {
+        return vfMapByName.get(name);
     }
 
     public Scenario getScenario() {

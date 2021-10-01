@@ -1,0 +1,3416 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "3.1.2",
+    "title": "SO Guilin APIs"
+  },
+  "tags": [
+    {
+      "name": "e2eServiceInstances"
+    },
+    {
+      "name": "Onap3gppServiceInstances"
+    },
+    {
+      "name": "globalhealthcheck"
+    },
+    {
+      "name": "nodehealthcheck"
+    },
+    {
+      "name": "onapsoinfraorchestrationRequests"
+    },
+    {
+      "name": "onapsoinfraorchestrationTasks"
+    },
+    {
+      "name": "onapsoinfraserviceInstantiation"
+    },
+    {
+      "name": "onapsoinfratasks"
+    },
+    {
+      "name": "onapsoinfracloudResources"
+    },
+    {
+      "name": "onapsoinfracloudResourcesRequests"
+    },
+    {
+      "name": "onapsoinframodelDistributions"
+    },
+    {
+      "name": "onapsoinfraworkflowSpecifications"
+    },
+    {
+      "name": "onapsoinfrainstanceManagement"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/onap/so/infra/e2eServiceInstances/{version}": {
+      "post": {
+        "tags": [
+          "e2eServiceInstances"
+        ],
+        "summary": "Create an E2E Service Instance on a version provided",
+        "description": "",
+        "operationId": "createE2EServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][3-5]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/e2eServiceInstances/{version}/{serviceId}": {
+      "put": {
+        "tags": [
+          "e2eServiceInstances"
+        ],
+        "summary": "Update an E2E Service Instance on a version provided and serviceId",
+        "description": "",
+        "operationId": "updateE2EServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][3-5]"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "e2eServiceInstances"
+        ],
+        "summary": "Delete E2E Service Instance on a specified version and serviceId",
+        "description": "",
+        "operationId": "deleteE2EServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][3-5]"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/e2eServiceInstances/{version}/{serviceId}/{operationType}": {
+      "post": {
+        "tags": [
+          "e2eServiceInstances"
+        ],
+        "summary": "Activate/Deactivate 5G slice Service on a specified version and serviceId",
+        "description": "",
+        "operationId": "activateE2EServiceInstances",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][3-5]"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "operationType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "activate/deactivate"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/e2eServiceInstances/{version}/{serviceId}/operations/{operationId}": {
+      "get": {
+        "tags": [
+          "e2eServiceInstances"
+        ],
+        "summary": "Find e2eServiceInstances Requests for a given serviceId and operationId",
+        "description": "",
+        "operationId": "getE2EServiceInstances",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][3-5]"
+          },
+          {
+            "name": "operationId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/e2eServiceInstances/{version}/{serviceId}/scale": {
+      "post": {
+        "tags": [
+          "e2eServiceInstances"
+        ],
+        "summary": "Scale E2E Service Instance on a specified version",
+        "description": "",
+        "operationId": "scaleE2EServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][3-5]"
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/e2eServiceInstances/{version}/{serviceId}/modeldifferences": {
+      "post": {
+        "tags": [
+          "e2eServiceInstances"
+        ],
+        "summary": "Find added and deleted resources of target model for the e2eserviceInstance on a given serviceId ",
+        "description": "",
+        "operationId": "compareModelwithTargetVersion",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][3-5]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/3gppservices/{version}/allocate": {
+      "post": {
+        "tags": [
+          "Onap3gppServiceInstances"
+        ],
+        "summary": "Create a 3GPP Service Instance on a version provided",
+        "description": "",
+        "operationId": "allocate3gppService",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Allocate3gppService"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/3gppServiceResponse"
+            }
+          }
+        }
+      }
+    },
+    "/onap/so/infra/3gppservices/{version}/deAllocate": {
+      "delete": {
+        "tags": [
+          "Onap3gppServiceInstances"
+        ],
+        "summary": "Terminate/Deallocate a 3GPP Service Instance on a version provided",
+        "description": "",
+        "operationId": "deallocate3gppService",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeAllocate3gppService"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/3gppServiceResponse"
+            }
+          }
+        }
+      }
+    },
+    "/onap/so/infra/3gppservices/{version}/modify": {
+      "put": {
+        "tags": [
+          "Onap3gppServiceInstances"
+        ],
+        "summary": "Modify a 3GPP Service Instance on a version provided",
+        "description": "",
+        "operationId": "modify3gppService",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Modify3gppService"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/3gppServiceResponse"
+            }
+          }
+        }
+      }
+    },
+    "/onap/so/infra/3gppservices/{version}/activate": {
+      "post": {
+        "tags": [
+          "Onap3gppServiceInstances"
+        ],
+        "summary": "Activate a 3GPP Service Instance on a version provided",
+        "description": "",
+        "operationId": "activate3gppService",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/3gppServiceActivation"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/3gppServiceResponse"
+            }
+          }
+        }
+      }
+    },
+    "/onap/so/infra/3gppservices/{version}/deActivate": {
+      "post": {
+        "tags": [
+          "Onap3gppServiceInstances"
+        ],
+        "summary": "Deactivate a 3GPP Service Instance on a version provided",
+        "description": "",
+        "operationId": "deactivate3gppService",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/3gppServiceActivation"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/3gppServiceResponse"
+            }
+          }
+        }
+      }
+    },
+    "/onap/so/infra/3gppservices/{version}/subnetCapabilityQuery": {
+      "get": {
+        "tags": [
+          "Onap3gppServiceInstances"
+        ],
+        "summary": "Provides subnet capability based on subnet types",
+        "description": "",
+        "operationId": "querySubnetCapability",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QuerySubnetCapability"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation with capabilities for the queried subnetTypes",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/globalhealthcheck": {
+      "get": {
+        "tags": [
+          "globalhealthcheck"
+        ],
+        "summary": "Performing global health check",
+        "description": "",
+        "operationId": "globalHealthcheck",
+        "produces": [
+          "text/html"
+        ],
+        "parameters": [
+          {
+            "name": "enableBpmn",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "default": true
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/nodehealthcheck": {
+      "get": {
+        "tags": [
+          "nodehealthcheck"
+        ],
+        "summary": "Performing node health check",
+        "description": "",
+        "operationId": "nodeHealthcheck",
+        "produces": [
+          "text/html"
+        ],
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/orchestrationRequests/{version}": {
+      "get": {
+        "tags": [
+          "onapsoinfraorchestrationRequests"
+        ],
+        "summary": "Find Orchestrated Requests for a URI Information",
+        "description": "",
+        "operationId": "getOrchestrationRequest",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/orchestrationRequests/{version}/{requestId}": {
+      "get": {
+        "tags": [
+          "onapsoinfraorchestrationRequests"
+        ],
+        "summary": "Find Orchestrated Requests for a given requestId",
+        "description": "",
+        "operationId": "getOrchestrationRequestForReqId",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/orchestrationRequests/{version}/{requestId}/unlock": {
+      "post": {
+        "tags": [
+          "onapsoinfraorchestrationRequests"
+        ],
+        "summary": "Unlock Orchestrated Requests for a given requestId",
+        "description": "",
+        "operationId": "unlockOrchestrationRequest",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/orchestrationTasks/{version}": {
+      "get": {
+        "tags": [
+          "onapsoinfraorchestrationTasks"
+        ],
+        "summary": "Get all orchestrationTasks",
+        "description": "",
+        "operationId": "getAllOrchestrationTasks",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "onapsoinfraorchestrationTasks"
+        ],
+        "summary": "Create an orchestrationTask",
+        "description": "",
+        "operationId": "createOrchestrationTask",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/orchestrationTasks/{version}/{taskId}": {
+      "get": {
+        "tags": [
+          "onapsoinfraorchestrationTasks"
+        ],
+        "summary": "Get orchestrationTask for a given taskId",
+        "description": "",
+        "operationId": "getOrchestrationTask",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "onapsoinfraorchestrationTasks"
+        ],
+        "summary": "update orchestrationTask for a given taskId",
+        "description": "",
+        "operationId": "updateOrchestrationTask",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "onapsoinfraorchestrationTasks"
+        ],
+        "summary": "delete orchestrationTask for a given taskId",
+        "description": "",
+        "operationId": "deleteOrchestrationTask",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/orchestrationTasks/{version}/{taskId}/commit": {
+      "post": {
+        "tags": [
+          "onapsoinfraorchestrationTasks"
+        ],
+        "summary": "commit orchestrationTask for a given taskId",
+        "description": "",
+        "operationId": "commitOrchestrationTask",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/orchestrationTasks/{version}/{taskId}/abort": {
+      "post": {
+        "tags": [
+          "onapsoinfraorchestrationTasks"
+        ],
+        "summary": "abort orchestrationTask for a given taskId",
+        "description": "",
+        "operationId": "abortOrchestrationTask",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][4-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/vfModules/{vfmoduleInstanceId}/deactivateAndCloudDelete": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Deactivate and Cloud Delete VfModule instance",
+        "description": "",
+        "operationId": "deactivateAndCloudDeleteVfModuleInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vfmoduleInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/configurations/{configurationInstanceId}/enablePort": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Enable Port Mirroring",
+        "description": "",
+        "operationId": "enablePort",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "configurationInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/configurations/{configurationInstanceId}/disablePort": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Disable Port Mirroring",
+        "description": "",
+        "operationId": "disablePort",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "configurationInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/configurations/{configurationInstanceId}/activate": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Activate Port Mirroring",
+        "description": "",
+        "operationId": "activatePort",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "configurationInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/configurations/{configurationInstanceId}/deactivate": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Deactivate Port Mirroring",
+        "description": "",
+        "operationId": "deactivatePort",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "configurationInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/addRelationships": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Add Relationships to a Service Instance",
+        "description": "",
+        "operationId": "addRelationships",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][6-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/vfModules/scaleOut": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "VF Auto Scale Out",
+        "description": "",
+        "operationId": "scaleOutVfModule",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/inPlaceSoftwareUpdate": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Perform VNF software update",
+        "description": "",
+        "operationId": "inPlaceSoftwareUpdate",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][6-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/applyUpdatedConfig": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Apply updated configuration",
+        "description": "",
+        "operationId": "applyUpdatedConfig",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][6-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Create a Service Instance on a version provided",
+        "description": "",
+        "operationId": "createServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/activate": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Activate provided Service Instance",
+        "description": "",
+        "operationId": "activateServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/deactivate": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Deactivate provided Service Instance",
+        "description": "",
+        "operationId": "deactivateServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}": {
+      "delete": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Delete provided Service Instance",
+        "description": "",
+        "operationId": "deleteServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/assign": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Assign Service Instance",
+        "description": "",
+        "operationId": "assignServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][7]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/unassign": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Unassign Service Instance",
+        "description": "",
+        "operationId": "unassignServiceInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/configurations": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Create Port Mirroring Configuration",
+        "description": "",
+        "operationId": "createPortConfiguration",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/configurations/{configurationInstanceId}": {
+      "delete": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Delete provided Port",
+        "description": "",
+        "operationId": "deletePortConfiguration",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "configurationInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/removeRelationships": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Remove Relationships from Service Instance",
+        "description": "",
+        "operationId": "removeRelationships",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][6-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Create VNF on a specified version and serviceInstance",
+        "description": "",
+        "operationId": "createVnfInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/replace": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Replace provided VNF instance",
+        "description": "",
+        "operationId": "replaceVnfInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}": {
+      "put": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Update VNF on a specified version, serviceInstance and vnfInstance",
+        "description": "",
+        "operationId": "updateVnfInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Delete provided VNF instance",
+        "description": "",
+        "operationId": "deleteVnfInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/vfModules": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Create VfModule on a specified version, serviceInstance and vnfInstance",
+        "description": "",
+        "operationId": "createVfModuleInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/vfModules/{vfmoduleInstanceId}/replace": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Create VfModule on a specified version, serviceInstance and vnfInstance",
+        "description": "",
+        "operationId": "replaceVfModuleInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vfmoduleInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/vfModules/{vfmoduleInstanceId}": {
+      "put": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Update VfModule on a specified version, serviceInstance, vnfInstance and vfModule",
+        "description": "",
+        "operationId": "updateVfModuleInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vfmoduleInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Delete provided VfModule instance",
+        "description": "",
+        "operationId": "deleteVfModuleInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vfmoduleInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/volumeGroups": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Create VolumeGroup on a specified version, serviceInstance, vnfInstance",
+        "description": "",
+        "operationId": "createVolumeGroupInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/vnfs/{vnfInstanceId}/volumeGroups/{volumeGroupInstanceId}": {
+      "put": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Update VolumeGroup on a specified version, serviceInstance, vnfInstance and volumeGroup",
+        "description": "",
+        "operationId": "updateVolumeGroupInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "volumeGroupInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Delete provided VolumeGroup instance",
+        "description": "",
+        "operationId": "deleteVolumeGroupInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "vnfInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "volumeGroupInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/networks": {
+      "post": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Create NetworkInstance on a specified version and serviceInstance ",
+        "description": "",
+        "operationId": "createNetworkInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/serviceInstantiation/{version}/serviceInstances/{serviceInstanceId}/networks/{networkInstanceId}": {
+      "put": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Update VolumeGroup on a specified version, serviceInstance, networkInstance",
+        "description": "",
+        "operationId": "updateNetworkInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "networkInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "onapsoinfraserviceInstantiation"
+        ],
+        "summary": "Delete provided Network instance",
+        "description": "",
+        "operationId": "deleteNetworkInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][5-7]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "networkInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/tasks/{version}": {
+      "get": {
+        "tags": [
+          "onapsoinfratasks"
+        ],
+        "summary": "Finds Manual Tasks",
+        "description": "",
+        "operationId": "queryFilters",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "originalRequestId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "subscriptionServiceType",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "nfRole",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "buildingBlockName",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "originalRequestDate",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "originalRequestorId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV]1"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/cloudResources/{version}/operationalEnvironments": {
+      "post": {
+        "tags": [
+          "onapsoinfracloudResources"
+        ],
+        "summary": "Create an Operational Environment",
+        "description": "",
+        "operationId": "createOperationEnvironment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/cloudResources/{version}/operationalEnvironments/{operationalEnvironmentId}/activate": {
+      "post": {
+        "tags": [
+          "onapsoinfracloudResources"
+        ],
+        "summary": "Activate an Operational Environment",
+        "description": "",
+        "operationId": "activateOperationEnvironment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          },
+          {
+            "name": "operationalEnvironmentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/cloudResources/{version}/operationalEnvironments/{operationalEnvironmentId}/deactivate": {
+      "post": {
+        "tags": [
+          "onapsoinfracloudResources"
+        ],
+        "summary": "Deactivate an Operational Environment",
+        "description": "",
+        "operationId": "deactivateOperationEnvironment",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          },
+          {
+            "name": "operationalEnvironmentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/cloudResourcesRequests/{version}/{requestId}/unlock": {
+      "post": {
+        "tags": [
+          "onapsoinfracloudResourcesRequests"
+        ],
+        "summary": "Unlock CloudOrchestration requests for a specified requestId",
+        "description": "",
+        "operationId": "unlockOrchestrationRequestForReqId",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/cloudResourcesRequests/{version}": {
+      "get": {
+        "tags": [
+          "onapsoinfracloudResourcesRequests"
+        ],
+        "summary": "Get status of an Operational Environment based on filter criteria",
+        "description": "",
+        "operationId": "getOperationEnvironmentStatusFilter",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/modelDistributions/{version}/distributions/{distributionId}": {
+      "post": {
+        "tags": [
+          "onapsoinframodelDistributions"
+        ],
+        "summary": "Update model distribution status",
+        "description": "",
+        "operationId": "updateModelDistributionStatus",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          },
+          {
+            "name": "distributionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/workflowSpecifications/{version}/workflows": {
+      "get": {
+        "tags": [
+          "onapsoinfraworkflowSpecifications"
+        ],
+        "summary": "Retrieve Workflow details based on the filter criteria",
+        "description": "",
+        "operationId": "queryWorkflowSpecifications",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "resourceTarget",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "List of workflow specifications on successful operation",
+            "schema": {
+              "$ref": "#/definitions/RetrievingWorkflowResponse"
+            }
+          }
+        }
+      }
+    },
+    "/onap/so/infra/instanceManagement/{version}/serviceInstances/{serviceInstanceId}/workflows/{workflow_UUID}": {
+      "post": {
+        "tags": [
+          "onapsoinfrainstanceManagement"
+        ],
+        "summary": "Executing service level custom workflow",
+        "description": "",
+        "operationId": "executeServiceLevelCustomWorkflow",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/ServiceLevelWorkflowExecution"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "workflow_UUID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/onap/so/infra/instanceManagement/{version}/serviceInstances/{serviceInstanceId}/pnfs/${pnfName}/workflows/${workflow_UUID}": {
+      "post": {
+        "tags": [
+          "onapsoinfrainstanceManagement"
+        ],
+        "summary": "Executing download/activate custom workflow",
+        "description": "",
+        "operationId": "executePNFCustomWorkflow",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/PNFCustomWorkflowExecution"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "pattern": "[vV][1]"
+          },
+          {
+            "name": "serviceInstanceId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pnfName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "workflow_UUID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Allocate3gppService": {
+      "description": "This describes the request body for 3gpp service allocation",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the service to allocate",
+          "type": "string"
+        },
+        "modelInvariantUuid": {
+          "description": "Model Invariant UUID corresponding to the service. For E.g :  NSST Model invariant uuid in case of NSSI creation",
+          "type": "string"
+        },
+        "modelUuid": {
+          "description": "Model UUID corresponding to the service. For E.g :  NSST Model uuid in case of NSSI creation",
+          "type": "string"
+        },
+        "globalSubscriberId": {
+          "type": "string"
+        },
+        "subscriptionServiceType": {
+          "description": "Service type for the subscription. For E.G :5G",
+          "type": "string"
+        },
+        "networkType": {
+          "description": "Network type. For E.G :AN/CN/TN",
+          "type": "string"
+        },
+        "additionalProperties": {
+          "description": "Map of additional properties required for service allocation",
+          "type": "object"
+        }
+      }
+    },
+    "DeAllocate3gppService": {
+      "description": "This describes the request body for 3gpp service Termination/Deallocation",
+      "type": "object",
+      "properties": {
+        "serviceInstanceID": {
+          "description": "ID of the service to terminate",
+          "type": "string"
+        },
+        "globalSubscriberId": {
+          "type": "string"
+        },
+        "subscriptionServiceType": {
+          "description": "Service type for the subscription. For E.G :5G",
+          "type": "string"
+        },
+        "networkType": {
+          "description": "Network type. For E.G :AN/CN/TN",
+          "type": "string"
+        },
+        "additionalProperties": {
+          "description": "Map of additional properties required for service deallocation",
+          "type": "object"
+        }
+      }
+    },
+    "Modify3gppService": {
+      "description": "This describes the request body for 3gpp service modification",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the service to modify",
+          "type": "string"
+        },
+        "serviceInstanceID": {
+          "description": "ID of the service to modify",
+          "type": "string"
+        },
+        "globalSubscriberId": {
+          "type": "string"
+        },
+        "subscriptionServiceType": {
+          "description": "Service type for the subscription. For E.G :5G",
+          "type": "string"
+        },
+        "networkType": {
+          "description": "Network type. For E.G :AN/CN/TN",
+          "type": "string"
+        },
+        "additionalProperties": {
+          "description": "Map of additional properties required for service modification",
+          "type": "object"
+        }
+      }
+    },
+    "3gppServiceActivation": {
+      "description": "This describes the request body for 3gpp service activation/deactivation",
+      "type": "object",
+      "properties": {
+        "serviceInstanceID": {
+          "description": "ID of the service to be activated/deactivated",
+          "type": "string"
+        },
+        "globalSubscriberId": {
+          "type": "string"
+        },
+        "subscriptionServiceType": {
+          "description": "Service type for the subscription. For E.G :5G",
+          "type": "string"
+        },
+        "networkType": {
+          "description": "Network type. For E.G :AN/CN/TN",
+          "type": "string"
+        },
+        "additionalProperties": {
+          "description": "Map of additional properties required for service activation/deactivation",
+          "type": "object"
+        }
+      }
+    },
+    "QuerySubnetCapability": {
+      "description": "This describes the subnet capabilities that can be queried",
+      "type": "object",
+      "properties": {
+        "subnetTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubnetTypes"
+          }
+        }
+      }
+    },
+    "SubnetTypes": {
+      "description": "This describes allowed subnet types",
+      "type": "string",
+      "enum": [
+        "AN",
+        "AN_NF",
+        "CN",
+        "TN_FH",
+        "TN_MH",
+        "TN_BH"
+      ]
+    },
+    "3gppServiceResponse": {
+      "description": "This describes the response for 3gpp services",
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "description": "Job ID to be used to identify the status of the job",
+          "type": "string"
+        },
+        "status": {
+          "description": "status of the job",
+          "type": "string"
+        },
+        "statusDescription": {
+          "description": "Description on status in case of erroneous response",
+          "type": "object"
+        }
+      }
+    },
+    "RetrievingWorkflowResponse": {
+      "description": "Response body of fetching workflows using resource target",
+      "type": "object",
+      "properties": {
+        "workflowSpecificationList":{
+          "description": "List of Workflow specification data",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/WorkflowSpecification"
+          }
+        }
+      }
+    },
+    "WorkflowSpecification": {
+      "description": "This describes workflow specification object",
+      "type": "object",
+      "properties": {
+        "artifactInfo": {
+          "description": "Attributes related to artifact information ",
+          "type": "object",
+          "properties": {
+            "artifactType": {
+              "description": "Type of the artifact to be queried",
+              "type": "string"
+            },
+            "artifactUuid": {
+              "description": "UUID of the artifact",
+              "type": "string"
+            },
+            "artifactName": {
+              "description": "Name of the artifact",
+              "type": "string"
+            },
+            "artifactVersion": {
+              "description": "Artifact's Version",
+              "type": "string"
+            },
+            "artifactDescription": {
+              "description": "",
+              "type": "string"
+            },
+            "workflowName": {
+              "description": "Name of the workflow fetched for the resource type",
+              "type": "string"
+            },
+            "operationName": {
+              "description": "Mapped operation name of the corresponding workflow",
+              "type": "string"
+            },
+            "workflowSource": {
+              "description": "",
+              "type": "string"
+            },
+            "workflowResourceTarget": {
+              "description": "Type of Resource mapped against the workflow",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "ServiceLevelWorkflowExecution": {
+      "description": "This describes the request body of service level custom workflow execution",
+      "type": "object",
+      "properties": {
+        "requestInfo": {
+          "description": "Request object contains source information",
+          "type": "object",
+          "properties": {
+            "source": {
+              "description": "Name of the sender",
+              "type": "string"
+            },
+            "suppressRollback": {
+              "description": "Enable/disable rollback suppression",
+              "type": "boolean"
+            },
+            "requestorId": {
+              "description": "Id of the sender",
+              "type": "string"
+            }
+          }
+        },
+        "modelInfo": {
+          "description": "Parameters related to the service model",
+          "type": "object",
+          "properties": {
+            "modelType": {
+              "description": "Type of the model to be executed",
+              "type": "string"
+            },
+            "modelInvariantUuid": {
+              "description": "Model invariant id corresponding to the service",
+              "type": "string"
+            },
+            "modelUuid": {
+              "description": "Model uuid corresponding to the service",
+              "type": "string"
+            },
+            "modelVersionId": {
+              "description": "Model version of the service instance",
+              "type": "string"
+            },
+            "modelName": {
+              "description": "Name of the service",
+              "type": "string"
+            },
+            "modelVersion": {
+              "description": "Version of the service instance",
+              "type": "string"
+            }
+          }
+        },
+        "requestParameters": {
+          "description": "User parameter object",
+          "type": "object",
+          "properties": {
+            "subscriptionServiceType": {
+              "description": "Type of service subscription",
+              "type": "string"
+            }
+          }
+        },
+        "subscriberInfo": {
+          "description": "Subscriber id information",
+          "type": "object",
+          "properties": {
+            "globalSubscriberId": {
+              "description": "Id of the subscriber sending the request",
+              "type": "string"
+            }
+          }
+        },
+        "project": {
+          "description": "Information about the target project name",
+          "type": "object",
+          "properties": {
+            "projectName":{
+              "description": "Name of the target project",
+              "type": "string"
+            }
+          }
+        },
+        "owningEntity": {
+          "description": "Object describes the entity details",
+          "type": "object",
+          "properties": {
+            "owningEntityId": {
+              "description": "Id of the owning Entity",
+              "type": "string"
+            },
+            "owningEntityName": {
+              "description": "Name of the owning Entity",
+              "type": "string"
+            }
+          }
+        }
+
+      }
+    },
+    "PNFCustomWorkflowExecution": {
+      "description": "This describes the request body of PNF custom workflow execution",
+      "type": "object",
+      "properties": {
+        "requestInfo": {
+          "description": "Request object contains source information",
+          "type": "object",
+          "properties": {
+            "source": {
+              "description": "Name of the sender",
+              "type": "string"
+            },
+            "suppressRollback": {
+              "description": "Enable/disable rollback suppression",
+              "type": "boolean"
+            },
+            "requestorId": {
+              "description": "Id of the sender",
+              "type": "string"
+            }
+          }
+        },
+        "modelInfo": {
+          "description": "Parameters related to the service model",
+          "type": "object",
+          "properties": {
+            "modelType": {
+              "description": "Type of the model to be executed",
+              "type": "string"
+            },
+            "modelInvariantUuid": {
+              "description": "Model invariant id corresponding to the service",
+              "type": "string"
+            },
+            "modelUuid": {
+              "description": "Model uuid corresponding to the service",
+              "type": "string"
+            },
+            "modelVersionId": {
+              "description": "Model version of the service instance",
+              "type": "string"
+            },
+            "modelName": {
+              "description": "Name of the service",
+              "type": "string"
+            },
+            "modelVersion": {
+              "description": "Version of the service instance",
+              "type": "string"
+            }
+          }
+        },
+        "requestParameters": {
+          "description": "User parameter object",
+          "type": "object",
+          "properties": {
+            "subscriptionServiceType": {
+              "description": "Type of service subscription",
+              "type": "string"
+            }
+          }
+        },
+        "subscriberInfo": {
+          "description": "Subscriber id information",
+          "type": "object",
+          "properties": {
+            "globalSubscriberId": {
+              "description": "Id of the subscriber sending the request",
+              "type": "string"
+            }
+          }
+        },
+        "project": {
+          "description": "Information about the target project name",
+          "type": "object",
+          "properties": {
+            "projectName":{
+              "description": "Name of the target project",
+              "type": "string"
+            }
+          }
+        },
+        "owningEntity": {
+          "description": "Object describes the entity details",
+          "type": "object",
+          "properties": {
+            "owningEntityId": {
+              "description": "Id of the owning Entity",
+              "type": "string"
+            },
+            "owningEntityName": {
+              "description": "Name of the owning Entity",
+              "type": "string"
+            }
+          }
+        }
+
+      }
+    }
+  }
+}

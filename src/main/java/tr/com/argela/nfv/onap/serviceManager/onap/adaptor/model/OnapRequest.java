@@ -65,6 +65,7 @@ public enum OnapRequest {
     SDC_VF_CERTIFY(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/resources/${" + OnapRequestParameters.DESIGN_VF_UNIQUE_ID + "}/lifecycleState/certify", 200, HttpResponseType.JSONObject, "payloads/design/vf/certify.json", "application/json"),
     /*SDC SERVICE MODEL*/
     SDC_SERVICE_MODELS(HttpCallType.GET, OnapModule.SDC_CATALOG, "/services", 200, HttpResponseType.JSONArray),
+    SDC_SERVICE_MODEL_DETAIL(HttpCallType.GET, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID + "}/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_FILTER + "}", 200, HttpResponseType.JSONObject),
     SDC_SERVICE_MODEL_CREATE(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services", 201, HttpResponseType.JSONObject, "payloads/design/service/create.json", "application/json"),
     SDC_SERVICE_MODEL_ADD_VF(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID + "}/resourceInstance", 201, HttpResponseType.JSONObject, "payloads/design/service/vfAdd.json", "application/json"),
     SDC_SERVICE_MODEL_CERTIFY(HttpCallType.POST, OnapModule.SDC_FeProxy, "/rest/v1/catalog/services/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID + "}/lifecycleState/certify", 200, HttpResponseType.JSONObject, "payloads/design/service/certify.json", "application/json"),
