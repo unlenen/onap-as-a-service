@@ -53,10 +53,8 @@ public enum OnapModule {
     SO("http://${ONAPIP}:30277/onap/so", new String[][]{
         {"Content-Type", "application/json"},
         {"Accept", "application/json"},
-        {"X-FromAppId", "AAI"},
-        {"X-TransactionId", "get_aai_subscr"},
         {"Authorization", "Basic SW5mcmFQb3J0YWxDbGllbnQ6cGFzc3dvcmQxJA=="},
-        {"Cookie", "JSESSIONID=AE7FF0DB42F6852AED6AE5A9C398CFEE"},}),
+        {"-ONAP-PartnerName", "NBI"},}),
     SDNC("https://${ONAPIP}:30267", new String[][]{
         {"Content-Type", "application/json"},
         {"Accept", "application/json"},

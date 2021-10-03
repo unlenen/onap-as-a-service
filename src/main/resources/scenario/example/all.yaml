@@ -32,6 +32,14 @@ service:
     description: ArgelaApp2
     vsp:
       name: ArgelaApp2
+  serviceInstances:
+  - name: ArgelaAppService_Istanbul_Instance1
+    customer:
+      id: hilalalsac
+    owningEntity:
+      id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
+      name: ArgelaOwningEntity3
+    project: Argela_Ist_Nfvlab_Onap_Demo1
       
 cloudRegions:
 - cloudOwner: CloudOwner

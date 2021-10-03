@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.OnapRequestFailedException;
 
 /**
@@ -70,6 +71,10 @@ public class OnapAdaptor {
             responseCode = onapEx.getResponseCode() + "";
         } else if (ex instanceof org.springframework.web.client.HttpClientErrorException) {
             org.springframework.web.client.HttpClientErrorException httpEx = (org.springframework.web.client.HttpClientErrorException) ex;
+            responseCode = httpEx.getStatusCode() + "";
+            detailObj = new JSONObject(httpEx.getResponseBodyAsString());
+        } else if (ex instanceof HttpServerErrorException) {
+            HttpServerErrorException httpEx = (HttpServerErrorException) ex;
             responseCode = httpEx.getStatusCode() + "";
             detailObj = new JSONObject(httpEx.getResponseBodyAsString());
         }

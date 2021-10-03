@@ -28,6 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
@@ -46,12 +47,12 @@ public class RuntimeService {
 
     Logger log = LoggerFactory.getLogger(RuntimeService.class);
 
-    @GetMapping(path = "/runtime/service-instances/{customerName}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getServiceInstances(@PathVariable(required = true) String customerName) throws IOException {
+    @GetMapping(path = "/runtime/service-instances/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getServiceInstances(@PathVariable(required = true) String customerId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_NAME.name(), customerName);
+        parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_ID.name(), customerId);
         JSONArray data = (JSONArray) adaptor.call(OnapRequest.RUNTIME_SERVICE_INSTANCES, parameters);
-        log.info("[Runtime][ServiceInstances][Get] customerName:" + customerName + ", size:" + data.length());
+        log.info("[Runtime][ServiceInstances][Get] " + parameters + " ,size:" + data.length());
         return ResponseEntity.ok(data.toString());
     }
 
@@ -61,6 +62,30 @@ public class RuntimeService {
         parameters.put(OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID.name(), serviceInstanceId);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_SERVICE_INSTANCE_DETAIL, parameters);
         log.info("[Runtime][ServiceInstanceDetail][Get] service-instance-id:" + serviceInstanceId + " , response:" + data.toString());
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/runtime/service-instance/{serviceInstanceName}/{serviceModelInvariantUUID}/{serviceModelUUID}/{serviceName}/{owningId}/{owningName}/{customerId}/{projectName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createServiceInstance(@PathVariable String serviceInstanceName,
+            @PathVariable String serviceModelInvariantUUID,
+            @PathVariable String serviceModelUUID,
+            @PathVariable String serviceName,
+            @PathVariable String owningId,
+            @PathVariable String owningName,
+            @PathVariable String customerId,
+            @PathVariable String projectName
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_NAME.name(), serviceInstanceName);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID.name(), serviceModelInvariantUUID);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UUID.name(), serviceModelUUID);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME.name(), serviceName);
+        parameters.put(OnapRequestParameters.BUSINESS_OWNING_ENTITY_ID.name(), owningId);
+        parameters.put(OnapRequestParameters.BUSINESS_OWNING_ENTITY_NAME.name(), owningName);
+        parameters.put(OnapRequestParameters.BUSINESS_CUSTOMER_ID.name(), customerId);
+        parameters.put(OnapRequestParameters.BUSINESS_PROJECT_NAME.name(), projectName);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_SERVICE_INSTANCE_CREATE, parameters);
+        log.info("[Runtime][ServiceInstance][Create] " + parameters + " , response:" + data.toString());
         return ResponseEntity.ok(data.toString());
     }
 

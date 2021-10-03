@@ -37,6 +37,7 @@ public class Service {
     DistributionStatus distributionStatus;
     List<Customer> customers;
     List<Tenant> tenants;
+    List<ServiceInstance> serviceInstances;
 
     @JsonIgnore
     Map<String, VF> vfMapByModelName = new HashMap<>();
@@ -132,6 +133,14 @@ public class Service {
 
     public void setTenants(List<Tenant> tenants) {
         this.tenants = tenants;
+    }
+
+    public List<ServiceInstance> getServiceInstances() {
+        return serviceInstances;
+    }
+
+    public void setServiceInstances(List<ServiceInstance> serviceInstances) {
+        this.serviceInstances = serviceInstances;
     }
 
     public void mapVfs() {

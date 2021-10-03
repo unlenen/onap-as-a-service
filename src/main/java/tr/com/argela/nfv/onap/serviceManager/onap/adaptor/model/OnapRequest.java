@@ -73,7 +73,8 @@ public enum OnapRequest {
     AAI_SERVICE_MODEL_SUBSCRIPTIONS(HttpCallType.GET, OnapModule.AAI, "/service-design-and-creation/services/service/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID + "}", 200, HttpResponseType.JSONObject),
     AAI_SERVICE_MODEL_SUBSCRIPTION_CREATE(HttpCallType.PUT, OnapModule.AAI, "/service-design-and-creation/services/service/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID + "}", 201, HttpResponseType.JSONObject, "payloads/business/subscription/serviceCreate.json", "application/json"),
     /*RUNTIME*/
-    RUNTIME_SERVICE_INSTANCES(HttpCallType.GET, OnapModule.NBI, "/service?relatedParty.id=${" + OnapRequestParameters.BUSINESS_CUSTOMER_NAME + "}", 200, HttpResponseType.JSONArray),
+    RUNTIME_SERVICE_INSTANCES(HttpCallType.GET, OnapModule.NBI, "/service?relatedParty.id=${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}", 200, HttpResponseType.JSONArray),
+    RUNTIME_SERVICE_INSTANCE_CREATE(HttpCallType.POST, OnapModule.SO, "/infra/serviceInstantiation/v7/serviceInstances", 200, HttpResponseType.JSONObject, "payloads/runtime/serviceInstance/create.json","application/json"),
     RUNTIME_SERVICE_INSTANCE_DETAIL(HttpCallType.GET, OnapModule.NBI, "/service/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}", 200, HttpResponseType.JSONObject),
     RUNTIME_VNFS(HttpCallType.GET, OnapModule.AAI, "/network/generic-vnfs", 200, HttpResponseType.JSONObject),
     RUNTIME_VNF_DETAIL(HttpCallType.GET, OnapModule.AAI, "/network/generic-vnfs/generic-vnf/${" + OnapRequestParameters.RUNTIME_VNF_ID + "}", 200, HttpResponseType.JSONObject),
