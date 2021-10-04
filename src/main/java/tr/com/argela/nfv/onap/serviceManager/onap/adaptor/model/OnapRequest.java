@@ -73,10 +73,13 @@ public enum OnapRequest {
     AAI_SERVICE_MODEL_SUBSCRIPTIONS(HttpCallType.GET, OnapModule.AAI, "/service-design-and-creation/services/service/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID + "}", 200, HttpResponseType.JSONObject),
     AAI_SERVICE_MODEL_SUBSCRIPTION_CREATE(HttpCallType.PUT, OnapModule.AAI, "/service-design-and-creation/services/service/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID + "}", 201, HttpResponseType.JSONObject, "payloads/business/subscription/serviceCreate.json", "application/json"),
     /*RUNTIME*/
+    RUNTIME_ACTION_STATUS(HttpCallType.GET, OnapModule.SO_NOTIFICATION, "${NOTIFICATION_URL}", 200, HttpResponseType.JSONObject),
     RUNTIME_SERVICE_INSTANCES(HttpCallType.GET, OnapModule.NBI, "/service?relatedParty.id=${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}", 200, HttpResponseType.JSONArray),
     RUNTIME_SERVICE_INSTANCE_CREATE(HttpCallType.POST, OnapModule.SO, "/infra/serviceInstantiation/v7/serviceInstances", 202, HttpResponseType.JSONObject, "payloads/runtime/serviceInstance/create.json", "application/json"),
     RUNTIME_SERVICE_INSTANCE_DETAIL(HttpCallType.GET, OnapModule.NBI, "/service/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}", 200, HttpResponseType.JSONObject),
     RUNTIME_VNFS(HttpCallType.GET, OnapModule.AAI, "/network/generic-vnfs", 200, HttpResponseType.JSONObject),
+    RUNTIME_VNF_CREATE(HttpCallType.POST, OnapModule.SO, "/infra/serviceInstantiation/v7/serviceInstances/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}/vnfs", 202, HttpResponseType.JSONObject, "payloads/runtime/vnf/create.json", "application/json"),
+    RUNTIME_VNFS_DETAIL_BY_SERVICE(HttpCallType.GET, OnapModule.AAI, "/network/generic-vnfs?${" + OnapRequestParameters.REQUEST_PARAMETERS + "}", 200, HttpResponseType.JSONObject),
     RUNTIME_VNF_DETAIL(HttpCallType.GET, OnapModule.AAI, "/network/generic-vnfs/generic-vnf/${" + OnapRequestParameters.RUNTIME_VNF_ID + "}", 200, HttpResponseType.JSONObject),
     RUNTIME_VFMODULES(HttpCallType.GET, OnapModule.AAI, "/network/generic-vnfs/generic-vnf/${" + OnapRequestParameters.RUNTIME_VNF_ID + "}/vf-modules", 200, HttpResponseType.JSONObject),
     RUNTIME_VFMODULE_DETAIL(HttpCallType.GET, OnapModule.AAI, "/network/generic-vnfs/generic-vnf/${" + OnapRequestParameters.RUNTIME_VNF_ID + "}/vf-modules/vf-module/${" + OnapRequestParameters.RUNTIME_VF_MODULE_ID + "}", 200, HttpResponseType.JSONObject),

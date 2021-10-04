@@ -33,14 +33,22 @@ service:
     vsp:
       name: ArgelaApp2
   serviceInstances:
-  - name: ArgelaAppService_Istanbul_Instance1
+  - name: ArgelaAppService_Istanbul_Instance51
     customer:
       id: hilalalsac
     owningEntity:
       id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
       name: ArgelaOwningEntity3
     project: Argela_Ist_Nfvlab_Onap_Demo1
-      
+    vnfs:
+    - name: ArgelaAppService_Istanbul_VNF2
+      lineOfBusiness: NfvDemo
+      platform: Argela_Ist_Nfvlab_OS1
+      tenant:
+        id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+      vf: 
+        name: ArgelaApp1
+          
 cloudRegions:
 - cloudOwner: CloudOwner
   complexName: ArgelaIstKollaOS1

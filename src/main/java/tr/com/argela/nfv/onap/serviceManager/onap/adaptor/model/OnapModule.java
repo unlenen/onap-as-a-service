@@ -55,6 +55,11 @@ public enum OnapModule {
         {"Accept", "application/json"},
         {"Authorization", "Basic SW5mcmFQb3J0YWxDbGllbnQ6cGFzc3dvcmQxJA=="},
         {"-ONAP-PartnerName", "NBI"},}),
+    SO_NOTIFICATION("", new String[][]{
+        {"Content-Type", "application/json"},
+        {"Accept", "application/json"},
+        {"Authorization", "Basic SW5mcmFQb3J0YWxDbGllbnQ6cGFzc3dvcmQxJA=="},
+        {"-ONAP-PartnerName", "NBI"},}),
     SDNC("https://${ONAPIP}:30267", new String[][]{
         {"Content-Type", "application/json"},
         {"Accept", "application/json"},

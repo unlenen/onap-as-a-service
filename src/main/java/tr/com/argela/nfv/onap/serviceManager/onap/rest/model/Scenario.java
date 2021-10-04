@@ -15,7 +15,10 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -26,6 +29,9 @@ public class Scenario {
     Vendor vendor;
     Service service;
     List<CloudRegion> cloudRegions;
+
+    @JsonIgnore
+    Map<String, Tenant> tenantMapById = new HashMap();
 
     public Vendor getVendor() {
         return vendor;
@@ -49,6 +55,19 @@ public class Scenario {
 
     public void setCloudRegions(List<CloudRegion> cloudRegions) {
         this.cloudRegions = cloudRegions;
+    }
+
+    public void mapTenants(Scenario scenario) {
+        for (CloudRegion cloudRegion : scenario.getCloudRegions()) {
+            for (Tenant tenant : cloudRegion.getTenants()) {
+                tenant.setCloudRegion(cloudRegion);
+                tenantMapById.put(tenant.getId(), tenant);
+            }
+        }
+    }
+
+    public Map<String, Tenant> getTenantMapById() {
+        return tenantMapById;
     }
 
 }

@@ -16,26 +16,26 @@
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.List;
 
 /**
  *
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
-public class ServiceInstance {
+public class VNF {
 
     String id;
     String name;
-    String project;
+    String type;
+    String lineOfBusiness;
+    String platform;
     String reqId;
     String reqUrl;
 
-    Customer customer;
-    OwningEntity owningEntity;
-    List<VNF> vnfs;
+    VF vf;
+    Tenant tenant;
 
     @JsonIgnore
-    Service service;
+    ServiceInstance serviceInstance;
 
     public String getId() {
         return id;
@@ -43,6 +43,14 @@ public class ServiceInstance {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -53,12 +61,20 @@ public class ServiceInstance {
         this.name = name;
     }
 
-    public String getProject() {
-        return project;
+    public String getLineOfBusiness() {
+        return lineOfBusiness;
     }
 
-    public void setProject(String project) {
-        this.project = project;
+    public void setLineOfBusiness(String lineOfBusiness) {
+        this.lineOfBusiness = lineOfBusiness;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
     }
 
     public String getReqId() {
@@ -77,41 +93,33 @@ public class ServiceInstance {
         this.reqUrl = reqUrl;
     }
 
-    public Service getService() {
-        return service;
+    public VF getVf() {
+        return vf;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setVf(VF vf) {
+        this.vf = vf;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Tenant getTenant() {
+        return tenant;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
 
-    public OwningEntity getOwningEntity() {
-        return owningEntity;
+    public ServiceInstance getServiceInstance() {
+        return serviceInstance;
     }
 
-    public void setOwningEntity(OwningEntity owningEntity) {
-        this.owningEntity = owningEntity;
-    }
-
-    public List<VNF> getVnfs() {
-        return vnfs;
-    }
-
-    public void setVnfs(List<VNF> vnfs) {
-        this.vnfs = vnfs;
+    public void setServiceInstance(ServiceInstance serviceInstance) {
+        this.serviceInstance = serviceInstance;
     }
 
     @Override
     public String toString() {
-        return "ServiceInstance{" + "id=" + id + ", name=" + name + '}';
+        return "VNF{" + "id=" + id + ", name=" + name + '}';
     }
 
 }

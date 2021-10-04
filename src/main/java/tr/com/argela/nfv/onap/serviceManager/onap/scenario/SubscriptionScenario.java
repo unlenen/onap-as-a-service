@@ -49,11 +49,9 @@ public class SubscriptionScenario extends CommonScenario {
     @Autowired
     BusinessService businessService;
 
-    Map<String, Tenant> tenantMapById = new HashMap();
-
     public void processSubscription(Service service) throws Exception {
 
-        mapTenants(service.getScenario());
+        service.getScenario().mapTenants(service.getScenario());
 
         subscribeService(service);
         saveCustomers(service);
@@ -148,17 +146,8 @@ public class SubscriptionScenario extends CommonScenario {
     }
 
     private void createTenantSubscription(Tenant tenant, Customer customer) throws Exception {
-        Tenant tenantFull = tenantMapById.get(tenant.getId());
+        Tenant tenantFull = customer.getService().getScenario().getTenantMapById().get(tenant.getId());
         String result = readResponse(businessService.createCustomerTenantSubscription(customer.getId(), tenantFull.getCloudRegion().getCloudOwner(), tenantFull.getCloudRegion().getRegionName(), tenantFull.getId(), tenantFull.getName(), customer.getService().getName()));
-    }
-
-    private void mapTenants(Scenario scenario) {
-        for (CloudRegion cloudRegion : scenario.getCloudRegions()) {
-            for (Tenant tenant : cloudRegion.getTenants()) {
-                tenant.setCloudRegion(cloudRegion);
-                tenantMapById.put(tenant.getId(), tenant);
-            }
-        }
     }
 
 }
