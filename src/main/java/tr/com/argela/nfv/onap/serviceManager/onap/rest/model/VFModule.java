@@ -16,29 +16,24 @@
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.List;
 
 /**
  *
  * @author Nebi Volkan UNLENEN(unlenen@gmail.com)
  */
-public class VNF {
+public class VFModule {
 
     String id;
     String name;
     String type;
-    String lineOfBusiness;
-    String platform;
     String reqId;
     String reqUrl;
+    String availabilityZone;
 
-    VF vf;
-    Tenant tenant;
+    VFModuleProfile profile;
 
     @JsonIgnore
-    ServiceInstance serviceInstance;
-
-    List<VFModule> vfModules;
+    VNF vnf;
 
     public String getId() {
         return id;
@@ -46,14 +41,6 @@ public class VNF {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getName() {
@@ -64,20 +51,12 @@ public class VNF {
         this.name = name;
     }
 
-    public String getLineOfBusiness() {
-        return lineOfBusiness;
+    public String getType() {
+        return type;
     }
 
-    public void setLineOfBusiness(String lineOfBusiness) {
-        this.lineOfBusiness = lineOfBusiness;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getReqId() {
@@ -96,41 +75,39 @@ public class VNF {
         this.reqUrl = reqUrl;
     }
 
-    public VF getVf() {
-        return vf;
+    public String getAvailabilityZone() {
+        return availabilityZone;
     }
 
-    public void setVf(VF vf) {
-        this.vf = vf;
+    public void setAvailabilityZone(String availabilityZone) {
+        this.availabilityZone = availabilityZone;
     }
 
-    public Tenant getTenant() {
-        return tenant;
+    public VFModuleProfile getProfile() {
+        return profile;
     }
 
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
+    public void setProfile(VFModuleProfile profile) {
+        this.profile = profile;
     }
 
-    public ServiceInstance getServiceInstance() {
-        return serviceInstance;
+    public VNF getVnf() {
+        return vnf;
     }
 
-    public void setServiceInstance(ServiceInstance serviceInstance) {
-        this.serviceInstance = serviceInstance;
-    }
-
-    public List<VFModule> getVfModules() {
-        return vfModules;
-    }
-
-    public void setVfModules(List<VFModule> vfModules) {
-        this.vfModules = vfModules;
+    public void setVnf(VNF vnf) {
+        this.vnf = vnf;
     }
 
     @Override
     public String toString() {
-        return "VNF{" + "id=" + id + ", name=" + name + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("VFModule{id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append(", type=").append(type);
+        sb.append(", availabilityZone=").append(availabilityZone);
+        sb.append('}');
+        return sb.toString();
     }
 
 }

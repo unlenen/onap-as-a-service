@@ -29,11 +29,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParameters;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VFModuleParameter;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VFModuleProfile;
 
 /**
  *
@@ -42,12 +45,12 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParam
 @RestController
 
 public class RuntimeService {
-    
+
     @Autowired
     OnapAdaptor adaptor;
-    
+
     Logger log = LoggerFactory.getLogger(RuntimeService.class);
-    
+
     @GetMapping(path = "/runtime/service-instances/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getServiceInstances(@PathVariable(required = true) String customerId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
@@ -56,7 +59,7 @@ public class RuntimeService {
         log.info("[Runtime][ServiceInstances][Get] " + parameters + " ,size:" + data.length());
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @GetMapping(path = "/runtime/service-instance/{serviceInstanceId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getServiceInstanceDetails(@PathVariable(required = true) String serviceInstanceId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
@@ -65,7 +68,7 @@ public class RuntimeService {
         log.info("[Runtime][ServiceInstanceDetail][Get] service-instance-id:" + serviceInstanceId + " , response:" + data.toString());
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @PutMapping(path = "/runtime/service-instance/{serviceInstanceName}/{serviceModelInvariantUUID}/{serviceModelUUID}/{serviceName}/{owningId}/{owningName}/{customerId}/{projectName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createServiceInstance(@PathVariable String serviceInstanceName,
             @PathVariable String serviceModelInvariantUUID,
@@ -89,14 +92,14 @@ public class RuntimeService {
         log.info("[Runtime][ServiceInstance][Create] " + parameters + " , response:" + data.toString());
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @GetMapping(path = "/runtime/vnfs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVNFs() throws IOException {
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VNFS);
         log.info("[Runtime][Vnfs][Get] size: " + adaptor.getResponseSize(data, "generic-vnf"));
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @GetMapping(path = "/runtime/action/status", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getActionStatus(@RequestParam("url") String url) {
         Map<String, String> parameters = new HashMap<>();
@@ -112,7 +115,7 @@ public class RuntimeService {
         log.info("[Runtime][Action][Status] " + parameters + ", response:" + requestStatus);
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @PutMapping(path = "/runtime/vnf/{vnfName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createVNF(@PathVariable String vnfName,
             @RequestParam(name = "serviceInstanceId") String serviceInstanceId,
@@ -137,7 +140,7 @@ public class RuntimeService {
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID.name(), serviceInvariantUUID);
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UUID.name(), serviceUUID);
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
-        
+
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
         parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
@@ -147,12 +150,12 @@ public class RuntimeService {
         parameters.put(OnapRequestParameters.DESIGN_VF_UUID.name(), vfUUID);
         parameters.put(OnapRequestParameters.BUSINESS_LINE_OF_BUSINESS.name(), lineOfBusiness);
         parameters.put(OnapRequestParameters.BUSINESS_PLATFORM_NAME.name(), platformName);
-        
+
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VNF_CREATE, parameters);
         log.info("[Runtime][VNF][Create] " + parameters + " , response:" + data.toString());
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @GetMapping(path = "/runtime/vnf/{vnfId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVNFDetail(@PathVariable(required = true) String vnfId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
@@ -161,7 +164,7 @@ public class RuntimeService {
         log.info("[Runtime][VnfDetail][Get] vnfId:" + vnfId + " , response: " + data);
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @GetMapping(path = "/runtime/vnf/{serviceUniqueId}/vnfName", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVNFDetailByService(
             @PathVariable(required = true) String serviceUniqueId,
@@ -170,7 +173,7 @@ public class RuntimeService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.RUNTIME_VNF_NAME.name(), vnfName);
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UNIQUE_ID.name(), serviceUniqueId);
-        
+
         String filter = "";
         if (vnfName != null) {
             filter = "&vnf-name=" + vnfName;
@@ -181,12 +184,12 @@ public class RuntimeService {
         if (!"".equals(filter)) {
             parameters.put(OnapRequestParameters.REQUEST_PARAMETERS.name(), filter);
         }
-        
+
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VNFS_DETAIL_BY_SERVICE, parameters);
         log.info("[Runtime][VnfDetailByService][Get] " + parameters + " , response: " + adaptor.getResponseSize(data, "generic-vnf"));
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @GetMapping(path = "/runtime/vf-modules/{vnfId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVFModules(@PathVariable(required = true) String vnfId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
@@ -195,7 +198,79 @@ public class RuntimeService {
         log.info("[Runtime][VFModules][Get] vnfId:" + vnfId + " , size: " + adaptor.getResponseSize(data, "vf-module"));
         return ResponseEntity.ok(data.toString());
     }
-    
+
+    @PutMapping(path = "/runtime/vf-module/{vnfName}/{vnfType}/{vfModuleName}/{vfModuleType}/{availabilityZone}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity preloadVFModule(
+            @PathVariable(required = true) String vnfName,
+            @PathVariable(required = true) String vnfType,
+            @PathVariable(required = true) String vfModuleName,
+            @PathVariable(required = true) String vfModuleType,
+            @PathVariable(required = true) String availabilityZone,
+            @RequestBody VFModuleProfile vFModuleProfile) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.RUNTIME_VNF_NAME.name(), vnfName);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_NAME.name(), vnfType);
+        parameters.put(OnapRequestParameters.RUNTIME_VFMODULE_NAME.name(), vfModuleName);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_TYPE.name(), vfModuleType);
+        parameters.put(OnapRequestParameters.CLOUD_AVAILABILITY_ZONE.name(), availabilityZone);
+        JSONArray preloadParameters = new JSONArray();
+        for (VFModuleParameter parameter : vFModuleProfile.getParameters()) {
+            JSONObject obj = new JSONObject();
+            obj.put("name", parameter.getName());
+            obj.put("value", parameter.getValue());
+            preloadParameters.put(obj);
+        }
+        parameters.put(OnapRequestParameters.RUNTIME_VFMODULE_PARAMS.name(), preloadParameters.toString());
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VFMODULE_PRELOAD, parameters);
+        log.info("[Runtime][VFModule][Preload] " + parameters + " , response:" + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/runtime/vfModule/{vnfId}/{vfModuleName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createVfModule(
+            @PathVariable String vnfId,
+            @PathVariable String vfModuleName,
+            @RequestParam(name = "serviceInstanceId") String serviceInstanceId,
+            @RequestParam(name = "serviceName") String serviceName,
+            @RequestParam(name = "serviceInvariantUUID") String serviceInvariantUUID,
+            @RequestParam(name = "serviceUUID") String serviceUUID,
+            @RequestParam(name = "cloudOwner") String cloudOwner,
+            @RequestParam(name = "cloudRegion") String cloudRegion,
+            @RequestParam(name = "tenantId") String tenantId,
+            @RequestParam(name = "vfName") String vfName,
+            @RequestParam(name = "vfModelUUID") String vfModelUUID,
+            @RequestParam(name = "vfModelType") String vfModelType,
+            @RequestParam(name = "vfModelName") String vfModelName,
+            @RequestParam(name = "vfModelInvariantId") String vfModelInvariantId,
+            @RequestParam(name = "vfUUID") String vfUUID,
+            @RequestParam(name = "vfModelCustomizationId") String vfModelCustomizationId
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.RUNTIME_VNF_ID.name(), vnfId);
+        parameters.put(OnapRequestParameters.RUNTIME_VFMODULE_NAME.name(), vfModuleName);
+
+        parameters.put(OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID.name(), serviceInstanceId);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME.name(), serviceName);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID.name(), serviceInvariantUUID);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UUID.name(), serviceUUID);
+
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
+        parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
+
+        parameters.put(OnapRequestParameters.DESIGN_VF_NAME.name(), vfName);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_UUID.name(), vfModelUUID);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_TYPE.name(), vfModelType);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_NAME.name(), vfModelName);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_InvariantId.name(), vfModelInvariantId);
+        parameters.put(OnapRequestParameters.DESIGN_VF_UUID.name(), vfUUID);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_CUSTOMIZATION_ID.name(), vfModelCustomizationId);
+
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VFMODULE_CREATE, parameters);
+        log.info("[Runtime][VFModule][Create] " + parameters + " , response:" + data.toString());
+        return ResponseEntity.ok(data.toString());
+    }
+
     @GetMapping(path = "/runtime/vf-module/{vnfId}/{vfModuleId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVFModuleDetail(@PathVariable(required = true) String vnfId, @PathVariable String vfModuleId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
@@ -205,17 +280,17 @@ public class RuntimeService {
         log.info("[Runtime][VFModuleDetail][Get] vnfId:" + vnfId + ",vfModuleId:" + vfModuleId + " , response:" + data.toString());
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @GetMapping(path = "/runtime/vf-module-properties/{vfModuleId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVFModuleInstantiationDetail(@PathVariable(required = true) String vfModuleId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
-        
+
         parameters.put(OnapRequestParameters.RUNTIME_VF_MODULE_ID.name(), vfModuleId);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VFMODULE_INSTANTIATE_DETAIL, parameters);
         log.info("[Runtime][VFModuleDetail][Get] vfModuleId:" + vfModuleId + " , response:" + data.toString());
         return ResponseEntity.ok(data.toString());
     }
-    
+
     @GetMapping(path = "/runtime/vf-module-topology/{serviceInstanceId}/{vnfId}/{vfModuleId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVFModuleTopology(@PathVariable(required = true) String serviceInstanceId, @PathVariable(required = true) String vnfId, @PathVariable(required = true) String vfModuleId) throws IOException {
         Map<String, String> parameters = new HashMap<>();
@@ -226,5 +301,5 @@ public class RuntimeService {
         log.info("[Runtime][VFModuleDetail][Get] service-instance-id:" + serviceInstanceId + ", vnfId:" + vnfId + " , vfModuleId:" + vfModuleId + " , response:" + data.toString());
         return ResponseEntity.ok(data.toString());
     }
-    
+
 }

@@ -82,7 +82,41 @@ service:
     description: ArgelaApp2
     vsp:
       name: ArgelaApp2
+  serviceInstances:
+  - name: ArgelaAppService_Istanbul_Instance_Test1
+    customer:
+      id: hilalalsac
+    owningEntity:
+      id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
+      name: ArgelaOwningEntity3
+    project: Argela_Ist_Nfvlab_Onap_Demo1
+    vnfs:
+    - name: ArgelaAppService_Istanbul_Vnf_Test1
+      lineOfBusiness: NfvDemo
+      platform: Argela_Ist_Nfvlab_OS1
+      tenant:
+        id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+      vf: 
+        name: ArgelaApp1
+      vfModules:
+      - name: ArgelaAppService_Istanbul_VfModule_App1_Test1
+        availabilityZone: nova
+        profile:
+          name: ArgelaApp1Profile
       
+    - name: ArgelaAppService_Istanbul_Vnf_Test2
+      lineOfBusiness: NfvDemo
+      platform: Argela_Ist_Nfvlab_OS1
+      tenant:
+        id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+      vf: 
+        name: ArgelaApp2
+      vfModules:
+      - name: ArgelaAppService_Istanbul_VfModule_App2_Test1
+        availabilityZone: nova
+        profile:
+          name: ArgelaApp2Profile
+          
 cloudRegions:
 - cloudOwner: CloudOwner
   complexName: ArgelaIstKollaOS1
@@ -92,6 +126,36 @@ cloudRegions:
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
     name: onap_project
+    
+profiles:
+- name: ArgelaApp1Profile
+  parameters:
+  - name: vnf_image
+    value: ubuntu20.04
+  - name: vnf_flavor
+    value: m1.medium
+  - name: vnf_network_name
+    value: ONAP_VNF_PRIVATE_NET
+  - name: vnf_name
+    value: ArgelaAppService_Istanbul_Vnf_Test1
+  - name: dcae_collector_ip
+    value: 192.168.135.171
+  - name: dcae_collector_port
+    value: 30417
+- name: ArgelaApp2Profile
+  parameters:
+  - name: vnf_image
+    value: ubuntu20.04
+  - name: vnf_flavor
+    value: m1.medium
+  - name: vnf_network_name
+    value: ONAP_VNF_PRIVATE_NET
+  - name: vnf_name
+    value: ArgelaAppService_Istanbul_Vnf_Test2
+  - name: dcae_collector_ip
+    value: 192.168.135.171
+  - name: dcae_collector_port
+    value: 30417
 ```  
 
 ### Scenario Load Swagger Example
@@ -126,8 +190,12 @@ cloudRegions:
 - Subscribe service to AAI  if it is not exists
 - Subscribe service to all customers if it is not exists
 - Subscribe tenants to service and customers
-
-
+#### ServiceInstance
+- Create or Use Existing Service Instance belong to customer
+#### VNF
+- Create or Use Existing VNF in Service Instace belong to customer
+#### VFModule
+- Create or Use Existing VfModule
 
 # REST APIs
 ## CLOUD

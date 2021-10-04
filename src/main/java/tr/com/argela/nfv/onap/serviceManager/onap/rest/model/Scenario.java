@@ -29,9 +29,12 @@ public class Scenario {
     Vendor vendor;
     Service service;
     List<CloudRegion> cloudRegions;
+    List<VFModuleProfile> profiles;
 
     @JsonIgnore
     Map<String, Tenant> tenantMapById = new HashMap();
+    @JsonIgnore
+    Map<String, VFModuleProfile> profileMapByName = new HashMap();
 
     public Vendor getVendor() {
         return vendor;
@@ -57,17 +60,39 @@ public class Scenario {
         this.cloudRegions = cloudRegions;
     }
 
+    public List<VFModuleProfile> getProfiles() {
+        return profiles;
+    }
+
+    public void setProfiles(List<VFModuleProfile> profiles) {
+        this.profiles = profiles;
+    }
+
     public void mapTenants(Scenario scenario) {
-        for (CloudRegion cloudRegion : scenario.getCloudRegions()) {
-            for (Tenant tenant : cloudRegion.getTenants()) {
-                tenant.setCloudRegion(cloudRegion);
-                tenantMapById.put(tenant.getId(), tenant);
+        if (scenario.getCloudRegions() != null) {
+            for (CloudRegion cloudRegion : scenario.getCloudRegions()) {
+                for (Tenant tenant : cloudRegion.getTenants()) {
+                    tenant.setCloudRegion(cloudRegion);
+                    tenantMapById.put(tenant.getId(), tenant);
+                }
+            }
+        }
+    }
+
+    public void mapProfiles(Scenario scenario) {
+        if (scenario.getProfileMapByName() != null) {
+            for (VFModuleProfile vfmp : scenario.getProfiles()) {
+                profileMapByName.put(vfmp.getName(), vfmp);
             }
         }
     }
 
     public Map<String, Tenant> getTenantMapById() {
         return tenantMapById;
+    }
+
+    public Map<String, VFModuleProfile> getProfileMapByName() {
+        return profileMapByName;
     }
 
 }

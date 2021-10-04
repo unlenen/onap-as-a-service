@@ -86,7 +86,7 @@ public class ScenarioService {
     }
 
     private void runScenario(Scenario scenario) throws Exception {
-
+        scenario.mapProfiles(scenario);
         scenario.getService().setScenario(scenario);
         vendorScenario.processVendor(scenario.getVendor());
         vspScenario.processVSPs(scenario.getVendor());

@@ -28,7 +28,7 @@ import tr.com.argela.nfv.onap.serviceManager.onap.rest.RuntimeService;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Service;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.ServiceInstance;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Tenant;
-import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VF;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VFModule;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VNF;
 
 /**
@@ -114,10 +114,14 @@ public class RuntimeScenario extends CommonScenario {
     private void processVNFs(ServiceInstance serviceInstance) throws Exception {
         for (VNF vnf : serviceInstance.getVnfs()) {
             vnf.setServiceInstance(serviceInstance);
+            vnf.setVf(vnf.getServiceInstance().getService().getVFByName(vnf.getVf().getName()));
+            Tenant tenant = vnf.getServiceInstance().getService().getScenario().getTenantMapById().get(vnf.getTenant().getId());
+            vnf.setTenant(tenant);
             if (!vnfExists(vnf)) {
                 createVNF(vnf);
                 waitForComplete(vnf.getReqUrl(), vnf);
             }
+            processVFModules(vnf);
         }
     }
 
@@ -135,7 +139,6 @@ public class RuntimeScenario extends CommonScenario {
             vnf.setId(vnfObj.get("vnf-id"));
             vnf.setType(vnfObj.get("vnf-type"));
             vnf.setType(vnfObj.get("vnf-type"));
-            vnf.getVf().setModelInvariantUUID(vnfObj.get("model-invariant-id"));
             vnf.getVf().setModelCustomizationUUID(vnfObj.get("model-customization-id"));
 
             log.info("[Scenario][Runtime][VNF][Exists] " + vnf);
@@ -145,12 +148,6 @@ public class RuntimeScenario extends CommonScenario {
     }
 
     private void createVNF(VNF vnf) throws Exception {
-
-        Tenant tenant = vnf.getServiceInstance().getService().getScenario().getTenantMapById().get(vnf.getTenant().getId());
-        vnf.setTenant(tenant);
-
-        VF vf = vnf.getServiceInstance().getService().getVFByName(vnf.getVf().getName());
-        vnf.setVf(vf);
 
         JSONObject root = new JSONObject(readResponse(runtimeService.createVNF(vnf.getName(),
                 vnf.getServiceInstance().getId(),
@@ -173,6 +170,77 @@ public class RuntimeScenario extends CommonScenario {
         vnf.setReqId(requestReferences.getString("requestId"));
         vnf.setReqUrl(requestReferences.getString("requestSelfLink"));
         log.info("[Scenario][Runtime][VNF][New] " + vnf);
+    }
+
+    private void processVFModules(VNF vnf) throws Exception {
+        if (vnf.getVfModules() != null) {
+            for (VFModule vfModule : vnf.getVfModules()) {
+                vfModule.setVnf(vnf);
+                vfModule.setProfile(vnf.getServiceInstance().getService().getScenario().getProfileMapByName().get(vfModule.getProfile().getName()));
+                if (!vfModuleExists(vfModule)) {
+                    preloadVFModule(vfModule);
+                    createVFModule(vfModule);
+                    waitForComplete(vfModule.getReqUrl(), vfModule);
+                }
+            }
+        } else {
+            log.info("[Scenario][Runtime][VNF][No VF-Module] " + vnf);
+        }
+    }
+
+    private boolean vfModuleExists(VFModule vfModule) throws Exception {
+        JSONObject root = new JSONObject(readResponseValidateOption(runtimeService.getVFModules(vfModule.getVnf().getId()), false));
+        if (root.has("error")) {
+            return false;
+        }
+        log.info("[Scenario][Runtime][VF-Module][Exists] " + vfModule);
+        return true;
+    }
+
+    private void preloadVFModule(VFModule vfModule) throws Exception {
+
+        JSONObject root = new JSONObject(readResponse(runtimeService.preloadVFModule(
+                vfModule.getVnf().getName(),
+                vfModule.getVnf().getVf().getModelName(),
+                vfModule.getName(),
+                vfModule.getVnf().getVf().getModelType(),
+                vfModule.getAvailabilityZone(),
+                vfModule.getProfile()
+        )));
+        String preloadResult = "fail";
+        if (root.has("output")) {
+            preloadResult = root.getJSONObject("output").getString("response-message");
+
+        }
+        log.info("[Scenario][Runtime][VF-Module][Preload] status:" + preloadResult + " " + vfModule);
+    }
+
+    private void createVFModule(VFModule vfModule) throws Exception {
+        VNF vnf = vfModule.getVnf();
+        JSONObject root = new JSONObject(readResponse(runtimeService.createVfModule(
+                vfModule.getVnf().getId(),
+                vfModule.getName(),
+                vnf.getServiceInstance().getId(),
+                vnf.getServiceInstance().getService().getName(),
+                vnf.getServiceInstance().getService().getInvariantUUID(),
+                vnf.getServiceInstance().getService().getUuid(),
+                vnf.getTenant().getCloudRegion().getCloudOwner(),
+                vnf.getTenant().getCloudRegion().getName(),
+                vnf.getTenant().getId(),
+                vnf.getVf().getName(),
+                vnf.getVf().getModelUUID(),
+                vnf.getVf().getModelType(),
+                vnf.getVf().getModelName(),
+                vnf.getVf().getModelInvariantUUID(),
+                vnf.getVf().getUuid(),
+                vnf.getVf().getModelCustomizationUUID()
+        )));
+
+        JSONObject requestReferences = root.getJSONObject("requestReferences");
+        vfModule.setId(requestReferences.getString("instanceId"));
+        vfModule.setReqId(requestReferences.getString("requestId"));
+        vfModule.setReqUrl(requestReferences.getString("requestSelfLink"));
+        log.info("[Scenario][Runtime][VFModule][New] " + vfModule);
     }
 
 }
