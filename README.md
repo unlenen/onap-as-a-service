@@ -52,16 +52,16 @@ vendor:
   name: Argela
   description: Argela
   vsps:
-  - name: ArgelaApp1
-    description: ArgelaApp1
-    file: d:\\ArgelaHelloWorld.zip
-  - name: ArgelaApp2
-    description: ArgelaApp2
-    file: d:\\ArgelaHelloWorld.zip
+  - name: Nginx
+    description: Nginx Server
+    file: d:\\ArgelaNginx.zip
+  - name: MysqlServer 
+    description: Mysql Server 
+    file: d:\\ArgelaMysqlServer.zip
     
 service:
-  name: ArgelaAppService
-  description: ArgelaApp1Service
+  name: ArgelaXService
+  description: ArgelaXService
   customers:
   - id: nebiunlenen
     name: Nebi Volkan Unlenen
@@ -74,48 +74,48 @@ service:
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
   vfs:
-  - name: ArgelaApp1
-    description: ArgelaApp1
+  - name: Nginx
+    description: Nginx
     vsp:
-      name: ArgelaApp1
-  - name: ArgelaApp2
-    description: ArgelaApp2
+      name: Nginx
+  - name: MysqlServer
+    description: MysqlServer
     vsp:
-      name: ArgelaApp2
+      name: MysqlServer
   serviceInstances:
-  - name: ArgelaAppService_Istanbul_Instance_Test1
+  - name: ArgelaXService_Instance_Nebi_Unlenen
     customer:
-      id: hilalalsac
+      id: nebiunlenen
     owningEntity:
       id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
       name: ArgelaOwningEntity3
     project: Argela_Ist_Nfvlab_Onap_Demo1
     vnfs:
-    - name: ArgelaAppService_Istanbul_Vnf_Test1
+    - name: ArgelaXService_Instance_Nebi_Unlenen_Istanbul_Nginx_Vnf
       lineOfBusiness: NfvDemo
       platform: Argela_Ist_Nfvlab_OS1
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
-        name: ArgelaApp1
+        name: Nginx
       vfModules:
-      - name: ArgelaAppService_Istanbul_VfModule_App1_Test1
+      - name: ArgelaXService_Instance_Nebi_Unlenen_Istanbul_Nginx_VfModule
         availabilityZone: nova
         profile:
-          name: ArgelaApp1Profile
+          name: NginxProfile
       
-    - name: ArgelaAppService_Istanbul_Vnf_Test2
+    - name: ArgelaXService_Instance_Nebi_Unlenen_Istanbul_Mysql_Vnf
       lineOfBusiness: NfvDemo
       platform: Argela_Ist_Nfvlab_OS1
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
-        name: ArgelaApp2
+        name: MysqlServer
       vfModules:
-      - name: ArgelaAppService_Istanbul_VfModule_App2_Test1
+      - name: ArgelaXService_Instance_Nebi_Unlenen_Istanbul_Mysql_VfModule
         availabilityZone: nova
         profile:
-          name: ArgelaApp2Profile
+          name: MysqlServerProfile
           
 cloudRegions:
 - cloudOwner: CloudOwner
@@ -128,7 +128,7 @@ cloudRegions:
     name: onap_project
     
 profiles:
-- name: ArgelaApp1Profile
+- name: NginxProfile
   parameters:
   - name: vnf_image
     value: ubuntu20.04
@@ -142,7 +142,7 @@ profiles:
     value: 192.168.135.171
   - name: dcae_collector_port
     value: 30417
-- name: ArgelaApp2Profile
+- name: MysqlServerProfile
   parameters:
   - name: vnf_image
     value: ubuntu20.04

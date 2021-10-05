@@ -99,7 +99,7 @@ public class SubscriptionScenario extends CommonScenario {
         if (subscription.has("service-id")) {
             log.info("[Scenario][Subscription][Service][Exists] " + service);
         } else {
-            readResponse(businessService.createServiceSubscription(service.getUniqueId(), service.getName()));
+            readResponseValidateOption(businessService.createServiceSubscription(service.getUniqueId(), service.getName()),false);
             log.info("[Scenario][Subscription][Service][Create] " + service);
         }
     }

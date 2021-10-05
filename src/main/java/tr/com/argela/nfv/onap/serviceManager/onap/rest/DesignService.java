@@ -306,6 +306,24 @@ public class DesignService {
         return ResponseEntity.ok(data.toString());
     }
 
+    @GetMapping(path = "/design/service-model-distribution/{serviceUUID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getServiceModelDistributions(@PathVariable String serviceUUID) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UUID.name(), serviceUUID);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_SERVICE_MODEL_DISTRIBUTE_LIST, parameters);
+        log.info("[Design][ServiceModel][DistributionList] " + parameters + " , size:" + adaptor.getResponseSize(data, "distributionStatusOfServiceList"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/design/service-model-distribution-detail/{distributionId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getServiceModelDistributionDetail(@PathVariable String distributionId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_DISTRIBUTION_ID.name(), distributionId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_SERVICE_MODEL_DISTRIBUTE_DETAIL, parameters);
+        log.info("[Design][ServiceModel][DistributionDetail] " + parameters + " , size:"+adaptor.getResponseSize(data, "distributionStatusList"));
+        return ResponseEntity.ok(data.toString());
+    }
+
     @GetMapping(path = "/design/service-model/{serviceUniqueId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getServiceModelDetail(@PathVariable String serviceUniqueId, @RequestParam(name = "filter", required = false) String filter) {
         Map<String, String> parameters = new HashMap<>();

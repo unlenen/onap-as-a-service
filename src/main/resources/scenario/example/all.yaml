@@ -1,17 +1,36 @@
+#########################################################################
+#                                                                       #
+#       ARGELA TECHNOLOGIES                                             #
+#       ONAP AS A SERVICE DEMO DATA                                     #
+#       App1 : Nginx                                                    #
+#       App2 : Mysql                                                    #
+#                                                                       #
+#       For using in your home openstack please provide                 #
+#       x) Nginx heat template                                          #
+#       x) Mysql heat template                                          #
+#       x) Openstack cluster with version > pike                        #
+#       x) cloudRegions and tenantId configuration must be change to    #
+#          your own openstack information                               #
+#       x) Profile must be change due to your heat env                  #
+#########################################################################
+
+# Vendor and App Definitions
 vendor:
   name: Argela
   description: Argela
   vsps:
-  - name: ArgelaApp1
-    description: ArgelaApp1
-    file: d:\\ArgelaHelloWorld.zip
-  - name: ArgelaApp2
-    description: ArgelaApp2
-    file: d:\\ArgelaHelloWorld.zip
+  - name: Nginx
+    description: Nginx Server
+    file: d:\\ArgelaNginx.zip
+  - name: MysqlServer 
+    description: Mysql Server 
+    file: d:\\ArgelaMysqlServer.zip
     
+# Service Definitions
 service:
-  name: ArgelaAppService
-  description: ArgelaApp1Service
+  name: ArgelaWebService
+  description: ArgelaWebService
+  # Customers
   customers:
   - id: nebiunlenen
     name: Nebi Volkan Unlenen
@@ -21,52 +40,62 @@ service:
     name: Feyza Hilal Alsac
   - id: erolozcan
     name: Erol Ozcan
+    
+  # Related Tenants
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+  
+  # Service Components
   vfs:
-  - name: ArgelaApp1
-    description: ArgelaApp1
+  - name: Nginx
+    description: Nginx
     vsp:
-      name: ArgelaApp1
-  - name: ArgelaApp2
-    description: ArgelaApp2
+      name: Nginx
+  - name: MysqlServer
+    description: MysqlServer
     vsp:
-      name: ArgelaApp2
+      name: MysqlServer
+  
+  # Service Instances
   serviceInstances:
-  - name: ArgelaAppService_Istanbul_Instance_Test1
+  - name: ArgelaWebService_Instance_Hilal_Alsac
     customer:
       id: hilalalsac
     owningEntity:
       id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
       name: ArgelaOwningEntity3
     project: Argela_Ist_Nfvlab_Onap_Demo1
+    # Vnfs
     vnfs:
-    - name: ArgelaAppService_Istanbul_Vnf_Test1
+    - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Nginx_Vnf
       lineOfBusiness: NfvDemo
       platform: Argela_Ist_Nfvlab_OS1
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
-        name: ArgelaApp1
+        name: Nginx  
+      # Vnf modules
       vfModules:
-      - name: ArgelaAppService_Istanbul_VfModule_App1_Test1
+      - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Nginx_VfModule
         availabilityZone: nova
         profile:
-          name: ArgelaApp1Profile
-      
-    - name: ArgelaAppService_Istanbul_Vnf_Test2
+          name: NginxProfile
+    # Vnfs  
+    - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Mysql_Vnf
       lineOfBusiness: NfvDemo
       platform: Argela_Ist_Nfvlab_OS1
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
-        name: ArgelaApp2
+        name: MysqlServer
+      # Vnf modules
       vfModules:
-      - name: ArgelaAppService_Istanbul_VfModule_App2_Test1
+      - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Mysql_VfModule
         availabilityZone: nova
         profile:
-          name: ArgelaApp2Profile
+          name: MysqlServerProfile
           
+         
 cloudRegions:
 - cloudOwner: CloudOwner
   complexName: ArgelaIstKollaOS1
@@ -78,7 +107,7 @@ cloudRegions:
     name: onap_project
     
 profiles:
-- name: ArgelaApp1Profile
+- name: NginxProfile
   parameters:
   - name: vnf_image
     value: ubuntu20.04
@@ -92,7 +121,7 @@ profiles:
     value: 192.168.135.171
   - name: dcae_collector_port
     value: 30417
-- name: ArgelaApp2Profile
+- name: MysqlServerProfile
   parameters:
   - name: vnf_image
     value: ubuntu20.04

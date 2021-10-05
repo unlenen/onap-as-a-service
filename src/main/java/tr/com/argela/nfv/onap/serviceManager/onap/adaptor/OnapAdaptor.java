@@ -62,7 +62,7 @@ public class OnapAdaptor {
     }
 
     private Object handleError(OnapRequest request, Throwable ex, String url, Map<String, String> parameters) throws JSONException {
-        log.error("[Error][CallingOnapAPI] " + request + " , msg : " + ex.getMessage(), ex);
+
         String responseCode = "<NONE>";
         JSONObject detailObj = new JSONObject();
         if (ex instanceof OnapRequestFailedException) {
@@ -92,6 +92,9 @@ public class OnapAdaptor {
             reqParameters.put(key, parameters.get(key));
         }
 
+        if (!"404".equals(responseCode)) {
+            log.error("[Error][CallingOnapAPI] " + request + " , msg : " + ex.getMessage(), ex);
+        }
         switch (request.getResponseType()) {
             case JSONObject: {
                 JSONObject root = new JSONObject();

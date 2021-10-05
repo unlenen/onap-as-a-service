@@ -105,9 +105,9 @@ public class RuntimeScenario extends CommonScenario {
             }
             tryCount++;
             Thread.sleep(1000);
-            if (tryCount % 5 == 0) {
-                log.info("[Scenario][Runtime][ActionWaiting][" + currentStatus + "] url:" + reqUrl + " , data:" + obj);
-            }
+
+            log.info("[Scenario][Runtime][ActionWaiting][" + currentStatus + "] url:" + reqUrl + " , data:" + obj);
+
         }
     }
 
@@ -131,6 +131,11 @@ public class RuntimeScenario extends CommonScenario {
                 vnf.getName()),
                 false
         );
+        JSONObject root = new JSONObject(data);
+        if (!root.has("generic-vnf")) {
+            return false;
+        }
+
         Filter vnfName = Filter.filter(Criteria.where("vnf-name").eq(vnf.getName()));
         DocumentContext rootContext = JsonPath.parse(data);
         net.minidev.json.JSONArray foundVnf = rootContext.read("$['generic-vnf'][?]", vnfName);

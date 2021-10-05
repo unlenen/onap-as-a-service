@@ -19,13 +19,16 @@ import com.jayway.jsonpath.Criteria;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.ServiceDistributionFailedException;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.DesignService;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Service;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VF;
@@ -44,6 +47,8 @@ public class ServiceModelScenario extends CommonScenario {
     @Autowired
     DesignService designService;
 
+    String[] checkObjs = {"SO-COpenSource-Env11", "aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "multicloud-k8s-id", "cds", "policy-id"};
+
     public void processService(Service service) throws Exception {
         if (serviceExists(service)) {
             readServiceUniqueId(service);
@@ -61,9 +66,9 @@ public class ServiceModelScenario extends CommonScenario {
 
         if (service.getDistributionStatus() == DistributionStatus.DISTRIBUTION_NOT_APPROVED) {
             distributeService(service);
-        } else {
-            loadVFsModuleInfo(service);
         }
+        checkDistribution(service);
+        loadVFsModuleInfo(service);
     }
 
     public void addVfsToService(Service service) throws Exception {
@@ -178,6 +183,69 @@ public class ServiceModelScenario extends CommonScenario {
                 vf.setModelCustomizationUUID(groupInstance.getString("customizationUUID"));
                 log.info("[Scenario][Service][LoadVfInformation][VFModelUpdate] service:" + service.getName() + " ,  " + vf);
             }
+        }
+    }
+
+    private void checkDistribution(Service service) throws Exception {
+
+        try {
+            JSONObject root = new JSONObject(readResponse(designService.getServiceModelDistributions(service.getUuid())));
+            JSONArray distributionDetailArray = root.getJSONArray("distributionStatusOfServiceList");
+            for (int i = 0; i < distributionDetailArray.length(); i++) {
+                JSONObject distibutionDetail = distributionDetailArray.getJSONObject(i);
+                String distributionId = distibutionDetail.getString("distributionID");
+                controlDistribution(service, distributionId);
+                break;
+            }
+        } catch (ServiceDistributionFailedException ex) {
+            log.error("[Scenario][Service][Distribute][Failed] " + ex.getService() + ", component:" + ex.getComponent() + " , status:" + ex.getStatus() + ", distributionId:" + ex.getDistributionId());
+            distributeService(service);
+            checkDistribution(service);
+        }
+    }
+
+    private boolean validateDistribution(int tryNumber, Service service, String distributionId) throws Exception {
+        JSONObject root = new JSONObject(readResponse(designService.getServiceModelDistributionDetail(distributionId)));
+        JSONArray distributionStatusList = root.getJSONArray("distributionStatusList");
+
+        Map<String, Boolean> checkList = new HashMap<>();
+
+        for (String component : checkObjs) {
+            checkList.put(component, Boolean.FALSE);
+        }
+
+        for (int i = 0; i < distributionStatusList.length(); i++) {
+            JSONObject distributionStatus = distributionStatusList.getJSONObject(i);
+            String component = distributionStatus.getString("omfComponentID");
+            String status = distributionStatus.getString("status");
+            if (checkList.get(component) != null && "DOWNLOAD_OK".equals(status)) {
+                checkList.put(component, Boolean.TRUE);
+            }
+            if (checkList.get(component) != null && "DISTRIBUTION_COMPLETE_ERROR ".equals(status)) {
+                throw new ServiceDistributionFailedException(service, distributionId, component, status);
+            }
+
+        }
+
+        boolean totalStatus = true;
+        for (String component : checkObjs) {
+            boolean status = checkList.get(component);
+            log.info("[Scenario][Service][Distribute][Status][No:" + tryNumber + "] service:" + service.getName() + " , component : " + component + ", status: " + status);
+            if (!status) {
+                totalStatus = false;
+            }
+        }
+        return totalStatus;
+
+    }
+
+    private void controlDistribution(Service service, String distributionId) throws Exception {
+        int tryNumber = 1;
+        while (true) {
+            if (validateDistribution((tryNumber++), service, distributionId)) {
+                break;
+            }
+            Thread.sleep(5000l);
         }
     }
 

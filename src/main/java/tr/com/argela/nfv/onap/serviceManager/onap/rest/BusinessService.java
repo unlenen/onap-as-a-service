@@ -154,9 +154,9 @@ public class BusinessService {
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID.name(), serviceInvariantUUID);
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME.name(), serviceName);
 
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.AAI_SERVICE_MODEL_SUBSCRIPTION_CREATE, parameters);
+        String data = (String) adaptor.call(OnapRequest.AAI_SERVICE_MODEL_SUBSCRIPTION_CREATE, parameters);
         log.info("[Business][Service][Subscriptions] serviceInvariantUUID: " + serviceInvariantUUID + " ,serviceName:" + serviceName + ", data: " + data);
-        return ResponseEntity.ok(data.toString());
+        return ResponseEntity.ok("{]");
     }
 
     @GetMapping(path = "/business/owning-entities", produces = MediaType.APPLICATION_JSON_VALUE)
