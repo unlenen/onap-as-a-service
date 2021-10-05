@@ -178,6 +178,9 @@ profiles:
 ### Service composition at ONAP SDC after scenario executed
 ![ONAP SDC](docs/images/onap-sdc.jpg)
 
+### Openstack instance page after scenario executed
+![ONAP SDC](docs/images/instantiation.jpg)
+
 ### Actions
 
 #### Vendor

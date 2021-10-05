@@ -19,6 +19,9 @@ import com.jayway.jsonpath.Criteria;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -46,6 +49,8 @@ public class ServiceModelScenario extends CommonScenario {
 
     @Autowired
     DesignService designService;
+
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
 
     String[] checkObjs = {"SO-COpenSource-Env11", "aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "multicloud-k8s-id", "cds", "policy-id"};
 
@@ -191,16 +196,24 @@ public class ServiceModelScenario extends CommonScenario {
         try {
             JSONObject root = new JSONObject(readResponse(designService.getServiceModelDistributions(service.getUuid())));
             JSONArray distributionDetailArray = root.getJSONArray("distributionStatusOfServiceList");
+            Date biggestTime = null;
+            String latestDistributionId = null;
             for (int i = 0; i < distributionDetailArray.length(); i++) {
                 JSONObject distibutionDetail = distributionDetailArray.getJSONObject(i);
                 String distributionId = distibutionDetail.getString("distributionID");
-                controlDistribution(service, distributionId);
-                break;
+                String timestamp = distibutionDetail.getString("timestamp");
+                Date date = dateFormatter.parse(timestamp);
+                if (biggestTime == null || biggestTime.before(date)) {
+                    biggestTime = date;
+                    latestDistributionId = distributionId;
+                }
             }
+            controlDistribution(service, latestDistributionId);
         } catch (ServiceDistributionFailedException ex) {
             log.error("[Scenario][Service][Distribute][Failed] " + ex.getService() + ", component:" + ex.getComponent() + " , status:" + ex.getStatus() + ", distributionId:" + ex.getDistributionId());
-            distributeService(service);
-            checkDistribution(service);
+            //distributeService(service);
+            //checkDistribution(service);
+            throw ex;
         }
     }
 

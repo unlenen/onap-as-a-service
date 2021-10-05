@@ -92,7 +92,7 @@ public class OnapAdaptor {
             reqParameters.put(key, parameters.get(key));
         }
 
-        if (!"404".equals(responseCode)) {
+        if (!"404 NOT_FOUND".equals(responseCode)) {
             log.error("[Error][CallingOnapAPI] " + request + " , msg : " + ex.getMessage(), ex);
         }
         switch (request.getResponseType()) {
