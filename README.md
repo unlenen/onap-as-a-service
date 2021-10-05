@@ -48,6 +48,8 @@ Scenario Service allows to create ONAP resource automaticaly from a yaml file
 
 ### Scenario Load Example
 ```yaml
+
+# Vendor and App Definitions
 vendor:
   name: Argela
   description: Argela
@@ -59,9 +61,11 @@ vendor:
     description: Mysql Server 
     file: d:\\ArgelaMysqlServer.zip
     
+# Service Definitions
 service:
-  name: ArgelaXService
-  description: ArgelaXService
+  name: ArgelaWebService
+  description: ArgelaWebService
+  # Customers
   customers:
   - id: nebiunlenen
     name: Nebi Volkan Unlenen
@@ -71,8 +75,12 @@ service:
     name: Feyza Hilal Alsac
   - id: erolozcan
     name: Erol Ozcan
+    
+  # Related Tenants
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+  
+  # Service Components
   vfs:
   - name: Nginx
     description: Nginx
@@ -82,41 +90,47 @@ service:
     description: MysqlServer
     vsp:
       name: MysqlServer
+  
+  # Service Instances
   serviceInstances:
-  - name: ArgelaXService_Instance_Nebi_Unlenen
+  - name: ArgelaWebService_Instance_Hilal_Alsac
     customer:
-      id: nebiunlenen
+      id: hilalalsac
     owningEntity:
       id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
       name: ArgelaOwningEntity3
     project: Argela_Ist_Nfvlab_Onap_Demo1
+    # Vnfs
     vnfs:
-    - name: ArgelaXService_Instance_Nebi_Unlenen_Istanbul_Nginx_Vnf
+    - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Nginx_Vnf
       lineOfBusiness: NfvDemo
       platform: Argela_Ist_Nfvlab_OS1
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
-        name: Nginx
+        name: Nginx  
+      # Vnf modules
       vfModules:
-      - name: ArgelaXService_Instance_Nebi_Unlenen_Istanbul_Nginx_VfModule
+      - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Nginx_VfModule
         availabilityZone: nova
         profile:
           name: NginxProfile
-      
-    - name: ArgelaXService_Instance_Nebi_Unlenen_Istanbul_Mysql_Vnf
+    # Vnfs  
+    - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Mysql_Vnf
       lineOfBusiness: NfvDemo
       platform: Argela_Ist_Nfvlab_OS1
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
         name: MysqlServer
+      # Vnf modules
       vfModules:
-      - name: ArgelaXService_Instance_Nebi_Unlenen_Istanbul_Mysql_VfModule
+      - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Mysql_VfModule
         availabilityZone: nova
         profile:
           name: MysqlServerProfile
           
+         
 cloudRegions:
 - cloudOwner: CloudOwner
   complexName: ArgelaIstKollaOS1
