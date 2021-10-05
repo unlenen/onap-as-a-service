@@ -320,7 +320,7 @@ public class DesignService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_DISTRIBUTION_ID.name(), distributionId);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_SERVICE_MODEL_DISTRIBUTE_DETAIL, parameters);
-        log.info("[Design][ServiceModel][DistributionDetail] " + parameters + " , size:"+adaptor.getResponseSize(data, "distributionStatusList"));
+        log.info("[Design][ServiceModel][DistributionDetail] " + parameters + " , size:" + adaptor.getResponseSize(data, "distributionStatusList"));
         return ResponseEntity.ok(data.toString());
     }
 

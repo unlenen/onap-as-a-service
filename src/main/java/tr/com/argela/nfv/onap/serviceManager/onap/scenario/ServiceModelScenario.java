@@ -221,7 +221,7 @@ public class ServiceModelScenario extends CommonScenario {
             if (checkList.get(component) != null && "DOWNLOAD_OK".equals(status)) {
                 checkList.put(component, Boolean.TRUE);
             }
-            if (checkList.get(component) != null && "DISTRIBUTION_COMPLETE_ERROR ".equals(status)) {
+            if (checkList.get(component) != null && "DISTRIBUTION_COMPLETE_ERROR".equals(status)) {
                 throw new ServiceDistributionFailedException(service, distributionId, component, status);
             }
 

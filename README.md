@@ -95,7 +95,7 @@ service:
   serviceInstances:
   - name: ArgelaWebService_Instance_Nebi_Unlenen
     customer:
-      id: hilalalsac
+      id: nebiunlenen
     owningEntity:
       id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
       name: ArgelaOwningEntity3
