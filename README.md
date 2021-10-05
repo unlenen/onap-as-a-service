@@ -93,7 +93,7 @@ service:
   
   # Service Instances
   serviceInstances:
-  - name: ArgelaWebService_Instance_Hilal_Alsac
+  - name: ArgelaWebService_Instance_Nebi_Unlenen
     customer:
       id: hilalalsac
     owningEntity:
@@ -102,7 +102,7 @@ service:
     project: Argela_Ist_Nfvlab_Onap_Demo1
     # Vnfs
     vnfs:
-    - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Nginx_Vnf
+    - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Nginx_Vnf
       lineOfBusiness: NfvDemo
       platform: Argela_Ist_Nfvlab_OS1
       tenant:
@@ -111,12 +111,12 @@ service:
         name: Nginx  
       # Vnf modules
       vfModules:
-      - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Nginx_VfModule
+      - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Nginx_VfModule
         availabilityZone: nova
         profile:
           name: NginxProfile
     # Vnfs  
-    - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Mysql_Vnf
+    - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Mysql_Vnf
       lineOfBusiness: NfvDemo
       platform: Argela_Ist_Nfvlab_OS1
       tenant:
@@ -125,7 +125,7 @@ service:
         name: MysqlServer
       # Vnf modules
       vfModules:
-      - name: ArgelaWebService_Instance_Hilal_Alsac_Istanbul_Mysql_VfModule
+      - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Mysql_VfModule
         availabilityZone: nova
         profile:
           name: MysqlServerProfile
