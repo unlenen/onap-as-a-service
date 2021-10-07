@@ -213,6 +213,8 @@ profiles:
 - Create or Use Existing VNF in Service Instace belong to customer
 #### VFModule
 - Create or Use Existing VfModule
+#### VServer
+- Read Details of VServer ( flavor, image , name , node )
 
 # REST APIs
 ## CLOUD

@@ -16,6 +16,7 @@
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.serverInstance.Server;
 
 /**
  *
@@ -29,6 +30,7 @@ public class VFModule {
     String reqId;
     String reqUrl;
     String availabilityZone;
+    Server server;
 
     VFModuleProfile profile;
 
@@ -97,6 +99,14 @@ public class VFModule {
 
     public void setVnf(VNF vnf) {
         this.vnf = vnf;
+    }
+
+    public Server getServer() {
+        return server;
+    }
+
+    public void setServer(Server server) {
+        this.server = server;
     }
 
     @Override

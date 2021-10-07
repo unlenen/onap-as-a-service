@@ -66,9 +66,9 @@ public class CloudService {
             @PathVariable String osDomain, @PathVariable String osDefaultProject,
             @RequestParam(name = "keystoneURL") String osKeystoneURL, @RequestParam(name = "user") String osUser, @RequestParam(name = "password") String osPassword) throws IOException {
         Map<String, String> parameters = new HashMap<>();
-        
+
         UUID esrUUID = UUID.randomUUID();
-        
+
         parameters.put(OnapRequestParameters.CLOUD_ESR_UUID.name(), esrUUID.toString());
         parameters.put(OnapRequestParameters.CLOUD_OS_NAME.name(), name);
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
@@ -101,6 +101,39 @@ public class CloudService {
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_AVAILABILITY_ZONE, parameters);
         log.info("[Cloud][AvailabilityZone][Get] size:" + adaptor.getResponseSize(data, "availability-zone"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/cloud/vserver/{cloudOwner}/{regionName}/{tenantId}/{vServerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getVServerDetail(
+            @PathVariable(required = true) String cloudOwner,
+            @PathVariable(required = true) String regionName,
+            @PathVariable(required = true) String tenantId,
+            @PathVariable(required = true) String vServerId
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), regionName);
+        parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
+        parameters.put(OnapRequestParameters.CLOUD_VSERVER_ID.name(), vServerId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_VSERVER_DETAIL, parameters);
+        log.info("[Cloud][VServer][Get] " + parameters);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/cloud/flavor/{cloudOwner}/{regionName}/{flavorId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getFlavorDetail(
+            @PathVariable(required = true) String cloudOwner,
+            @PathVariable(required = true) String regionName,
+            @PathVariable(required = true) String flavorId
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), regionName);
+        parameters.put(OnapRequestParameters.CLOUD_OS_FLAVOR_ID.name(), flavorId);
+
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_VSERVER_FLAVOR_DETAIL, parameters);
+        log.info("[Cloud][Flavor][Get] " + parameters);
         return ResponseEntity.ok(data.toString());
     }
 }

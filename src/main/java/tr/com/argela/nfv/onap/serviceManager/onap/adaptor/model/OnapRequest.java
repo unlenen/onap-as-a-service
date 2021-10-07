@@ -30,6 +30,8 @@ public enum OnapRequest {
     CLOUD_COMPLEX(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/complexes", 200, HttpResponseType.JSONObject),
     CLOUD_TENANT(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants", 200, HttpResponseType.JSONObject),
     CLOUD_AVAILABILITY_ZONE(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/availability-zones", 200, HttpResponseType.JSONObject),
+    CLOUD_VSERVER_DETAIL(HttpCallType.GET, OnapModule.AAI, "/aai/v16/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants/tenant/${" + OnapRequestParameters.CLOUD_TENANT_ID + "}/vservers/vserver/${" + OnapRequestParameters.CLOUD_VSERVER_ID + "}", 200, HttpResponseType.JSONObject),
+    CLOUD_VSERVER_FLAVOR_DETAIL(HttpCallType.GET, OnapModule.AAI,"/aai/v16/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/flavors/flavor/${" + OnapRequestParameters.CLOUD_OS_FLAVOR_ID + "}", 200, HttpResponseType.JSONObject),
     /*BUSINESS*/
     BUSINESS_CUSTOMERS(HttpCallType.GET, OnapModule.AAI, "/business/customers", 200, HttpResponseType.JSONObject),
     BUSINESS_CUSTOMER(HttpCallType.GET, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}", 200, HttpResponseType.JSONObject),
@@ -88,7 +90,10 @@ public enum OnapRequest {
     RUNTIME_VFMODULE_PRELOAD(HttpCallType.POST, OnapModule.SDNC, "/restconf/operations/GENERIC-RESOURCE-API:preload-vf-module-topology-operation", 200, HttpResponseType.JSONObject, "payloads/runtime/vfModule/preload.json", "application/json"),
     RUNTIME_VFMODULE_DETAIL(HttpCallType.GET, OnapModule.AAI, "/network/generic-vnfs/generic-vnf/${" + OnapRequestParameters.RUNTIME_VNF_ID + "}/vf-modules/vf-module/${" + OnapRequestParameters.RUNTIME_VF_MODULE_ID + "}", 200, HttpResponseType.JSONObject),
     RUNTIME_VFMODULE_INSTANTIATE_DETAIL(HttpCallType.GET, OnapModule.SO, "/infra/orchestrationRequests/v7?filter=vfModuleInstanceId:EQUALS:${" + OnapRequestParameters.RUNTIME_VF_MODULE_ID + "}", 200, HttpResponseType.JSONObject),
-    RUNTIME_VFMODULE_TOPOLOGY(HttpCallType.GET, OnapModule.SDNC, "/restconf/config/GENERIC-RESOURCE-API:services/service/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}/service-data/vnfs/vnf/${" + OnapRequestParameters.RUNTIME_VNF_ID + "}/vnf-data/vf-modules/vf-module/${" + OnapRequestParameters.RUNTIME_VF_MODULE_ID + "}/vf-module-data/vf-module-topology/", 200, HttpResponseType.JSONObject),;
+    RUNTIME_VFMODULE_TOPOLOGY(HttpCallType.GET, OnapModule.SDNC, "/restconf/config/GENERIC-RESOURCE-API:services/service/${" + OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID + "}/service-data/vnfs/vnf/${" + OnapRequestParameters.RUNTIME_VNF_ID + "}/vnf-data/vf-modules/vf-module/${" + OnapRequestParameters.RUNTIME_VF_MODULE_ID + "}/vf-module-data/vf-module-topology/", 200, HttpResponseType.JSONObject),
+    
+    ;
+    
 
     private OnapRequest(HttpCallType callType, OnapModule onapModule, String url, int validReturnCode, HttpResponseType responseType) {
         this.callType = callType;
