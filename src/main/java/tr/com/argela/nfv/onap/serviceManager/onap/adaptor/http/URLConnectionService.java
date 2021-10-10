@@ -15,9 +15,11 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 import javax.net.ssl.HostnameVerifier;
@@ -43,7 +45,6 @@ import org.springframework.web.client.RestTemplate;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.OnapRequestFailedException;
-import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParameters;
 
 /**
  *
@@ -130,7 +131,7 @@ public class URLConnectionService {
         return response;
     }
 
-    public ResponseEntity postFile(OnapRequest onapRequest, String url, String paramName, String filePath) {
+    public ResponseEntity postFile(OnapRequest onapRequest, String url, Map<String, Object> fileMapByParamName) {
         HttpHeaders headers = new HttpHeaders();
 
         for (String header : onapRequest.getOnapModule().getHeaders().keySet()) {
@@ -139,7 +140,14 @@ public class URLConnectionService {
         headers.setContentType(org.springframework.http.MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add(paramName, new FileSystemResource(new File(filePath)));
+        for (String paramName : fileMapByParamName.keySet()) {
+            Object val = fileMapByParamName.get(paramName);
+            if (val instanceof File) {
+                body.add(paramName, new FileSystemResource((File) (val)));
+            } else if (val instanceof String) {
+                body.add(paramName, (String) val);
+            }
+        }
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
@@ -149,7 +157,7 @@ public class URLConnectionService {
         return response;
     }
 
-    public Object call(OnapRequest onapRequest, String url, Map<String, String> parameters) throws IOException {
+    public Object call(OnapRequest onapRequest, String url, Map<String, String> parameters, Map<String, Object> files) throws IOException {
 
         String data = "";
         switch (onapRequest.getCallType()) {
@@ -179,7 +187,7 @@ public class URLConnectionService {
                 break;
             }
             case POST_FILE: {
-                response = postFile(onapRequest, url, parameters.get(OnapRequestParameters.FILE_PARAM_NAME.name()), parameters.get(OnapRequestParameters.FILE_PATH.name()));
+                response = postFile(onapRequest, url, files);
             }
         }
 

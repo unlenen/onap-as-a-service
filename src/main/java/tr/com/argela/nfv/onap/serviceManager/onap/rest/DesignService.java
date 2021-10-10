@@ -19,6 +19,7 @@ import com.jayway.jsonpath.Criteria;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -123,9 +124,11 @@ public class DesignService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.DESIGN_VSP_ID.name(), vspId);
         parameters.put(OnapRequestParameters.DESIGN_VSP_VERSION_ID.name(), vspVersionId);
-        parameters.put(OnapRequestParameters.FILE_PARAM_NAME.name(), "upload");
-        parameters.put(OnapRequestParameters.FILE_PATH.name(), vspFileLocalPath);
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VSP_UPLOAD_FILE, parameters);
+
+        Map<String, Object> files = new HashMap<>();
+        files.put("upload", new File(vspFileLocalPath));
+
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.SDC_VSP_UPLOAD_FILE, parameters, files);
         log.info("[Design][Vsp][FileUpload] " + parameters + " ,response:" + data);
         return ResponseEntity.ok(data.toString());
     }

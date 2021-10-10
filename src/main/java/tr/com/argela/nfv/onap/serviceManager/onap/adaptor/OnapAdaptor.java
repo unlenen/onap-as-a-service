@@ -51,11 +51,14 @@ public class OnapAdaptor {
     }
 
     public Object call(OnapRequest request, Map<String, String> parameters) {
+        return call(request, parameters, null);
+    }
+
+    public Object call(OnapRequest request, Map<String, String> parameters, Map<String, Object> files) {
         parameters.put("ONAPIP", onapConfig.onapIPAddress);
         String url = request.getEndpoint(parameters);
         try {
-
-            return urlConnectionService.call(request, url, parameters);
+            return urlConnectionService.call(request, url, parameters, files);
         } catch (Throwable ex) {
             return handleError(request, ex, url, parameters);
         }
@@ -72,7 +75,10 @@ public class OnapAdaptor {
         } else if (ex instanceof org.springframework.web.client.HttpClientErrorException) {
             org.springframework.web.client.HttpClientErrorException httpEx = (org.springframework.web.client.HttpClientErrorException) ex;
             responseCode = httpEx.getStatusCode() + "";
-            detailObj = new JSONObject(httpEx.getResponseBodyAsString());
+            try {
+                detailObj = new JSONObject(httpEx.getResponseBodyAsString());
+            } catch (Exception e) {
+            }
         } else if (ex instanceof HttpServerErrorException) {
             HttpServerErrorException httpEx = (HttpServerErrorException) ex;
             responseCode = httpEx.getStatusCode() + "";

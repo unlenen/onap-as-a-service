@@ -15,7 +15,10 @@
  */
 package tr.com.argela.nfv.onap.serviceManager.onap.rest;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -29,8 +32,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tr.com.argela.nfv.onap.serviceManager.onap.OnapUtil;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequest;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.model.OnapRequestParameters;
@@ -70,7 +75,7 @@ public class CloudService {
         UUID esrUUID = UUID.randomUUID();
 
         parameters.put(OnapRequestParameters.CLOUD_ESR_UUID.name(), esrUUID.toString());
-        parameters.put(OnapRequestParameters.CLOUD_OS_NAME.name(), name);
+        parameters.put(OnapRequestParameters.CLOUD_NAME.name(), name);
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
         parameters.put(OnapRequestParameters.CLOUD_COMPLEX_NAME.name(), complexName);
         parameters.put(OnapRequestParameters.CLOUD_COMPLEX_NAME.name(), complexName);
@@ -81,6 +86,30 @@ public class CloudService {
         parameters.put(OnapRequestParameters.CLOUD_OS_PROJECT.name(), osDefaultProject);
         String data = (String) adaptor.call(OnapRequest.CLOUD_OS_CREATE, parameters);
         log.info("[Cloud][OpenstackRegion][Create] name: " + name + " , keystone:" + osKeystoneURL + ", domain:" + osDomain + " , osProject:" + osDefaultProject + ",osUser:" + osUser + ", osPass:" + osPassword);
+        return ResponseEntity.ok(data);
+    }
+
+    @PutMapping(path = "/cloud/k8s/{name}/{cloudOwner}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createK8SRegion(
+            @PathVariable String name,
+            @PathVariable String cloudOwner,
+            @RequestBody String kubeconfig
+    ) throws IOException {
+
+        String body = "{\"cloud-region\":\"" + name + "\",\"cloud-owner\":\"" + cloudOwner + "\",\"other-connectivity-list\":{\"connectivity-records\":[{\"ssl-initiator\":\"false\"}]}};type=application/json";
+        File kubeConfigFile = OnapUtil.writeStringToTmpFile(kubeconfig, "k8s_config", ".json");
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_NAME.name(), name);
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+
+        Map<String, Object> files = new HashMap<>();
+        files.put("metadata", body);
+        files.put("file", kubeConfigFile);
+
+        String data = (String) adaptor.call(OnapRequest.CLOUD_K8S_MSB_ADD_KUBECONFIG, parameters, files);
+        log.info("[Cloud][K8S][Create] " + parameters);
+        kubeConfigFile.delete();
+
         return ResponseEntity.ok(data);
     }
 

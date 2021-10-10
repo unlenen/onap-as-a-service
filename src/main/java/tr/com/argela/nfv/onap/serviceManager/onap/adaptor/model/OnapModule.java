@@ -47,6 +47,8 @@ public enum OnapModule {
         {"X-FromAppId", "robot-ete"},
         {"Cookie", "JSESSIONID=node01w0clju3fse7818yffifda06aw27.node0"}
     }),
+    MULTICLOUD_K8S("http://${ONAPIP}:30280/", new String[][]{
+        {"Accept", "application/json"}}),
     NBI("https://${ONAPIP}:30274/nbi/api/v4", new String[][]{
         {"Content-Type", "application/json"},
         {"Accept", "application/json"}}),

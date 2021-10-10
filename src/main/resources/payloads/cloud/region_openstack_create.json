@@ -1,6 +1,6 @@
 {
     "cloud-owner": "${CLOUD_OWNER}",
-    "cloud-region-id": "${CLOUD_OS_NAME}",
+    "cloud-region-id": "${CLOUD_NAME}",
     "cloud-type": "openstack",
     "owner-defined-type": "",
     "cloud-region-version": "pike",
@@ -8,7 +8,7 @@
     "complex-name": "${CLOUD_COMPLEX_NAME}",
     "identity-url": "WillBeUpdatedByMultiCloud",
     "sriov-automation": false,
-    "cloud-extra-info": "{\"openstack-region-id\":\"${CLOUD_OS_NAME}\"}",
+    "cloud-extra-info": "{\"openstack-region-id\":\"${CLOUD_NAME}\"}",
     "esr-system-info-list": {
     	"esr-system-info": [
             {
