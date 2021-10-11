@@ -77,7 +77,7 @@ public class VFScenario extends CommonScenario {
     }
 
     private boolean vfExists(VF vf) throws Exception {
-        String root = readResponse(designService.getVFs(), true);
+        String root = readResponseValidateOption(designService.getVFs(),false);
         Filter vfName = Filter.filter(Criteria.where("name").eq(vf.getName()));
         DocumentContext rootContext = JsonPath.parse(root);
         net.minidev.json.JSONArray vfs = rootContext.read("$[?]", vfName);

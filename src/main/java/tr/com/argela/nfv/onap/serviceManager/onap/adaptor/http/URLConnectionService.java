@@ -157,14 +157,14 @@ public class URLConnectionService {
         return response;
     }
 
-    public Object call(OnapRequest onapRequest, String url, Map<String, String> parameters, Map<String, Object> files) throws IOException {
+    public Object call(OnapRequest onapRequest, String url, Map<String, String> parameters, Map<String, Object> files, String payloadFilePath) throws IOException {
 
         String data = "";
         switch (onapRequest.getCallType()) {
             case PUT:
             case POST: {
-                if (onapRequest.getPayloadFilePath() != null) {
-                    data = enrichPayloadData(readResourceFileToString(onapRequest.getPayloadFilePath()), parameters);
+                if (payloadFilePath != null) {
+                    data = enrichPayloadData(readResourceFileToString(payloadFilePath), parameters);
                 }
             }
         }

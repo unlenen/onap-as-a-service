@@ -55,10 +55,14 @@ public class OnapAdaptor {
     }
 
     public Object call(OnapRequest request, Map<String, String> parameters, Map<String, Object> files) {
+        return call(request, parameters, files, request.getPayloadFilePath());
+    }
+
+    public Object call(OnapRequest request, Map<String, String> parameters, Map<String, Object> files, String payload) {
         parameters.put("ONAPIP", onapConfig.onapIPAddress);
         String url = request.getEndpoint(parameters);
         try {
-            return urlConnectionService.call(request, url, parameters, files);
+            return urlConnectionService.call(request, url, parameters, files, payload);
         } catch (Throwable ex) {
             return handleError(request, ex, url, parameters);
         }

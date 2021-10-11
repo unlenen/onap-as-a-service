@@ -28,9 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.BusinessService;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.DesignService;
-import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.CloudRegion;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Customer;
-import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Scenario;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Service;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Tenant;
 
@@ -75,7 +73,11 @@ public class SubscriptionScenario extends CommonScenario {
 
     private Map<String, Customer> getCustomers() throws Exception {
         Map<String, Customer> customerIds = new HashMap<>();
-        JSONObject root = new JSONObject(readResponse(businessService.getCostumers()));
+        String data = readResponseValidateOption(businessService.getCostumers(), false);
+        JSONObject root = new JSONObject(data);
+        if (root.has("error")) {
+            return new HashMap<>();
+        }
         JSONArray array = root.getJSONArray("customer");
         for (int i = 0; i < array.length(); i++) {
             JSONObject customer = array.getJSONObject(i);
@@ -99,7 +101,7 @@ public class SubscriptionScenario extends CommonScenario {
         if (subscription.has("service-id")) {
             log.info("[Scenario][Subscription][Service][Exists] " + service);
         } else {
-            readResponseValidateOption(businessService.createServiceSubscription(service.getUniqueId(), service.getName()),false);
+            readResponseValidateOption(businessService.createServiceSubscription(service.getUniqueId(), service.getName()), false);
             log.info("[Scenario][Subscription][Service][Create] " + service);
         }
     }

@@ -1,0 +1,82 @@
+#########################################################################
+#                                                                       #
+#       ARGELA TECHNOLOGIES                                             #
+#       ONAP AS A SERVICE DEMO DATA                                     #
+#       App1 : Nginx                                                    #
+#                                                                       #
+#       For using in your home k8s cluster please provide               #
+#       x) Nginx cnf template                                           #
+#       x) K8S cluster                                                  #
+#       x) cloudRegions and tenantId configuration must be change to    #
+#          your own k8s information                                     #
+#       x) Profile must be change due to your cnf env                   #
+#########################################################################
+
+# Vendor and App Definitions
+vendor:
+  name: Argela
+  description: Argela
+  vsps:
+  - name: NginxCNF
+    description: Nginx Server
+    file: d:\\data\helm\nginx\k8s_nginx_cnf\k8s_nginx_cnf.zip
+    
+# Service Definitions
+service:
+  name: ArgelaCNFService_001
+  description: ArgelaCNFService
+  # Customers
+  customers:
+  - id: nebiunlenen
+    name: Nebi Volkan Unlenen
+    
+  # Related Tenants
+  tenants:
+  - id: default
+  
+  # Service Components
+  vfs:
+  - name: NginxCNF
+    description: NginxCNF
+    vsp:
+      name: NginxCNF
+  
+  # Service Instances
+  serviceInstances:
+  - name: ArgelaCNFService
+    customer:
+      id: nebiunlenen
+    owningEntity:
+      id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
+      name: ArgelaOwningEntity3
+    project: Argela_Ist_Nfvlab_Onap_Demo1
+    # Vnfs
+    vnfs:
+    - name: ArgelaCNFService_Inst_Nginx_IstK8sCnfCluster
+      lineOfBusiness: NfvDemo
+      platform: Argela_Ist_Nfvlab_OS1
+      tenant:
+        id: default
+      vf: 
+        name: Nginx  
+      # Vnf modules
+      vfModules:
+      - name: ArgelaCNFService_Inst_Nginx_IstK8sCnfCluster_VF
+        availabilityZone: nova
+        profile:
+          name: NginxProfile
+   
+         
+cloudRegions:
+- cloudOwner: CloudOwner
+  complexName: ArgelaIstKollaOS1
+  regionName: IstK8sCnfCluster
+  name: IstK8sCnfCluster
+  cloudType: KUBERNETES
+  tenants:
+  - id: default
+    name: default
+    
+profiles:
+- name: NginxProfile
+  parameters: []

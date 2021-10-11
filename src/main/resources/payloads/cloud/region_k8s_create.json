@@ -1,0 +1,27 @@
+{
+    "cloud-owner": "${CLOUD_OWNER}",
+    "cloud-region-id": "${CLOUD_NAME}",
+    "cloud-type": "k8s",
+    "owner-defined-type": "t1",
+    "cloud-region-version": "1.20.6",
+    "cloud-zone": "CloudZone",
+    "complex-name": "${CLOUD_COMPLEX_NAME}",
+    "identity-url": "WillBeUpdatedByMultiCloud",
+    "sriov-automation": false,
+    "cloud-extra-info": "{\"openstack-region-id\":\"${CLOUD_NAME}\"}",
+    "esr-system-info-list": {
+    	"esr-system-info": [
+            {
+            "esr-system-info-id": "${CLOUD_ESR_UUID}",
+            "service-url": "http://k8s",
+            "user-name": "demo",
+            "password": "onapDemo",
+            "system-type": "VIM",
+            "ssl-insecure": true,
+            "cloud-domain": "Default",
+            "default-tenant": "${CLOUD_OS_PROJECT}",
+            "system-status": "active"
+            }
+        ]
+    }
+}

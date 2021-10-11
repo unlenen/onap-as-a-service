@@ -86,13 +86,35 @@ public class ScenarioService {
     }
 
     private void runScenario(Scenario scenario) throws Exception {
-        scenario.mapProfiles(scenario);
-        scenario.getService().setScenario(scenario);
+        if (scenario.getProfiles() != null) {
+            scenario.mapProfiles(scenario);
+        }
+        if (scenario.getVendor() == null) {
+            log.error("Vendor is null");
+            return;
+        }
         vendorScenario.processVendor(scenario.getVendor());
+        if (scenario.getVendor().getVsps() == null) {
+            log.error("Vsps is null");
+            return;
+        }
         vspScenario.processVSPs(scenario.getVendor());
+        if (scenario.getService() == null) {
+            log.error("Service is null");
+            return;
+        }
         vfScenario.processVFs(scenario);
+        scenario.getService().setScenario(scenario);
         serviceModelScenario.processService(scenario.getService());
+        if (scenario.getService().getCustomers() == null || scenario.getService().getTenants() == null || scenario.getCloudRegions() == null) {
+            log.error("Customer or Tenants or CloudRegion is null");
+            return;
+        }
         subscriptionScenario.processSubscription(scenario.getService());
+        if (scenario.getService().getServiceInstances() == null) {
+            log.error("Service Instance is null");
+            return;
+        }
         runtimeScenario.processServiceInstances(scenario.getService());
     }
 

@@ -52,7 +52,7 @@ public class ServiceModelScenario extends CommonScenario {
 
     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
 
-    String[] checkObjs = {"SO-COpenSource-Env11", "aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "multicloud-k8s-id", "cds", "policy-id"};
+    String[] checkObjs = {"SO-COpenSource-Env11", "aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "cds", "policy-id"};
 
     public void processService(Service service) throws Exception {
         if (serviceExists(service)) {
