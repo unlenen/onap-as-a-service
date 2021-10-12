@@ -161,9 +161,9 @@ public class CloudService {
         parameters.put(OnapRequestParameters.CLOUD_COMPLEX_NAME.name(), complex);
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), name);
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_REGION_COMPLEX_Relations, parameters);
+        String data = (String) adaptor.call(OnapRequest.CLOUD_REGION_COMPLEX_Relations, parameters);
         log.info("[Cloud][ComplexRegionRelation][Create] " + parameters + " , response:" + data);
-        return ResponseEntity.ok(data.toString());
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping(path = "/cloud/tenants/{cloudOwner}/{cloudRegion}", produces = MediaType.APPLICATION_JSON_VALUE)

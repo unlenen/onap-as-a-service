@@ -165,7 +165,7 @@ public class CloudScenario extends CommonScenario {
     }
 
     private void createAvailabilityZone(AvailabilityZone availabilityZone) throws IOException {
-        cloudService.createCloudTenant(
+        cloudService.createCloudAvailibilityZone(
                 availabilityZone.getCloudRegion().getCloudOwner(),
                 availabilityZone.getCloudRegion().getName(),
                 availabilityZone.getName(),
