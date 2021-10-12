@@ -240,7 +240,7 @@ insert into cloud_sites (id , region_id , identity_service_id , cloud_version , 
 
 - If your openstack different than first one , please add 
 
-insert into identity_services (id , IDENTITY_URL, MSO_ID,MSO_PASS,ADMIN_TENANT,MEMBER_ROLE,TENANT_METADATA,IDENTITY_SERVER_TYPE,IDENTITY_AUTHENTICATION_TYPE,CREATION_TIMESTAMP,PROJECT_DOMAIN_NAME,USER_DOMAIN_NAME,ADMIN_PROJECT_DOMAIN_NAME) values('ARGELA_IST_OPENSTACK_IDENTITY' ,'https://os1-nfvlab.argela.com.tr:5000/v3','onap_user','your password','service','admin',1,'KEYSTONE_V3','USERNAME_PASSWORD',now(),'argela','argela','Default');
+insert into identity_services (id , IDENTITY_URL, MSO_ID,MSO_PASS,ADMIN_TENANT,MEMBER_ROLE,TENANT_METADATA,IDENTITY_SERVER_TYPE,IDENTITY_AUTHENTICATION_TYPE,CREATION_TIMESTAMP,PROJECT_DOMAIN_NAME,USER_DOMAIN_NAME,ADMIN_PROJECT_DOMAIN_NAME) values('ARGELA_IST_OPENSTACK_IDENTITY' ,'https://<openstack-ip>:5000/v3','onap_user','your password','service','admin',1,'KEYSTONE_V3','USERNAME_PASSWORD',now(),'argela','argela','Default');
 
 ```
 - Create or Use Existing Tenant
