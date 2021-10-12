@@ -149,7 +149,7 @@ public class SubscriptionScenario extends CommonScenario {
 
     private void createTenantSubscription(Tenant tenant, Customer customer) throws Exception {
         Tenant tenantFull = customer.getService().getScenario().getTenantMapById().get(tenant.getId());
-        String result = readResponse(businessService.createCustomerTenantSubscription(customer.getId(), tenantFull.getCloudRegion().getCloudOwner(), tenantFull.getCloudRegion().getRegionName(), tenantFull.getId(), tenantFull.getName(), customer.getService().getName()));
+        String result = readResponse(businessService.createCustomerTenantSubscription(customer.getId(), tenantFull.getCloudRegion().getCloudOwner(), tenantFull.getCloudRegion().getName(), tenantFull.getId(), tenantFull.getName(), customer.getService().getName()));
     }
 
 }

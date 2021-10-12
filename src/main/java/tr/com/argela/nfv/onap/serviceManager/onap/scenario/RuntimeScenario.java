@@ -211,7 +211,7 @@ public class RuntimeScenario extends CommonScenario {
             if (!checkPlatform(vnf.getPlatform())) {
                 createPlatform(vnf.getPlatform());
             }
-           
+
             if (!checkLineOfBusiness(vnf.getLineOfBusiness())) {
                 createLineOfBusiness(vnf.getLineOfBusiness());
             }
@@ -403,7 +403,7 @@ public class RuntimeScenario extends CommonScenario {
         CloudRegion cloudRegion = vfModule.getVnf().getTenant().getCloudRegion();
         JSONObject vServer = new JSONObject(readResponse(cloudService.getVServerDetail(
                 cloudRegion.getCloudOwner(),
-                cloudRegion.getRegionName(),
+                cloudRegion.getName(),
                 vfModule.getVnf().getTenant().getId(),
                 vfModule.getServer().getId()
         )));
@@ -464,7 +464,7 @@ public class RuntimeScenario extends CommonScenario {
     }
 
     private void loadVFModuleDetails(VFModule vfModule) throws Exception {
-        JSONObject root = new JSONObject(readResponse(runtimeService.getVFModuleDetail(vfModule.getVnf().getId(), vfModule.getVnf().getId())));
+        JSONObject root = new JSONObject(readResponse(runtimeService.getVFModuleDetail(vfModule.getVnf().getId(), vfModule.getId())));
         loadOpenstackVmInformationFromVFModuleData(vfModule, root);
     }
 
@@ -474,7 +474,7 @@ public class RuntimeScenario extends CommonScenario {
 
         JSONObject root = new JSONObject(readResponse(cloudService.getFlavorDetail(
                 cloudRegion.getCloudOwner(),
-                cloudRegion.getRegionName(),
+                cloudRegion.getName(),
                 openstackServer.getFlavor().getId()
         )));
 
