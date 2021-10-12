@@ -229,6 +229,20 @@ profiles:
 #### Cloud
 - Create or Use Existing Complex
 - Create or Use Existing Region
+```yaml
+You should add SO Keystone information manually
+
+- Connect
+kubectl exec -it dev-mariadb-galera-0 -- mysql -u cataloguser -p"catalog123" catalogdb
+
+- Add New Region
+insert into cloud_sites (id , region_id , identity_service_id , cloud_version , clli,creation_timestamp, cloud_owner) values ('argela_ist_kolla_openstack_regionone','RegionOne','DEFAULT_KEYSTONE','2.5','RegionOne',now(),'CloudOwner');
+
+- If your openstack different than first one , please add 
+
+insert into identity_services (id , IDENTITY_URL, MSO_ID,MSO_PASS,ADMIN_TENANT,MEMBER_ROLE,TENANT_METADATA,IDENTITY_SERVER_TYPE,IDENTITY_AUTHENTICATION_TYPE,CREATION_TIMESTAMP,PROJECT_DOMAIN_NAME,USER_DOMAIN_NAME,ADMIN_PROJECT_DOMAIN_NAME) values('ARGELA_IST_OPENSTACK_IDENTITY' ,'https://os1-nfvlab.argela.com.tr:5000/v3','onap_user','your password','service','admin',1,'KEYSTONE_V3','USERNAME_PASSWORD',now(),'argela','argela','Default');
+
+```
 - Create or Use Existing Tenant
 - Create or Use Existing Availability Zone
 - Add relation to region for complex
