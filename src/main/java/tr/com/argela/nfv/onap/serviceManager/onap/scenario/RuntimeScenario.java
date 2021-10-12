@@ -19,6 +19,7 @@ import com.jayway.jsonpath.Criteria;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,9 +27,11 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.BusinessService;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.CloudService;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.RuntimeService;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.CloudRegion;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.OwningEntity;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Service;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.ServiceInstance;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Tenant;
@@ -55,16 +58,88 @@ public class RuntimeScenario extends CommonScenario {
     @Autowired
     RuntimeService runtimeService;
 
+    @Autowired
+    BusinessService businessService;
+
     public void processServiceInstances(Service service) throws Exception {
 
         for (ServiceInstance serviceInstance : service.getServiceInstances()) {
+
             serviceInstance.setService(service);
+            processGeneralEntities(serviceInstance);
             if (!serviceInstanceExists(serviceInstance)) {
                 createServiceInstance(serviceInstance);
                 waitForComplete(serviceInstance.getReqUrl(), serviceInstance);
             }
             processVNFs(serviceInstance);
         }
+    }
+
+    private void processGeneralEntities(ServiceInstance serviceInstance) throws Exception {
+        if (!checkOwningEntity(serviceInstance.getOwningEntity())) {
+            createOwningEntity(serviceInstance.getOwningEntity());
+        }
+        if (!checkProject(serviceInstance.getProject())) {
+            createProject(serviceInstance.getProject());
+        }
+    }
+
+    private boolean checkOwningEntity(OwningEntity owningEntity) throws Exception {
+        JSONObject root = new JSONObject(readResponseValidateOption(businessService.getOwningEntity(
+                owningEntity.getId()
+        ), false));
+        if (root.has("error")) {
+            return false;
+        }
+        log.info("[Scenario][Runtime][OwningEntity][Exists] " + owningEntity);
+        return true;
+    }
+
+    private void createOwningEntity(OwningEntity owningEntity) throws IOException {
+        businessService.createOwningEntity(owningEntity.getId(), owningEntity.getName());
+        log.info("[Scenario][Runtime][OwningEntity][New] " + owningEntity);
+    }
+
+    private boolean checkProject(String project) throws Exception {
+        JSONObject root = new JSONObject(readResponseValidateOption(businessService.getProject(project), false));
+        if (root.has("error")) {
+            return false;
+        }
+        log.info("[Scenario][Runtime][Project][Exists] " + project);
+        return true;
+    }
+
+    private void createProject(String project) throws IOException {
+        businessService.createProject(project);
+        log.info("[Scenario][Runtime][Project][New] " + project);
+    }
+
+    private boolean checkPlatform(String platform) throws Exception {
+        JSONObject root = new JSONObject(readResponseValidateOption(businessService.getPlatform(platform), false));
+        if (root.has("error")) {
+            return false;
+        }
+        log.info("[Scenario][Runtime][Platform][Exists] " + platform);
+        return true;
+    }
+
+    private void createPlatform(String platform) throws IOException {
+        businessService.createPlatform(platform);
+        log.info("[Scenario][Runtime][Platform][New] " + platform);
+    }
+
+    private boolean checkLineOfBusiness(String lineOfBusiness) throws Exception {
+        JSONObject root = new JSONObject(readResponseValidateOption(businessService.getLineOfBusiness(lineOfBusiness), false));
+        if (root.has("error")) {
+            return false;
+        }
+        log.info("[Scenario][Runtime][LineOfBusiness][Exists] " + lineOfBusiness);
+        return true;
+    }
+
+    private void createLineOfBusiness(String lineOfBusiness) throws IOException {
+        businessService.createLineOfBusiness(lineOfBusiness);
+        log.info("[Scenario][Runtime][LineOfBusiness][New] " + lineOfBusiness);
     }
 
     private boolean serviceInstanceExists(ServiceInstance serviceInstance) throws Exception {
@@ -132,6 +207,15 @@ public class RuntimeScenario extends CommonScenario {
             vnf.setVf(vnf.getServiceInstance().getService().getVFByName(vnf.getVf().getName()));
             Tenant tenant = vnf.getServiceInstance().getService().getScenario().getTenantMapById().get(vnf.getTenant().getId());
             vnf.setTenant(tenant);
+
+            if (!checkPlatform(vnf.getPlatform())) {
+                createPlatform(vnf.getPlatform());
+            }
+           
+            if (!checkLineOfBusiness(vnf.getLineOfBusiness())) {
+                createLineOfBusiness(vnf.getLineOfBusiness());
+            }
+
             if (!vnfExists(vnf)) {
                 createVNF(vnf);
                 waitForComplete(vnf.getReqUrl(), vnf);

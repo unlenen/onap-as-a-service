@@ -161,23 +161,103 @@ public class BusinessService {
 
     @GetMapping(path = "/business/owning-entities", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getOwningEntities() throws IOException {
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_OWNING_ENTITY);
-        log.info("[Business][OwningEntity][Get] size:" + adaptor.getResponseSize(data, "owning-entity"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_OWNING_ENTITIES);
+        log.info("[Business][OwningEntities][Get] size:" + adaptor.getResponseSize(data, "owning-entity"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/business/owning-entity/{owningId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getOwningEntity(@PathVariable String owningEntityId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_OWNING_ENTITY_ID.name(), owningEntityId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_OWNING_ENTITY, parameters);
+        log.info("[Business][OwningEntity][Get] " + parameters + " , response :" + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/business/owning-entity/{owningId}/{owningName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createOwningEntity(@PathVariable String owningEntityId, @PathVariable String owningName) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_OWNING_ENTITY_ID.name(), owningEntityId);
+        parameters.put(OnapRequestParameters.BUSINESS_OWNING_ENTITY_NAME.name(), owningName);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_OWNING_ENTITY_CREATE, parameters);
+        log.info("[Business][OwningEntity][Create] " + parameters + " , response :" + data);
         return ResponseEntity.ok(data.toString());
     }
 
     @GetMapping(path = "/business/platforms", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getPlatforms() throws IOException {
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_PLATFORM);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_PLATFORMS);
         log.info("[Business][Platforms][Get] size:" + adaptor.getResponseSize(data, "platform"));
         return ResponseEntity.ok(data.toString());
     }
 
+    @GetMapping(path = "/business/platform/{platformName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getPlatform(@PathVariable String platformName) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_PLATFORM_NAME.name(), platformName);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_PLATFORM, parameters);
+        log.info("[Business][Platform][Get] " + parameters + " , response : " + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/business/platform/{platformName}}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createPlatform(@PathVariable String platformName) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_PLATFORM_NAME.name(), platformName);
+        String data = (String) adaptor.call(OnapRequest.BUSINESS_PLATFORM_CREATE, parameters);
+        log.info("[Business][Project][Create] " + parameters + " , response : " + data);
+        return ResponseEntity.ok(data);
+    }
+
     @GetMapping(path = "/business/projects", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getProjects() throws IOException {
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_PROJECT);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_PROJECTS);
         log.info("[Business][Projects][Get] size:" + adaptor.getResponseSize(data, "project"));
         return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/business/project/{projectName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getProject(@PathVariable String projectName) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_PROJECT_NAME.name(), projectName);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_PROJECT, parameters);
+        log.info("[Business][Project][Get] " + parameters + " , response : " + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/business/project/{projectName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createProject(@PathVariable String projectName) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_PROJECT_NAME.name(), projectName);
+        String data = (String) adaptor.call(OnapRequest.BUSINESS_PROJECT_CREATE, parameters);
+        log.info("[Business][Project][Create] " + parameters + " , response : " + data);
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping(path = "/business/line-of-businesses", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getLineOfBusinesses() throws IOException {
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_LineOfBusiness);
+        log.info("[Business][LineOfBusinesses][Get]");
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/business/line-of-business/{lineOfBusiness}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getLineOfBusiness(@PathVariable String lineOfBusiness) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_LINE_OF_BUSINESS.name(), lineOfBusiness);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_LineOfBusiness, parameters);
+        log.info("[Business][LineOfBusiness][Get] " + parameters + " , response : " + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/business/line-of-business/{lineOfBusiness}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createLineOfBusiness(@PathVariable String lineOfBusiness) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.BUSINESS_LINE_OF_BUSINESS.name(), lineOfBusiness);
+        String data = (String) adaptor.call(OnapRequest.BUSINESS_LineOfBusiness_CREATE, parameters);
+        log.info("[Business][LineOfBusiness][Create] " + parameters + " , response : " + data);
+        return ResponseEntity.ok(data);
     }
 
 }

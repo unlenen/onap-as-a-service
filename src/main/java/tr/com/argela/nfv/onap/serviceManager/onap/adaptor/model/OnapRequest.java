@@ -48,6 +48,7 @@ public enum OnapRequest {
     CLOUD_VSERVER_DETAIL(HttpCallType.GET, OnapModule.AAI, "/aai/v16/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants/tenant/${" + OnapRequestParameters.CLOUD_TENANT_ID + "}/vservers/vserver/${" + OnapRequestParameters.CLOUD_VSERVER_ID + "}", 200, HttpResponseType.JSONObject),
     CLOUD_VSERVER_FLAVOR_DETAIL(HttpCallType.GET, OnapModule.AAI, "/aai/v16/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/flavors/flavor/${" + OnapRequestParameters.CLOUD_OS_FLAVOR_ID + "}", 200, HttpResponseType.JSONObject),
     /*BUSINESS*/
+    /*BUSINESS Customers*/
     BUSINESS_CUSTOMERS(HttpCallType.GET, OnapModule.AAI, "/business/customers", 200, HttpResponseType.JSONObject),
     BUSINESS_CUSTOMER(HttpCallType.GET, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}", 200, HttpResponseType.JSONObject),
     BUSINESS_CUSTOMER_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}", 201, HttpResponseType.STRING, "payloads/business/customer/create.json", "application/json"),
@@ -56,9 +57,22 @@ public enum OnapRequest {
     BUSINESS_CUSTOMER_SERVICE_SUBSCRIPTION(HttpCallType.GET, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}/service-subscriptions/service-subscription/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME + "}", 200, HttpResponseType.JSONObject),
     BUSINESS_CUSTOMER_SUBSCRIPTION_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}/service-subscriptions/service-subscription/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME + "}", 201, HttpResponseType.STRING, "payloads/business/subscription/customerToService.json", "application/json"),
     BUSINESS_CUSTOMER_TENANT_SUBSCRIPTION_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/customers/customer/${" + OnapRequestParameters.BUSINESS_CUSTOMER_ID + "}/service-subscriptions/service-subscription/${" + OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME + "}/relationship-list/relationship", 200, HttpResponseType.STRING, "payloads/business/subscription/customerToTenant.json", "application/json"),
-    BUSINESS_OWNING_ENTITY(HttpCallType.GET, OnapModule.AAI, "/business/owning-entities", 200, HttpResponseType.JSONObject),
-    BUSINESS_PLATFORM(HttpCallType.GET, OnapModule.AAI, "/business/platforms", 200, HttpResponseType.JSONObject),
-    BUSINESS_PROJECT(HttpCallType.GET, OnapModule.AAI, "/business/projects", 200, HttpResponseType.JSONObject),
+    /*BUSINESS Owning Entity*/
+    BUSINESS_OWNING_ENTITIES(HttpCallType.GET, OnapModule.AAI, "/business/owning-entities", 200, HttpResponseType.JSONObject),
+    BUSINESS_OWNING_ENTITY(HttpCallType.GET, OnapModule.AAI, "/business/owning-entities/owning-entity/${" + OnapRequestParameters.BUSINESS_OWNING_ENTITY_ID + "}", 200, HttpResponseType.JSONObject),
+    BUSINESS_OWNING_ENTITY_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/owning-entities/owning-entity/${" + OnapRequestParameters.BUSINESS_OWNING_ENTITY_ID + "}", 201, HttpResponseType.STRING, "payloads/business/general/owning_entity_create.json", "application/json"),
+    /*BUSINESS Project*/
+    BUSINESS_PROJECTS(HttpCallType.GET, OnapModule.AAI, "/business/projects", 200, HttpResponseType.JSONObject),
+    BUSINESS_PROJECT(HttpCallType.GET, OnapModule.AAI, "/business/projects/project/${" + OnapRequestParameters.BUSINESS_PROJECT_NAME + "}", 200, HttpResponseType.JSONObject),
+    BUSINESS_PROJECT_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/projects/project/${" + OnapRequestParameters.BUSINESS_PROJECT_NAME + "}", 201,  HttpResponseType.STRING, "payloads/business/general/project_create.json", "application/json"),
+    /*BUSINESS Platform*/
+    BUSINESS_PLATFORMS(HttpCallType.GET, OnapModule.AAI, "/business/platforms", 200, HttpResponseType.JSONObject),
+    BUSINESS_PLATFORM(HttpCallType.GET, OnapModule.AAI, "/business/platforms/platform/${" + OnapRequestParameters.BUSINESS_PLATFORM_NAME + "}", 200, HttpResponseType.JSONObject),
+    BUSINESS_PLATFORM_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/platforms/platform/${" + OnapRequestParameters.BUSINESS_PLATFORM_NAME + "}", 201,  HttpResponseType.STRING, "payloads/business/general/platform_create.json", "application/json"),
+    /*BUSINESS Platform*/
+    BUSINESS_LineOfBusinesses(HttpCallType.GET, OnapModule.AAI, "/business/lines-of-business", 200, HttpResponseType.JSONObject),
+    BUSINESS_LineOfBusiness(HttpCallType.GET, OnapModule.AAI, "/business/lines-of-business/line-of-business/${" + OnapRequestParameters.BUSINESS_LINE_OF_BUSINESS + "}", 200, HttpResponseType.JSONObject),
+    BUSINESS_LineOfBusiness_CREATE(HttpCallType.PUT, OnapModule.AAI, "/business/lines-of-business/line-of-business/${" + OnapRequestParameters.BUSINESS_LINE_OF_BUSINESS + "}", 201,  HttpResponseType.STRING, "payloads/business/general/line_of_business_create.json", "application/json"),
     /*SDC*/
     /*SDC VENDOR*/
     SDC_VENDORS(HttpCallType.GET, OnapModule.SDC_FeProxy, "/onboarding-api/v1.0/vendor-license-models", 200, HttpResponseType.JSONObject),

@@ -49,6 +49,22 @@ Scenario Service allows to create ONAP resource automaticaly from a yaml file
 ### Scenario Load Example
 ```yaml
 
+#########################################################################
+#                                                                       #
+#       ARGELA TECHNOLOGIES                                             #
+#       ONAP AS A SERVICE DEMO DATA                                     #
+#       App1 : Nginx                                                    #
+#       App2 : Mysql                                                    #
+#                                                                       #
+#       For using in your home openstack please provide                 #
+#       x) Nginx heat template                                          #
+#       x) Mysql heat template                                          #
+#       x) Openstack cluster with version > pike                        #
+#       x) cloudRegions and tenantId configuration must be change to    #
+#          your own openstack information                               #
+#       x) Profile must be change due to your heat env                  #
+#########################################################################
+
 # Vendor and App Definitions
 vendor:
   name: Argela
@@ -98,13 +114,13 @@ service:
       id: nebiunlenen
     owningEntity:
       id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
-      name: ArgelaOwningEntity3
-    project: Argela_Ist_Nfvlab_Onap_Demo1
+      name: Argela_NFV_CC
+    project: Argela_NFV_CC_ONAP_VNF_DEMO
     # Vnfs
     vnfs:
     - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Nginx_Vnf
-      lineOfBusiness: NfvDemo
-      platform: Argela_Ist_Nfvlab_OS1
+      lineOfBusiness: NFV_POC
+      platform: Argela_Istanbul_NFVLAB_Openstack
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
@@ -117,8 +133,8 @@ service:
           name: NginxProfile
     # Vnfs  
     - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Mysql_Vnf
-      lineOfBusiness: NfvDemo
-      platform: Argela_Ist_Nfvlab_OS1
+      lineOfBusiness: NFV_POC
+      platform: Argela_Istanbul_NFVLAB_Openstack
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
@@ -133,13 +149,21 @@ service:
          
 cloudRegions:
 - cloudOwner: CloudOwner
-  complexName: ArgelaIstKollaOS1
+  name: argela_ist_kolla_openstack_regionone
+  complexName: argela_ist_nfvlab
   regionName: RegionOne
-  name: RegionOne
+  domain: argela
+  defaultProject: onap_project
+  authServiceURL: "https://<openstack-ip>:5000/v3"
+  authUser: "onap_user"
+  authPassword: "argela"
   cloudType: OPENSTACK
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
     name: onap_project
+  availabilityZones:
+  - name: nova
+    hypervisorType: kvm
     
 profiles:
 - name: NginxProfile
@@ -170,6 +194,7 @@ profiles:
     value: 192.168.135.171
   - name: dcae_collector_port
     value: 30417
+
 ```  
 
 ### Scenario Load Swagger Example

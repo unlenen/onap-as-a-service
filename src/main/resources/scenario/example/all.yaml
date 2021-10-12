@@ -63,13 +63,13 @@ service:
       id: nebiunlenen
     owningEntity:
       id: a4dc9387-4548-43b3-8aed-5a38c9331d3d
-      name: ArgelaOwningEntity3
-    project: Argela_Ist_Nfvlab_Onap_Demo1
+      name: Argela_NFV_CC
+    project: Argela_NFV_CC_ONAP_VNF_DEMO
     # Vnfs
     vnfs:
     - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Nginx_Vnf
-      lineOfBusiness: NfvDemo
-      platform: Argela_Ist_Nfvlab_OS1
+      lineOfBusiness: NFV_POC
+      platform: Argela_Istanbul_NFVLAB_Openstack
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
@@ -82,8 +82,8 @@ service:
           name: NginxProfile
     # Vnfs  
     - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Mysql_Vnf
-      lineOfBusiness: NfvDemo
-      platform: Argela_Ist_Nfvlab_OS1
+      lineOfBusiness: NFV_POC
+      platform: Argela_Istanbul_NFVLAB_Openstack
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
@@ -103,7 +103,7 @@ cloudRegions:
   regionName: RegionOne
   domain: argela
   defaultProject: onap_project
-  authServiceURL: "https://os1-nfvlab.argela.com.tr:5000/v3"
+  authServiceURL: "https://<openstack-ip>:5000/v3"
   authUser: "onap_user"
   authPassword: "argela"
   cloudType: OPENSTACK
