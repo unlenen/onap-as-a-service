@@ -226,12 +226,23 @@ profiles:
 - Add VFs if service is not certified
 - Certify Service if it is not certified
 - Distribute Service if it is not distributed
+#### Cloud
+- Create or Use Existing Complex
+- Create or Use Existing Region
+- Create or Use Existing Tenant
+- Create or Use Existing Availability Zone
+- Add relation to region for complex
 #### Customer
 - Create or Use Existing Customer
 #### Subscription
 - Subscribe service to AAI  if it is not exists
 - Subscribe service to all customers if it is not exists
 - Subscribe tenants to service and customers
+#### Business General
+- Create or Use Existing OwningEntity
+- Create or Use Existing Project
+- Create or Use Existing Platform
+- Create or Use Existing Line of Business
 #### ServiceInstance
 - Create or Use Existing Service Instance belong to customer
 #### VNF
