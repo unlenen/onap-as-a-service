@@ -25,14 +25,26 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.http.HttpResponseType;
  */
 public enum OnapRequest {
     /*CLOUD*/
-    CLOUD_REGION(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions", 200, HttpResponseType.JSONObject),
-    CLOUD_OS_CREATE(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_NAME + "}", 201, HttpResponseType.STRING, "payloads/cloud/region_openstack_create.json", "application/json"),
+
+ /*CLOUD Complex*/
+    CLOUD_COMPLEXS(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/complexes", 200, HttpResponseType.JSONObject),
+    CLOUD_COMPLEX(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/complexes/complex/${" + OnapRequestParameters.CLOUD_COMPLEX_NAME + "}", 200, HttpResponseType.JSONObject),
+    CLOUD_COMPLEX_CREATE(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/complexes/complex/${" + OnapRequestParameters.CLOUD_COMPLEX_NAME + "}", 201, HttpResponseType.STRING, "payloads/cloud/complex_create.json", "application/json"),
+    /*CLOUD Regions*/
+    CLOUD_REGIONS(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions", 200, HttpResponseType.JSONObject),
+    CLOUD_REGION(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_NAME + "}", 200, HttpResponseType.JSONObject),
+    CLOUD_REGION_COMPLEX_Relations(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/relationship-list/relationship", 200, HttpResponseType.JSONObject, "payloads/cloud/region_complex_relations.json", "application/json"),
+    CLOUD_REGION_CREATE(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_NAME + "}", 201, HttpResponseType.STRING, "payloads/cloud/region_openstack_create.json", "application/json"),
     CLOUD_K8S_MSB_ADD_KUBECONFIG(HttpCallType.POST_FILE, OnapModule.MULTICLOUD_K8S, "/v1/connectivity-info", 201, HttpResponseType.STRING),
-    CLOUD_COMPLEX(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/complexes", 200, HttpResponseType.JSONObject),
-    CLOUD_COMPLEX_CREATE(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure//complexes/complex/${" + OnapRequestParameters.CLOUD_COMPLEX_NAME + "}", 200, HttpResponseType.JSONObject,"payloads/cloud/complex_create.json", "application/json"),
-    CLOUD_TENANT(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants", 200, HttpResponseType.JSONObject),
-    CLOUD_TENANT_CREATE(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants/tenant/${" + OnapRequestParameters.CLOUD_TENANT_ID + "}", 201, HttpResponseType.JSONObject, "payloads/cloud/tenant_create.json", "application/json"),
-    CLOUD_AVAILABILITY_ZONE(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/availability-zones", 200, HttpResponseType.JSONObject),
+    /*CLOUD Tenants*/
+    CLOUD_TENANTS(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants", 200, HttpResponseType.JSONObject),
+    CLOUD_TENANT(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants/tenant/${" + OnapRequestParameters.CLOUD_TENANT_ID + "}", 200, HttpResponseType.JSONObject),
+    CLOUD_TENANT_CREATE(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants/tenant/${" + OnapRequestParameters.CLOUD_TENANT_ID + "}", 201, HttpResponseType.STRING, "payloads/cloud/tenant_create.json", "application/json"),
+    /*CLOUD AZ*/
+    CLOUD_AVAILABILITY_ZONES(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/availability-zones", 200, HttpResponseType.JSONObject),
+    CLOUD_AVAILABILITY_ZONE(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/availability-zones/availability-zone/${" + OnapRequestParameters.CLOUD_AVAILABILITY_ZONE + "}", 200, HttpResponseType.JSONObject),
+    CLOUD_AVAILABILITY_ZONE_CREATE(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/availability-zones/availability-zone/${" + OnapRequestParameters.CLOUD_AVAILABILITY_ZONE + "}", 201, HttpResponseType.STRING),
+    /*CLOUD Other*/
     CLOUD_VSERVER_DETAIL(HttpCallType.GET, OnapModule.AAI, "/aai/v16/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants/tenant/${" + OnapRequestParameters.CLOUD_TENANT_ID + "}/vservers/vserver/${" + OnapRequestParameters.CLOUD_VSERVER_ID + "}", 200, HttpResponseType.JSONObject),
     CLOUD_VSERVER_FLAVOR_DETAIL(HttpCallType.GET, OnapModule.AAI, "/aai/v16/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/flavors/flavor/${" + OnapRequestParameters.CLOUD_OS_FLAVOR_ID + "}", 200, HttpResponseType.JSONObject),
     /*BUSINESS*/

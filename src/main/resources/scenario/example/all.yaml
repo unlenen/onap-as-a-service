@@ -98,13 +98,21 @@ service:
          
 cloudRegions:
 - cloudOwner: CloudOwner
-  complexName: ArgelaIstKollaOS1
+  name: argela_ist_kolla_openstack_regionone
+  complexName: argela_ist_nfvlab
   regionName: RegionOne
-  name: RegionOne
+  domain: argela
+  defaultProject: onap_project
+  authServiceURL: "https://os1-nfvlab.argela.com.tr:5000/v3"
+  authUser: "onap_user"
+  authPassword: "argela"
   cloudType: OPENSTACK
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
     name: onap_project
+  availabilityZones:
+  - name: nova
+    hypervisorType: kvm
     
 profiles:
 - name: NginxProfile

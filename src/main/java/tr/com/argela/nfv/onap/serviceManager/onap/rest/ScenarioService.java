@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.OnapAdaptor;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Scenario;
+import tr.com.argela.nfv.onap.serviceManager.onap.scenario.CloudScenario;
 import tr.com.argela.nfv.onap.serviceManager.onap.scenario.RuntimeScenario;
 import tr.com.argela.nfv.onap.serviceManager.onap.scenario.ServiceModelScenario;
 import tr.com.argela.nfv.onap.serviceManager.onap.scenario.SubscriptionScenario;
@@ -63,6 +64,9 @@ public class ScenarioService {
 
     @Autowired
     RuntimeScenario runtimeScenario;
+
+    @Autowired
+    CloudScenario cloudScenario;
 
     Logger log = LoggerFactory.getLogger(ScenarioService.class);
 
@@ -102,6 +106,10 @@ public class ScenarioService {
         if (scenario.getService() == null) {
             log.error("Service is null");
             return;
+        }
+
+        if (scenario.getCloudRegions() != null) {
+            cloudScenario.processCloudRegions(scenario);
         }
         vfScenario.processVFs(scenario);
         scenario.getService().setScenario(scenario);

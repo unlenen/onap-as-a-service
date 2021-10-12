@@ -24,12 +24,23 @@ import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.CloudType;
  */
 public class CloudRegion {
 
+    String name;
     String cloudOwner;
     String complexName;
     String regionName;
-    String name;
+
     CloudType cloudType;
+    String domain, defaultProject, authServiceURL, authUser, authPassword, configParameters;
     List<Tenant> tenants;
+    List<AvailabilityZone> availabilityZones;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getCloudOwner() {
         return cloudOwner;
@@ -55,14 +66,6 @@ public class CloudRegion {
         this.regionName = regionName;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public CloudType getCloudType() {
         return cloudType;
     }
@@ -71,12 +74,73 @@ public class CloudRegion {
         this.cloudType = cloudType;
     }
 
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public String getDefaultProject() {
+        return defaultProject;
+    }
+
+    public void setDefaultProject(String defaultProject) {
+        this.defaultProject = defaultProject;
+    }
+
+    public String getAuthServiceURL() {
+        return authServiceURL;
+    }
+
+    public void setAuthServiceURL(String authServiceURL) {
+        this.authServiceURL = authServiceURL;
+    }
+
+    public String getAuthUser() {
+        return authUser;
+    }
+
+    public void setAuthUser(String authUser) {
+        this.authUser = authUser;
+    }
+
+    public String getAuthPassword() {
+        return authPassword;
+    }
+
+    public void setAuthPassword(String authPassword) {
+        this.authPassword = authPassword;
+    }
+
+    public String getConfigParameters() {
+        return configParameters;
+    }
+
+    public void setConfigParameters(String configParameters) {
+        this.configParameters = configParameters;
+    }
+
     public List<Tenant> getTenants() {
         return tenants;
     }
 
     public void setTenants(List<Tenant> tenants) {
         this.tenants = tenants;
+    }
+
+    public List<AvailabilityZone> getAvailabilityZones() {
+        return availabilityZones;
+    }
+
+    public void setAvailabilityZones(List<AvailabilityZone> availabilityZones) {
+        this.availabilityZones = availabilityZones;
+    }
+
+    @Override
+    public String toString() {
+        return "CloudRegion{" + "cloudOwner=" + cloudOwner + ", name=" + name + ", cloudType=" + cloudType + '}';
     }
 
 }

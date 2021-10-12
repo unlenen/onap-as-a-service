@@ -51,37 +51,56 @@ public class CloudService {
     Logger log = LoggerFactory.getLogger(CloudService.class);
 
     @GetMapping(path = "/cloud/complexs", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getCloudComplex() throws IOException {
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_COMPLEX);
-        log.info("[Cloud][Complex][Get] size:" + adaptor.getResponseSize(data, "complex"));
+    public ResponseEntity getCloudComplexs() throws IOException {
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_COMPLEXS);
+        log.info("[Cloud][Complexs][Get] size:" + adaptor.getResponseSize(data, "complex"));
         return ResponseEntity.ok(data.toString());
     }
 
-    @GetMapping(path = "/cloud/complex/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/cloud/complexs/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getCloudComplex(@PathVariable String name) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_COMPLEX_NAME.name(), name);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_COMPLEXS);
+        log.info("[Cloud][Complex][Get] " + parameters + " , result : " + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/cloud/complex/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createCloudComplex(@PathVariable String name) throws IOException {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.CLOUD_COMPLEX_NAME.name(), name);
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_COMPLEX_CREATE, parameters);
-        log.info("[Cloud][Complex][Put] " + parameters + " , response:" + data);
-        return ResponseEntity.ok(data.toString());
+        String data = (String) adaptor.call(OnapRequest.CLOUD_COMPLEX_CREATE, parameters);
+        log.info("[Cloud][Complex][Create] " + parameters + " , response:" + data);
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping(path = "/cloud/regions", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getCloudRegions() throws IOException {
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_REGION);
-        log.info("[Cloud][Region][Get] size:" + adaptor.getResponseSize(data, "cloud-region"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_REGIONS);
+        log.info("[Cloud][Regions][Get] size:" + adaptor.getResponseSize(data, "cloud-region"));
         return ResponseEntity.ok(data.toString());
     }
 
-    @PutMapping(path = "/cloud/openstack/{name}/{cloudOwner}/{complexName}/{osDomain}/{osDefaultProject}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createOpenstackRegion(@PathVariable String name, @PathVariable String cloudOwner, @PathVariable String complexName,
+    @GetMapping(path = "/cloud/region/{cloudOwner}/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getCloudRegion(@PathVariable String cloudOwner, @PathVariable String name) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_NAME.name(), name);
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_REGION, parameters);
+        log.info("[Cloud][Region][Get] " + parameters + " , response : " + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/cloud/openstack/{cloudOwner}/{name}/{regionName}/{complexName}/{osDomain}/{osDefaultProject}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createOpenstackRegion(@PathVariable String cloudOwner, @PathVariable String name, @PathVariable String regionName, @PathVariable String complexName,
             @PathVariable String osDomain, @PathVariable String osDefaultProject,
             @RequestParam(name = "keystoneURL") String osKeystoneURL, @RequestParam(name = "user") String osUser, @RequestParam(name = "password") String osPassword) throws IOException {
 
-        return ResponseEntity.ok(createRegion(OnapRequest.CLOUD_OS_CREATE.getPayloadFilePath(), name, cloudOwner, complexName, osDomain, osDefaultProject, osKeystoneURL, osUser, osPassword));
+        return ResponseEntity.ok(createRegion(OnapRequest.CLOUD_REGION_CREATE.getPayloadFilePath(), name, regionName, cloudOwner, complexName, osDomain, osDefaultProject, osKeystoneURL, osUser, osPassword));
     }
 
-    public String createRegion(String payload, String name, String cloudOwner, String complexName,
+    public String createRegion(String payload, String name, String regionName, String cloudOwner, String complexName,
             String osDomain, String osDefaultProject,
             String osKeystoneURL, String osUser, String osPassword) throws IOException {
         Map<String, String> parameters = new HashMap<>();
@@ -90,6 +109,7 @@ public class CloudService {
 
         parameters.put(OnapRequestParameters.CLOUD_ESR_UUID.name(), esrUUID.toString());
         parameters.put(OnapRequestParameters.CLOUD_NAME.name(), name);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), regionName);
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
         parameters.put(OnapRequestParameters.CLOUD_COMPLEX_NAME.name(), complexName);
         parameters.put(OnapRequestParameters.CLOUD_COMPLEX_NAME.name(), complexName);
@@ -98,15 +118,15 @@ public class CloudService {
         parameters.put(OnapRequestParameters.CLOUD_OS_PASSWORD.name(), osPassword);
         parameters.put(OnapRequestParameters.CLOUD_OS_DOMAIN.name(), osDomain);
         parameters.put(OnapRequestParameters.CLOUD_OS_PROJECT.name(), osDefaultProject);
-        String data = (String) adaptor.call(OnapRequest.CLOUD_OS_CREATE, parameters, null, payload);
-        log.info("[Cloud][CloudRegion][Create] name: " + name + " , keystone:" + osKeystoneURL + ", domain:" + osDomain + " , osProject:" + osDefaultProject + ",osUser:" + osUser + ", osPass:" + osPassword);
+        String data = (String) adaptor.call(OnapRequest.CLOUD_REGION_CREATE, parameters, null, payload);
+        log.info("[Cloud][CloudRegion][Create] " + parameters + " , response : " + data);
         return data;
     }
 
-    @PutMapping(path = "/cloud/k8s/{name}/{cloudOwner}/{complex}/{namespace}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/cloud/k8s/{cloudOwner}/{name}/{complex}/{namespace}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createK8SRegion(
-            @PathVariable String name,
             @PathVariable String cloudOwner,
+            @PathVariable String name,
             @PathVariable String complex,
             @PathVariable String namespace,
             @RequestBody String kubeconfig
@@ -125,10 +145,25 @@ public class CloudService {
 
         String data = (String) adaptor.call(OnapRequest.CLOUD_K8S_MSB_ADD_KUBECONFIG, parameters, files);
 
-        log.info("[Cloud][K8S][Create] " + parameters);
         kubeConfigFile.delete();
-        String data2 = (String) createRegion("payloads/cloud/region_k8s_create.json", name, cloudOwner, complex, null, namespace, null, null, null);
+        String data2 = (String) createRegion("payloads/cloud/region_k8s_create.json", name, name, cloudOwner, complex, null, namespace, null, null, null);
+        log.info("[Cloud][K8S][Create] " + parameters);
         return ResponseEntity.ok(data);
+    }
+
+    @PutMapping(path = "/cloud/region-complex/{cloudOwner}/{name}/{complex}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createCloudRegionComplexRelations(
+            @PathVariable String cloudOwner,
+            @PathVariable String name,
+            @PathVariable String complex
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_COMPLEX_NAME.name(), complex);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), name);
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_REGION_COMPLEX_Relations, parameters);
+        log.info("[Cloud][ComplexRegionRelation][Create] " + parameters + " , response:" + data);
+        return ResponseEntity.ok(data.toString());
     }
 
     @GetMapping(path = "/cloud/tenants/{cloudOwner}/{cloudRegion}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -136,8 +171,19 @@ public class CloudService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_TENANT, parameters);
-        log.info("[Cloud][Tenant][Get] size:" + adaptor.getResponseSize(data, "tenant"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_TENANTS, parameters);
+        log.info("[Cloud][Tenants][Get] " + parameters + " , size:" + adaptor.getResponseSize(data, "tenant"));
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/cloud/tenant/{cloudOwner}/{cloudRegion}/{tenantId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getCloudTenant(@PathVariable String cloudOwner, @PathVariable String cloudRegion, @PathVariable String tenantId) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
+        parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_TENANTS, parameters);
+        log.info("[Cloud][Tenant][Get] " + parameters + ", response : " + data);
         return ResponseEntity.ok(data.toString());
     }
 
@@ -153,9 +199,9 @@ public class CloudService {
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
         parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
         parameters.put(OnapRequestParameters.CLOUD_TENANT_NAME.name(), tenantName);
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_TENANT_CREATE, parameters);
+        String data = (String) adaptor.call(OnapRequest.CLOUD_TENANT_CREATE, parameters);
         log.info("[Cloud][Tenant][Create] " + parameters + " , response : " + data);
-        return ResponseEntity.ok(data.toString());
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping(path = "/cloud/availability-zones/{cloudOwner}/{cloudRegion}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -163,9 +209,37 @@ public class CloudService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_AVAILABILITY_ZONE, parameters);
-        log.info("[Cloud][AvailabilityZone][Get] size:" + adaptor.getResponseSize(data, "availability-zone"));
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_AVAILABILITY_ZONES, parameters);
+        log.info("[Cloud][AvailabilityZones][Get] " + parameters + " , size:" + adaptor.getResponseSize(data, "availability-zone"));
         return ResponseEntity.ok(data.toString());
+    }
+
+    @GetMapping(path = "/cloud/availability-zone/{cloudOwner}/{cloudRegion}/{availabilityZone}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getCloudAvailabilityZone(@PathVariable String cloudOwner, @PathVariable String cloudRegion, @PathVariable String availibilityZone) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
+        parameters.put(OnapRequestParameters.CLOUD_AVAILABILITY_ZONE.name(), availibilityZone);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_AVAILABILITY_ZONE, parameters);
+        log.info("[Cloud][AvailabilityZone][Get] " + parameters + " , " + data);
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @PutMapping(path = "/cloud/availability-zone/{cloudOwner}/{cloudRegion}/{availabilityZone}/{hypervisorType}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity createCloudAvailibilityZone(
+            @PathVariable String cloudOwner,
+            @PathVariable String cloudRegion,
+            @PathVariable String azName,
+            @PathVariable String azHypervisorType
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
+        parameters.put(OnapRequestParameters.CLOUD_AVAILABILITY_ZONE.name(), azName);
+        parameters.put(OnapRequestParameters.CLOUD_HYPERVISOR_TYPE.name(), azHypervisorType);
+        String data = (String) adaptor.call(OnapRequest.CLOUD_AVAILABILITY_ZONE_CREATE, parameters);
+        log.info("[Cloud][AvailabilityZone][Create] " + parameters + " , response : " + data);
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping(path = "/cloud/vserver/{cloudOwner}/{regionName}/{tenantId}/{vServerId}", produces = MediaType.APPLICATION_JSON_VALUE)
