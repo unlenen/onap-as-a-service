@@ -202,6 +202,10 @@ public class RuntimeScenario extends CommonScenario {
     }
 
     private void processVNFs(ServiceInstance serviceInstance) throws Exception {
+        if (serviceInstance.getVnfs() == null) {
+            log.info("[Scenario][Runtime][ServiceInstance][No VNF-Module] " + serviceInstance);
+            return;
+        }
         for (VNF vnf : serviceInstance.getVnfs()) {
             vnf.setServiceInstance(serviceInstance);
             vnf.setVf(vnf.getServiceInstance().getService().getVFByName(vnf.getVf().getName()));
