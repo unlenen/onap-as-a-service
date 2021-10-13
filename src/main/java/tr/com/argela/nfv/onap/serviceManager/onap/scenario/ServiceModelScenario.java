@@ -52,7 +52,8 @@ public class ServiceModelScenario extends CommonScenario {
 
     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
 
-    String[] checkObjs = {"SO-COpenSource-Env11", "aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "cds", "policy-id"};
+    String[] checkObjs = { "aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "cds", "policy-id"};
+    //String[] checkObjs = {"SO-COpenSource-Env11", "aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "cds", "policy-id"};
 
     public void processService(Service service) throws Exception {
         if (serviceExists(service)) {
@@ -180,6 +181,11 @@ public class ServiceModelScenario extends CommonScenario {
             JSONArray groupInstances = component.getJSONArray("groupInstances");
             for (int j = 0; j < groupInstances.length(); j++) {
                 JSONObject groupInstance = groupInstances.getJSONObject(j);
+
+                String modelTypeName = groupInstance.getString("groupName");
+                if (modelTypeName.contains("base_template_dummy_ignore")|| modelTypeName.contains("base_template")) {
+                    continue;
+                }
 
                 vf.setModelType(groupInstance.getString("groupName"));
                 vf.setCustomizationName(groupInstance.getString("groupName"));

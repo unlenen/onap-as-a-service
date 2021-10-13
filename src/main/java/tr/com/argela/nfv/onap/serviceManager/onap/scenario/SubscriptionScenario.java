@@ -97,7 +97,7 @@ public class SubscriptionScenario extends CommonScenario {
 
     private void subscribeService(Service service) throws Exception {
 
-        JSONObject subscription = new JSONObject(readResponseValidateOption(businessService.getServiceSubscriptions(service.getInvariantUUID()), false));
+        JSONObject subscription = new JSONObject(readResponseValidateOption(businessService.getServiceSubscriptions(service.getUniqueId()), false));
         if (subscription.has("service-id")) {
             log.info("[Scenario][Subscription][Service][Exists] " + service);
         } else {
@@ -128,6 +128,9 @@ public class SubscriptionScenario extends CommonScenario {
         DocumentContext rootContext = JsonPath.parse(subscription.toString());
 
         for (Tenant tenant : customer.getService().getTenants()) {
+            Tenant tenantFull = customer.getService().getScenario().getTenantMapById().get(tenant.getId());
+            tenant.setName(tenantFull.getName());
+            tenant.setCloudRegion(tenantFull.getCloudRegion());
             boolean subscriptionFound = false;
             if (subscription.has("relationship-list")) {
 
@@ -147,9 +150,8 @@ public class SubscriptionScenario extends CommonScenario {
 
     }
 
-    private void createTenantSubscription(Tenant tenant, Customer customer) throws Exception {
-        Tenant tenantFull = customer.getService().getScenario().getTenantMapById().get(tenant.getId());
-        String result = readResponse(businessService.createCustomerTenantSubscription(customer.getId(), tenantFull.getCloudRegion().getCloudOwner(), tenantFull.getCloudRegion().getName(), tenantFull.getId(), tenantFull.getName(), customer.getService().getName()));
+    private void createTenantSubscription(Tenant tenant, Customer customer) throws Exception {     
+        String result = readResponse(businessService.createCustomerTenantSubscription(customer.getId(), tenant.getCloudRegion().getCloudOwner(), tenant.getCloudRegion().getName(), tenant.getId(), tenant.getName(), customer.getService().getName()));
     }
 
 }

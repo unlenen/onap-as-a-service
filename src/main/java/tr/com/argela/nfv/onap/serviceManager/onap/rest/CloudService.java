@@ -182,7 +182,7 @@ public class CloudService {
         parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
         parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
         parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_TENANTS, parameters);
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_TENANT, parameters);
         log.info("[Cloud][Tenant][Get] " + parameters + ", response : " + data);
         return ResponseEntity.ok(data.toString());
     }
