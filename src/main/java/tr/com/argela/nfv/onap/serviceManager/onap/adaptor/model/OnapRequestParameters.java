@@ -31,6 +31,7 @@ public enum OnapRequestParameters {
     CLOUD_HYPERVISOR_TYPE,
     CLOUD_ESR_UUID,
     CLOUD_VSERVER_ID,
+    CLOUD_HELM_INST_ID,
     CLOUD_OS_FLAVOR_ID,
     CLOUD_NAME,
     CLOUD_REGION_NAME,

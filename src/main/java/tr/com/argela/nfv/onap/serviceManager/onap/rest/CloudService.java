@@ -274,4 +274,16 @@ public class CloudService {
         log.info("[Cloud][Flavor][Get] " + parameters);
         return ResponseEntity.ok(data.toString());
     }
+
+    @GetMapping(path = "/cloud/k8s/{helmInstId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getK8SInstanceDetail(
+            @PathVariable(required = true) String helmInstId
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_HELM_INST_ID.name(), helmInstId);
+
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.CLOUD_K8S_INST_DETAIL, parameters);
+        log.info("[Cloud][K8S][Get] " + parameters);
+        return ResponseEntity.ok(data.toString());
+    }
 }

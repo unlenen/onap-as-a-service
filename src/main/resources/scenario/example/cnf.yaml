@@ -43,7 +43,7 @@ service:
   
   # Service Instances   
   serviceInstances:
-  - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S5
+  - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S7
     customer:
       id: nebiunlenen
     owningEntity:
@@ -53,7 +53,7 @@ service:
     
     # Vnfs
     vnfs:
-    - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S52_Ist_Nfvlab_Onap_k8s_vnf
+    - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S71_Ist_Nfvlab_Onap_k8s_vnf
       lineOfBusiness: NFV_POC
       platform: Argela_Istanbul_NFVLAB_Openstack
       tenant:
@@ -61,7 +61,7 @@ service:
       vf: 
         name: CNF_Nginx_Helm_3
       vfModules:
-      - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S52_Ist_Nfvlab_Onap_k8s_VF
+      - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S71_Ist_Nfvlab_Onap_k8s_VF
         availabilityZone: K8S
         profile:
           name: NginxProfile
@@ -87,7 +87,7 @@ profiles:
   - name: k8s-rb-profile-name
     value: default
   - name: nginx.name
-    value: argela-nging-web
+    value: argela-nginx-web
   - name: nginx.port
     value: 80
   - name: nginx.nodeport

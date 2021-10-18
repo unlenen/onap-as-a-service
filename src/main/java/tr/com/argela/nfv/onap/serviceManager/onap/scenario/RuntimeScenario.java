@@ -20,7 +20,9 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +40,8 @@ import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Tenant;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VFModule;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VNF;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.serverInstance.ServerEntity;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.serverInstance.k8s.HelmInstance;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.serverInstance.k8s.ResourceBundle;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.serverInstance.openstack.OpenstackComputeNode;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.serverInstance.openstack.OpenstackFlavor;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.serverInstance.openstack.OpenstackImage;
@@ -296,7 +300,16 @@ public class RuntimeScenario extends CommonScenario {
                 }
 
                 if (vfModuleAlive) {
-                    loadVServerInformation(vfModule);
+                    switch (vfModule.getVnf().getTenant().getCloudRegion().getCloudType()) {
+                        case OPENSTACK: {
+                            loadVServerInformation(vfModule);
+                            break;
+                        }
+                        case KUBERNETES: {
+                            loadK8SInstInformation(vfModule);
+                        }
+                    }
+
                 }
             }
         } else {
@@ -316,19 +329,20 @@ public class RuntimeScenario extends CommonScenario {
         if (!foundVfModule.isEmpty()) {
             LinkedHashMap<String, String> vfModuleObj = (LinkedHashMap<String, String>) foundVfModule.get(0);
             vfModule.setId(vfModuleObj.get("vf-module-id"));
-            switch (vfModule.getVnf().getTenant().getCloudRegion().getCloudType()) {
-                case OPENSTACK: {
-
-                    JSONArray vfModuleArray = root.getJSONArray("vf-module");
-                    for (int i = 0; i < vfModuleArray.length(); i++) {
-                        JSONObject vfModuleJSONObj = vfModuleArray.getJSONObject(i);
+            JSONArray vfModuleArray = root.getJSONArray("vf-module");
+            for (int i = 0; i < vfModuleArray.length(); i++) {
+                JSONObject vfModuleJSONObj = vfModuleArray.getJSONObject(i);
+                switch (vfModule.getVnf().getTenant().getCloudRegion().getCloudType()) {
+                    case OPENSTACK: {
                         loadOpenstackVmInformationFromVFModuleData(vfModule, vfModuleJSONObj);
+                        break;
                     }
-
-                    break;
+                    case KUBERNETES: {
+                        loadK8SVmInformationFromVFModuleData(vfModule, vfModuleJSONObj);
+                        break;
+                    }
                 }
             }
-
             log.info("[Scenario][Runtime][VF-Module][Exists] " + vfModule);
             return true;
         }
@@ -469,7 +483,16 @@ public class RuntimeScenario extends CommonScenario {
 
     private void loadVFModuleDetails(VFModule vfModule) throws Exception {
         JSONObject root = new JSONObject(readResponse(runtimeService.getVFModuleDetail(vfModule.getVnf().getId(), vfModule.getId())));
-        loadOpenstackVmInformationFromVFModuleData(vfModule, root);
+        switch (vfModule.getVnf().getTenant().getCloudRegion().getCloudType()) {
+            case OPENSTACK: {
+                loadOpenstackVmInformationFromVFModuleData(vfModule, root);
+                break;
+            }
+            case KUBERNETES: {
+                loadK8SVmInformationFromVFModuleData(vfModule, root);
+                break;
+            }
+        }
     }
 
     private void loadVServerFlavorDetail(VFModule vfModule, OpenstackServer openstackServer) throws Exception {
@@ -488,6 +511,59 @@ public class RuntimeScenario extends CommonScenario {
         flavor.setDisk(root.getInt("flavor-disk"));
         flavor.setSwap(root.getString("flavor-swap"));
         flavor.setEphemeral(root.getInt("flavor-ephemeral"));
+    }
+
+    private void loadK8SVmInformationFromVFModuleData(VFModule vfModule, JSONObject vfModuleObj) {
+        HelmInstance helmInstance = new HelmInstance();
+        vfModule.setServer(helmInstance);
+        if (vfModuleObj.has("heat-stack-id")) {
+            String helmInstanceName = vfModuleObj.getString("heat-stack-id");
+            helmInstance.setId(helmInstanceName);
+            helmInstance.setName(helmInstanceName);
+        }
+    }
+
+    private void loadK8SInstInformation(VFModule vfModule) throws Exception {
+        JSONObject helmInstanceObj = new JSONObject(readResponse(cloudService.getK8SInstanceDetail(
+                vfModule.getServer().getId()
+        )));
+
+        if (helmInstanceObj.has("error")) {
+            return;
+        }
+
+        HelmInstance helmInstance = (HelmInstance) vfModule.getServer();
+        helmInstance.setNamespace(helmInstanceObj.getString("namespace"));
+        helmInstance.setReleaseName(helmInstanceObj.getString("release-name"));
+        if (helmInstanceObj.has("request")) {
+            JSONObject request = helmInstanceObj.getJSONObject("request");
+            ResourceBundle resourceBundle = new ResourceBundle();
+            resourceBundle.setId(request.getString("rb-version"));
+            resourceBundle.setName(request.getString("rb-name"));
+            helmInstance.setResourceBundle(resourceBundle);
+
+            helmInstance.setProfileName(request.getString("profile-name"));
+        }
+
+        if (helmInstanceObj.has("resources")) {
+            JSONArray resources = helmInstanceObj.getJSONArray("resources");
+            for (int i = 0; i < resources.length(); i++) {
+                JSONObject resource = resources.getJSONObject(i);
+                String name = resource.getString("Name");
+                if (resource.has("GVK")) {
+                    JSONObject gvk = resource.getJSONObject("GVK");
+                    String type = gvk.getString("Kind");
+                    String version = gvk.getString("Version");
+                    List<String> list = helmInstance.getK8sObjects().get(type + "_" + version);
+                    if (list == null) {
+                        list = new ArrayList<>();
+                        helmInstance.getK8sObjects().put(type + "_" + version, list);
+                    }
+                    list.add(name);
+                }
+            }
+        }
+
     }
 
 }
