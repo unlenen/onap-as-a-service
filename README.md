@@ -48,7 +48,6 @@ Scenario Service allows to create ONAP resource automaticaly from a yaml file
 
 ### Scenario Load Example VNF
 ```yaml
-
 #########################################################################
 #                                                                       #
 #       ARGELA TECHNOLOGIES                                             #
@@ -95,6 +94,7 @@ service:
   # Related Tenants
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+  - id: 207a223d949544c38c8e369bc309c381
   
   # Service Components
   vfs:
@@ -124,11 +124,14 @@ service:
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
-        name: Nginx  
+        name: Nginx
+      
       # Vnf modules
       vfModules:
       - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Nginx_VfModule
         availabilityZone: nova
+        vfModel:
+          modelType: Nginx..nginx..module-0
         profile:
           name: NginxProfile
     # Vnfs  
@@ -139,15 +142,19 @@ service:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
         name: MysqlServer
+    
       # Vnf modules
       vfModules:
       - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Mysql_VfModule
         availabilityZone: nova
+        vfModel:
+          modelType: Mysqlserver..mysql..module-0
         profile:
           name: MysqlServerProfile
           
          
 cloudRegions:
+# Istanbul Openstack
 - cloudOwner: CloudOwner
   name: argela_ist_kolla_openstack_regionone
   complexName: argela_ist_nfvlab
@@ -160,6 +167,23 @@ cloudRegions:
   cloudType: OPENSTACK
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+    name: onap_project
+  availabilityZones:
+  - name: nova
+    hypervisorType: kvm
+# Ankara Openstack
+- cloudOwner: CloudOwner
+  name: argela_ankara_openstack_regionone
+  complexName: argela_ankara_nfvlab
+  regionName: RegionOne
+  domain: argela
+  defaultProject: onap_project
+  authServiceURL: "https://<openstack-ip>:5000/v3"
+  authUser: "onap_user"
+  authPassword: "argela"
+  cloudType: OPENSTACK
+  tenants:
+  - id: 207a223d949544c38c8e369bc309c381
     name: onap_project
   availabilityZones:
   - name: nova
@@ -194,7 +218,6 @@ profiles:
     value: 192.168.135.171
   - name: dcae_collector_port
     value: 30417
-
 ```  
 
 
@@ -203,7 +226,7 @@ profiles:
 #########################################################################
 #                                                                       #
 #       ARGELA TECHNOLOGIES                                             #
-#       ONAP AS A SERVICE CNF DATA                                      #
+#       ONAP AS A SERVICE DEMO DATA                                     #
 #       App1 : Nginx                                                    #
 #                                                                       #
 #       For using in your home k8s cluster please provide               #
@@ -245,7 +268,7 @@ service:
   
   # Service Instances   
   serviceInstances:
-  - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S5
+  - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen
     customer:
       id: nebiunlenen
     owningEntity:
@@ -255,7 +278,7 @@ service:
     
     # Vnfs
     vnfs:
-    - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S52_Ist_Nfvlab_Onap_k8s_vnf
+    - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_Ist_Nfvlab_Onap_k8s_vnf
       lineOfBusiness: NFV_POC
       platform: Argela_Istanbul_NFVLAB_Openstack
       tenant:
@@ -263,8 +286,10 @@ service:
       vf: 
         name: CNF_Nginx_Helm_3
       vfModules:
-      - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S52_Ist_Nfvlab_Onap_k8s_VF
+      - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_Ist_Nfvlab_Onap_k8s_VF
         availabilityZone: K8S
+        vfModel:
+          modelType: CnfNginxHelm3..helm_nginx..module-1
         profile:
           name: NginxProfile
   
@@ -288,6 +313,14 @@ profiles:
   parameters:
   - name: k8s-rb-profile-name
     value: default
+  - name: nginx.name
+    value: argela-nginx-web
+  - name: nginx.port
+    value: 80
+  - name: nginx.nodeport
+    value: 30080
+  - name: nginx.image
+    value: nginx:latest
 ```
 
 ### Scenario Load Swagger Example
