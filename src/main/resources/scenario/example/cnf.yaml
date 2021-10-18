@@ -86,3 +86,11 @@ profiles:
   parameters:
   - name: k8s-rb-profile-name
     value: default
+  - name: nginx.name
+    value: argela-nging-web
+  - name: nginx.port
+    value: 80
+  - name: nginx.nodeport
+    value: 30080
+  - name: nginx.image
+    value: nginx:latest

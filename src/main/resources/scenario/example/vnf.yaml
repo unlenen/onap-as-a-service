@@ -44,6 +44,7 @@ service:
   # Related Tenants
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+  - id: 207a223d949544c38c8e369bc309c381
   
   # Service Components
   vfs:
@@ -109,6 +110,22 @@ cloudRegions:
   cloudType: OPENSTACK
   tenants:
   - id: 5aa6ebb7ed1145f1b59c579d01c4ad36
+    name: onap_project
+  availabilityZones:
+  - name: nova
+    hypervisorType: kvm
+- cloudOwner: CloudOwner
+  name: argela_ankara_openstack_regionone
+  complexName: argela_ankara_nfvlab
+  regionName: RegionOne
+  domain: argela
+  defaultProject: onap_project
+  authServiceURL: "https://<openstack-ip>:5000/v3"
+  authUser: "onap_user"
+  authPassword: "argela"
+  cloudType: OPENSTACK
+  tenants:
+  - id: 207a223d949544c38c8e369bc309c381
     name: onap_project
   availabilityZones:
   - name: nova
