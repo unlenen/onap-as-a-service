@@ -160,10 +160,11 @@ public class URLConnectionService {
     public Object call(OnapRequest onapRequest, String url, Map<String, String> parameters, Map<String, Object> files, String payloadFilePath) throws IOException {
 
         String data = "";
-        switch (onapRequest.getCallType()) {
-            case PUT:
-            case POST: {
-                if (payloadFilePath != null) {
+        if (payloadFilePath != null) {
+            switch (onapRequest.getCallType()) {
+                case DELETE:
+                case PUT:
+                case POST: {
                     data = enrichPayloadData(readResourceFileToString(payloadFilePath), parameters);
                 }
             }
@@ -178,7 +179,11 @@ public class URLConnectionService {
                 break;
             }
             case DELETE: {
-                response = delete(url, onapRequest.getOnapModule().getHeaders());
+                if (data == null) {
+                    response = delete(url, onapRequest.getOnapModule().getHeaders());
+                } else {
+                    response = push(onapRequest.getCallType().name(), url, onapRequest.getOnapModule().getHeaders(), data, onapRequest.getPayloadFileType());
+                }
                 break;
             }
             case PUT:

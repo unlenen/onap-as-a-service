@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -93,6 +94,23 @@ public class RuntimeService {
         return ResponseEntity.ok(data.toString());
     }
 
+    @DeleteMapping(path = "/runtime/service-instance/{serviceInstanceId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteServiceInstance(@PathVariable String serviceInstanceId,
+            @RequestParam(name = "serviceName") String serviceName,
+            @RequestParam(name = "serviceUUID") String serviceModelUUID,
+            @RequestParam(name = "serviceInvariantUUID") String serviceModelInvariantUUID
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID.name(), serviceInstanceId);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_NAME.name(), serviceName);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_UUID.name(), serviceModelUUID);
+        parameters.put(OnapRequestParameters.DESIGN_SERVICE_MODEL_InvariantUUID.name(), serviceModelInvariantUUID);
+
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_SERVICE_INSTANCE_DELETE, parameters);
+        log.info("[Runtime][ServiceInstance][Delete] " + parameters + " , response:" + data.toString());
+        return ResponseEntity.ok(data.toString());
+    }
+
     @GetMapping(path = "/runtime/vnfs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getVNFs() throws IOException {
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VNFS);
@@ -153,6 +171,35 @@ public class RuntimeService {
 
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VNF_CREATE, parameters);
         log.info("[Runtime][VNF][Create] " + parameters + " , response:" + data.toString());
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @DeleteMapping(path = "/runtime/vnf/{vnfId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteVNF(@PathVariable String vnfId,
+            @RequestParam(name = "serviceInstanceId") String serviceInstanceId,
+            @RequestParam(name = "vfName") String vfName,
+            @RequestParam(name = "vfUUID") String vfUUID,
+            @RequestParam(name = "vfInvariantUUID") String vfInvariantUUID,
+            @RequestParam(name = "vfModelName") String vfModelName,
+            @RequestParam(name = "cloudOwner") String cloudOwner,
+            @RequestParam(name = "cloudRegion") String cloudRegion,
+            @RequestParam(name = "tenantId") String tenantId
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.RUNTIME_VNF_ID.name(), vnfId);
+        parameters.put(OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID.name(), serviceInstanceId);
+
+        parameters.put(OnapRequestParameters.DESIGN_VF_NAME.name(), vfName);
+        parameters.put(OnapRequestParameters.DESIGN_VF_UUID.name(), vfUUID);
+        parameters.put(OnapRequestParameters.DESIGN_VF_invariantUUID.name(), vfInvariantUUID);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_NAME.name(), vfModelName);
+
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
+        parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
+
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VNF_DELETE, parameters);
+        log.info("[Runtime][VNF][Delete] " + parameters + " , response:" + data.toString());
         return ResponseEntity.ok(data.toString());
     }
 
@@ -268,6 +315,36 @@ public class RuntimeService {
 
         JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VFMODULE_CREATE, parameters);
         log.info("[Runtime][VFModule][Create] " + parameters + " , response:" + data.toString());
+        return ResponseEntity.ok(data.toString());
+    }
+
+    @DeleteMapping(path = "/runtime/vfModule/{vnfId}/{vfModuleId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteVfModule(
+            @PathVariable String vnfId,
+            @PathVariable String vfModuleId,
+            @RequestParam(name = "serviceInstanceId") String serviceInstanceId,
+            @RequestParam(name = "vfModelType") String vfModelType,
+            @RequestParam(name = "vfModelUUID") String vfModelUUID,
+            @RequestParam(name = "vfModelInvariantId") String vfModelInvariantId,
+            @RequestParam(name = "cloudOwner") String cloudOwner,
+            @RequestParam(name = "cloudRegion") String cloudRegion,
+            @RequestParam(name = "tenantId") String tenantId
+    ) throws IOException {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.RUNTIME_SERVICE_INSTANCE_ID.name(), serviceInstanceId);
+        parameters.put(OnapRequestParameters.RUNTIME_VNF_ID.name(), vnfId);
+        parameters.put(OnapRequestParameters.RUNTIME_VF_MODULE_ID.name(), vfModuleId);
+
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_TYPE.name(), vfModelType);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_UUID.name(), vfModelUUID);
+        parameters.put(OnapRequestParameters.DESIGN_VF_MODEL_InvariantId.name(), vfModelInvariantId);
+
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        parameters.put(OnapRequestParameters.CLOUD_REGION.name(), cloudRegion);
+        parameters.put(OnapRequestParameters.CLOUD_TENANT_ID.name(), tenantId);
+
+        JSONObject data = (JSONObject) adaptor.call(OnapRequest.RUNTIME_VFMODULE_DELETE, parameters);
+        log.info("[Runtime][VFModule][Delete] " + parameters + " , response:" + data.toString());
         return ResponseEntity.ok(data.toString());
     }
 
