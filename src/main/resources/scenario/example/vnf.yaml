@@ -74,11 +74,14 @@ service:
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
-        name: Nginx  
+        name: Nginx
+      
       # Vnf modules
       vfModules:
       - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Nginx_VfModule
         availabilityZone: nova
+        vfModel:
+          modelType: Nginx..nginx..module-0
         profile:
           name: NginxProfile
     # Vnfs  
@@ -89,15 +92,19 @@ service:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
         name: MysqlServer
+    
       # Vnf modules
       vfModules:
       - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Mysql_VfModule
         availabilityZone: nova
+        vfModel:
+          modelType: Mysqlserver..mysql..module-0
         profile:
           name: MysqlServerProfile
           
          
 cloudRegions:
+# Istanbul Openstack
 - cloudOwner: CloudOwner
   name: argela_ist_kolla_openstack_regionone
   complexName: argela_ist_nfvlab
@@ -114,6 +121,7 @@ cloudRegions:
   availabilityZones:
   - name: nova
     hypervisorType: kvm
+# Ankara Openstack
 - cloudOwner: CloudOwner
   name: argela_ankara_openstack_regionone
   complexName: argela_ankara_nfvlab

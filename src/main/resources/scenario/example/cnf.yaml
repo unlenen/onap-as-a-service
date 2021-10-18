@@ -43,7 +43,7 @@ service:
   
   # Service Instances   
   serviceInstances:
-  - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S7
+  - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen
     customer:
       id: nebiunlenen
     owningEntity:
@@ -53,7 +53,7 @@ service:
     
     # Vnfs
     vnfs:
-    - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S71_Ist_Nfvlab_Onap_k8s_vnf
+    - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_Ist_Nfvlab_Onap_k8s_vnf
       lineOfBusiness: NFV_POC
       platform: Argela_Istanbul_NFVLAB_Openstack
       tenant:
@@ -61,8 +61,10 @@ service:
       vf: 
         name: CNF_Nginx_Helm_3
       vfModules:
-      - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_S71_Ist_Nfvlab_Onap_k8s_VF
+      - name: CNF_ArgelaWebService_Instance_Nebi_Unlenen_Ist_Nfvlab_Onap_k8s_VF
         availabilityZone: K8S
+        vfModel:
+          modelType: CnfNginxHelm3..helm_nginx..module-1
         profile:
           name: NginxProfile
   

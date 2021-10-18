@@ -237,12 +237,12 @@ public class RuntimeService {
             @RequestParam(name = "cloudOwner") String cloudOwner,
             @RequestParam(name = "cloudRegion") String cloudRegion,
             @RequestParam(name = "tenantId") String tenantId,
+            @RequestParam(name = "vfUUID") String vfUUID,
             @RequestParam(name = "vfName") String vfName,
             @RequestParam(name = "vfModelUUID") String vfModelUUID,
             @RequestParam(name = "vfModelType") String vfModelType,
             @RequestParam(name = "vfModelName") String vfModelName,
             @RequestParam(name = "vfModelInvariantId") String vfModelInvariantId,
-            @RequestParam(name = "vfUUID") String vfUUID,
             @RequestParam(name = "vfModelCustomizationId") String vfModelCustomizationId
     ) throws IOException {
         Map<String, String> parameters = new HashMap<>();

@@ -37,6 +37,7 @@ import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.OwningEntity;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Service;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.ServiceInstance;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Tenant;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VFModel;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VFModule;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VNF;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.serverInstance.ServerEntity;
@@ -250,9 +251,6 @@ public class RuntimeScenario extends CommonScenario {
             LinkedHashMap<String, String> vnfObj = (LinkedHashMap<String, String>) foundVnf.get(0);
             vnf.setId(vnfObj.get("vnf-id"));
             vnf.setType(vnfObj.get("vnf-type"));
-            vnf.setType(vnfObj.get("vnf-type"));
-            vnf.getVf().setModelCustomizationUUID(vnfObj.get("model-customization-id"));
-
             log.info("[Scenario][Runtime][VNF][Exists] " + vnf);
             return true;
         }
@@ -260,7 +258,6 @@ public class RuntimeScenario extends CommonScenario {
     }
 
     private void createVNF(VNF vnf) throws Exception {
-
         JSONObject root = new JSONObject(readResponse(runtimeService.createVNF(vnf.getName(),
                 vnf.getServiceInstance().getId(),
                 vnf.getServiceInstance().getService().getName(),
@@ -351,12 +348,13 @@ public class RuntimeScenario extends CommonScenario {
     }
 
     private void preloadVFModule(VFModule vfModule) throws Exception {
-
+        VNF vnf = vfModule.getVnf();
+        VFModel vfModel = vnf.getVf().getVfModelType(vfModule.getVfModel().getModelType());
         JSONObject root = new JSONObject(readResponse(runtimeService.preloadVFModule(
                 vfModule.getVnf().getName(),
-                vfModule.getVnf().getVf().getModelName(),
+                vnf.getVf().getModelName(),
                 vfModule.getName(),
-                vfModule.getVnf().getVf().getModelType(),
+                vfModel.getModelType(),
                 vfModule.getAvailabilityZone(),
                 vfModule.getProfile()
         )));
@@ -370,6 +368,9 @@ public class RuntimeScenario extends CommonScenario {
 
     private void createVFModule(VFModule vfModule) throws Exception {
         VNF vnf = vfModule.getVnf();
+
+        VFModel vfModel = vnf.getVf().getVfModelType(vfModule.getVfModel().getModelType());
+
         JSONObject root = new JSONObject(readResponse(runtimeService.createVfModule(
                 vfModule.getVnf().getId(),
                 vfModule.getName(),
@@ -380,13 +381,13 @@ public class RuntimeScenario extends CommonScenario {
                 vnf.getTenant().getCloudRegion().getCloudOwner(),
                 vnf.getTenant().getCloudRegion().getName(),
                 vnf.getTenant().getId(),
-                vnf.getVf().getName(),
-                vnf.getVf().getModelUUID(),
-                vnf.getVf().getModelType(),
-                vnf.getVf().getModelName(),
-                vnf.getVf().getModelInvariantUUID(),
                 vnf.getVf().getUuid(),
-                vnf.getVf().getModelCustomizationUUID()
+                vnf.getVf().getName(),
+                vfModel.getModelUUID(),
+                vfModel.getModelType(),
+                vnf.getVf().getModelName(),
+                vfModel.getModelInvariantUUID(),
+                vfModel.getModelCustomizationUUID()
         )));
 
         JSONObject requestReferences = root.getJSONObject("requestReferences");

@@ -77,16 +77,20 @@ public class ScenarioService {
         mapper.findAndRegisterModules();
     }
 
-    @PostMapping(path = "/scenario/load", consumes = "application/x-yaml", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Scenario> loadScenario(@RequestBody String yaml) throws Exception {
-        Scenario scenario = convertToYaml(yaml);
+    @PostMapping(path = "/scenario/load", consumes = "text/yaml", produces = "text/plain")
+    public ResponseEntity<String> loadScenario(@RequestBody String yaml) throws Exception {
+        Scenario scenario = readFromYaml(yaml);
         runScenario(scenario);
-        return ResponseEntity.ok(scenario);
+        return ResponseEntity.ok(writeToYaml(scenario));
     }
 
-    private Scenario convertToYaml(String yaml) throws JsonProcessingException {
+    private Scenario readFromYaml(String yaml) throws JsonProcessingException {
         Scenario scenario = mapper.readValue(yaml, Scenario.class);
         return scenario;
+    }
+
+    private String writeToYaml(Scenario scenario) throws JsonProcessingException {
+        return mapper.writeValueAsString(scenario);
     }
 
     private void runScenario(Scenario scenario) throws Exception {

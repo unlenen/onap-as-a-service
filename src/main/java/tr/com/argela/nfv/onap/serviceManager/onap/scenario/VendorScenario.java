@@ -42,10 +42,12 @@ public class VendorScenario extends CommonScenario {
     DesignService designService;
 
     public void processVendor(Vendor vendor) throws Exception {
-        if (vendorExists(vendor)) {
-            readVendorVersion(vendor);
-        } else {
-            createVendor(vendor);
+        if (vendor.getId() == null) {
+            if (vendorExists(vendor)) {
+                readVendorVersion(vendor);
+            } else {
+                createVendor(vendor);
+            }
         }
 
         if (vendor.getVersionStatus() != EntityStatus.CERTIFIED) {

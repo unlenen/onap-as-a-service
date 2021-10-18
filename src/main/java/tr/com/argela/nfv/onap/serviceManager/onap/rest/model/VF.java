@@ -16,6 +16,8 @@
 package tr.com.argela.nfv.onap.serviceManager.onap.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.EntityStatus;
 
 /**
@@ -27,11 +29,13 @@ public class VF {
     String uuid;
     String uniqueId;
     String invariantUUID;
-    String name, description, versionName, customizationUUID, modelName, modelType, customizationName, modelUUID, modelInvariantUUID, modelCustomizationUUID;
+    String name, description, versionName, modelName;
     VSP vsp;
     @JsonIgnore
     Service service;
     EntityStatus versionStatus;
+
+    Map<String, VFModel> vfModelMapByType = new LinkedHashMap<>();
 
     public String getUuid() {
         return uuid;
@@ -81,60 +85,12 @@ public class VF {
         this.versionName = versionName;
     }
 
-    public String getCustomizationUUID() {
-        return customizationUUID;
-    }
-
-    public void setCustomizationUUID(String customizationUUID) {
-        this.customizationUUID = customizationUUID;
-    }
-
-    public String getCustomizationName() {
-        return customizationName;
-    }
-
-    public void setCustomizationName(String customizationName) {
-        this.customizationName = customizationName;
-    }
-
     public String getModelName() {
         return modelName;
     }
 
     public void setModelName(String modelName) {
         this.modelName = modelName;
-    }
-
-    public String getModelUUID() {
-        return modelUUID;
-    }
-
-    public void setModelUUID(String modelUUID) {
-        this.modelUUID = modelUUID;
-    }
-
-    public String getModelCustomizationUUID() {
-        return modelCustomizationUUID;
-    }
-
-    public void setModelCustomizationUUID(String modelCustomizationUUID) {
-        this.modelCustomizationUUID = modelCustomizationUUID;
-    }
-
-    public String getModelInvariantUUID() {
-        return modelInvariantUUID;
-    }
-
-    public void setModelInvariantUUID(String modelInvariantUUID) {
-        this.modelInvariantUUID = modelInvariantUUID;
-    }
-
-    public String getModelType() {
-        return modelType;
-    }
-
-    public void setModelType(String modelType) {
-        this.modelType = modelType;
     }
 
     public VSP getVsp() {
@@ -161,10 +117,24 @@ public class VF {
         this.versionStatus = versionStatus;
     }
 
-    @Override
-    public String toString() {
-        return "VF{" + "uuid=" + uuid + ", uniqueId=" + uniqueId + ", invariantUUID=" + invariantUUID + ", name=" + name + ", versionName=" + versionName + ", customizationUUID=" + customizationUUID + ", modelName=" + modelName + ", modelType=" + modelType + ", versionStatus=" + versionStatus + '}';
+    public Map<String, VFModel> getVfModelMapByType() {
+        return vfModelMapByType;
     }
 
-    
+    public VFModel getVfModelType(String type) {
+        VFModel vfModel = getVfModelMapByType().get(type);
+        if (vfModel != null) {
+            return vfModel;
+        }
+        vfModel = new VFModel();
+        vfModel.setModelType(type);
+        getVfModelMapByType().put(type, vfModel);
+        return vfModel;
+    }
+
+    @Override
+    public String toString() {
+        return "VF{" + "uuid=" + uuid + ", uniqueId=" + uniqueId + ", invariantUUID=" + invariantUUID + ", name=" + name + ", versionName=" + versionName + '}';
+    }
+
 }

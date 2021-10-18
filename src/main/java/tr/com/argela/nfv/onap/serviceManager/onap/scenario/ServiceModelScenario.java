@@ -35,6 +35,7 @@ import tr.com.argela.nfv.onap.serviceManager.onap.adaptor.exception.ServiceDistr
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.DesignService;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.Service;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VF;
+import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.VFModel;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.DistributionStatus;
 import tr.com.argela.nfv.onap.serviceManager.onap.rest.model.constant.EntityStatus;
 
@@ -52,7 +53,7 @@ public class ServiceModelScenario extends CommonScenario {
 
     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS Z");
 
-    String[] checkObjs = { "aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "cds", "policy-id"};
+    String[] checkObjs = {"aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "cds", "policy-id"};
     //String[] checkObjs = {"SO-COpenSource-Env11", "aai-ml", "sdc-COpenSource-Env11-sdnc-dockero", "cds", "policy-id"};
 
     public void processService(Service service) throws Exception {
@@ -116,8 +117,8 @@ public class ServiceModelScenario extends CommonScenario {
         Service service = vf.getService();
         log.info("[Scenario][Service][AddVf] service:" + service.getName() + " , uuid : " + service.getUuid() + " , invariantUUID :" + service.getInvariantUUID() + " , uniqueId:" + service.getUniqueId() + " , serviceStatus:" + service.getVersionStatus() + " , vf:" + vf.getName() + " , vfUniqueId:" + vf.getUniqueId());
         JSONObject root = new JSONObject(readResponse(designService.addVFtoServiceModel(vf.getService().getUniqueId(), vf.getUniqueId(), vf.getName(), index)));
-        vf.setCustomizationUUID(root.getString("customizationUUID"));
-        vf.setModelName(root.getString("name"));
+        /* VFModel vfModel = vf.getVfModel(root.getString("name"));
+        vfModel.setCustomizationUUID(root.getString("customizationUUID"));*/
     }
 
     protected void readServiceUniqueId(Service service) throws Exception {
@@ -153,11 +154,13 @@ public class ServiceModelScenario extends CommonScenario {
             JSONArray groupInstances = component.getJSONArray("groupInstances");
             for (int j = 0; j < groupInstances.length(); j++) {
                 JSONObject groupInstance = groupInstances.getJSONObject(j);
-                vf.setModelType(groupInstance.getString("groupName"));
-                vf.setCustomizationName(groupInstance.getString("groupName"));
-                vf.setModelUUID(groupInstance.getString("groupUUID"));
-                vf.setModelInvariantUUID(groupInstance.getString("invariantUUID"));
-                vf.setModelCustomizationUUID(groupInstance.getString("customizationUUID"));
+                String modelType = groupInstance.getString("groupName");
+                VFModel vfModel = vf.getVfModelType(modelType);
+                vfModel.setModelType(groupInstance.getString("groupName"));
+                vfModel.setCustomizationName(groupInstance.getString("groupName"));
+                vfModel.setModelUUID(groupInstance.getString("groupUUID"));
+                vfModel.setModelInvariantUUID(groupInstance.getString("invariantUUID"));
+                vfModel.setModelCustomizationUUID(groupInstance.getString("customizationUUID"));
                 log.info("[Scenario][Service][Distribute][VFModelUpdate] service:" + service.getName() + " ,  " + vf);
             }
         }
@@ -177,21 +180,21 @@ public class ServiceModelScenario extends CommonScenario {
             if (vf == null) {
                 continue;
             }
+
             vf.setModelName(modelName);
+
             JSONArray groupInstances = component.getJSONArray("groupInstances");
             for (int j = 0; j < groupInstances.length(); j++) {
+
                 JSONObject groupInstance = groupInstances.getJSONObject(j);
-
                 String modelTypeName = groupInstance.getString("groupName");
-                if (modelTypeName.contains("base_template_dummy_ignore")|| modelTypeName.contains("base_template")) {
-                    continue;
-                }
-
-                vf.setModelType(groupInstance.getString("groupName"));
-                vf.setCustomizationName(groupInstance.getString("groupName"));
-                vf.setModelUUID(groupInstance.getString("groupUUID"));
-                vf.setModelInvariantUUID(groupInstance.getString("invariantUUID"));
-                vf.setModelCustomizationUUID(groupInstance.getString("customizationUUID"));
+                VFModel vfModel = vf.getVfModelType(modelTypeName);
+                vfModel.setModelType(modelTypeName);
+                vfModel.setCustomizationName(modelTypeName);
+                vfModel.setCustomizationUUID(groupInstance.getString("customizationUUID"));
+                vfModel.setModelUUID(groupInstance.getString("groupUUID"));
+                vfModel.setModelInvariantUUID(groupInstance.getString("invariantUUID"));
+                vfModel.setModelCustomizationUUID(groupInstance.getString("customizationUUID"));
                 log.info("[Scenario][Service][LoadVfInformation][VFModelUpdate] service:" + service.getName() + " ,  " + vf);
             }
         }

@@ -32,6 +32,8 @@ public class VFModule {
     String availabilityZone;
     Server server;
 
+    VFModel vfModel;
+
     VFModuleProfile profile;
 
     @JsonIgnore
@@ -107,6 +109,14 @@ public class VFModule {
 
     public void setServer(Server server) {
         this.server = server;
+    }
+
+    public VFModel getVfModel() {
+        return vfModel;
+    }
+
+    public void setVfModel(VFModel vfModel) {
+        this.vfModel = vfModel;
     }
 
     @Override

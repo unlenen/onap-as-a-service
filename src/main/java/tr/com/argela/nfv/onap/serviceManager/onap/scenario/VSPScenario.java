@@ -50,10 +50,12 @@ public class VSPScenario extends CommonScenario {
     }
 
     public void processVSP(VSP vsp) throws Exception {
-        if (vspExists(vsp)) {
-            readVspVersion(vsp);
-        } else {
-            createVSP(vsp);
+        if (vsp.getId() == null) {
+            if (vspExists(vsp)) {
+                readVspVersion(vsp);
+            } else {
+                createVSP(vsp);
+            }
         }
 
         if (vsp.getVersionStatus() != EntityStatus.CERTIFIED) {
