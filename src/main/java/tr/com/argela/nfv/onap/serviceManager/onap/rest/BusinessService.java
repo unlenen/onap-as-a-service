@@ -180,9 +180,9 @@ public class BusinessService {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(OnapRequestParameters.BUSINESS_OWNING_ENTITY_ID.name(), owningEntityId);
         parameters.put(OnapRequestParameters.BUSINESS_OWNING_ENTITY_NAME.name(), owningName);
-        JSONObject data = (JSONObject) adaptor.call(OnapRequest.BUSINESS_OWNING_ENTITY_CREATE, parameters);
+        String data = (String) adaptor.call(OnapRequest.BUSINESS_OWNING_ENTITY_CREATE, parameters);
         log.info("[Business][OwningEntity][Create] " + parameters + " , response :" + data);
-        return ResponseEntity.ok(data.toString());
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping(path = "/business/platforms", produces = MediaType.APPLICATION_JSON_VALUE)

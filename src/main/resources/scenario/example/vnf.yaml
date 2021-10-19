@@ -19,17 +19,17 @@ vendor:
   name: Argela
   description: Argela
   vsps:
-  - name: Nginx
+  - name: VNF_Nginx
     description: Nginx Server
-    file: d:\\ArgelaNginx.zip
-  - name: MysqlServer 
+    file: d:\\data\\openstack\\ArgelaNginx.zip
+  - name: VNF_MysqlServer 
     description: Mysql Server 
-    file: d:\\ArgelaMysqlServer.zip
+    file: d:\\data\\openstack\\ArgelaMysqlServer.zip
     
 # Service Definitions
 service:
-  name: ArgelaWebService
-  description: ArgelaWebService
+  name: Argela_Web_Service
+  description: Argela_Web_Service
   # Customers
   customers:
   - id: nebiunlenen
@@ -48,15 +48,15 @@ service:
   
   # Service Components
   vfs:
-  - name: Nginx
-    description: Nginx
+  - name: VNF_Nginx
+    description: VNF_Nginx
     vsp:
-      name: Nginx
-  - name: MysqlServer
-    description: MysqlServer
+      name: VNF_Nginx
+  - name: VNF_MysqlServer
+    description: VNF_MysqlServer
     vsp:
-      name: MysqlServer
-  
+      name: VNF_MysqlServer
+
   # Service Instances
   serviceInstances:
   - name: ArgelaWebService_Instance_Nebi_Unlenen
@@ -74,14 +74,14 @@ service:
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
-        name: Nginx
+        name: VNF_Nginx
       
       # Vnf modules
       vfModules:
       - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Nginx_VfModule
         availabilityZone: nova
         vfModel:
-          modelType: Nginx..nginx..module-0
+          modelType: VnfNginx..nginx..module-0
         profile:
           name: NginxProfile
     # Vnfs  
@@ -91,17 +91,17 @@ service:
       tenant:
         id: 5aa6ebb7ed1145f1b59c579d01c4ad36
       vf: 
-        name: MysqlServer
+        name: VNF_MysqlServer
     
       # Vnf modules
       vfModules:
       - name: ArgelaWebService_Instance_Nebi_Unlenen_Istanbul_Mysql_VfModule
         availabilityZone: nova
         vfModel:
-          modelType: Mysqlserver..mysql..module-0
+          modelType: VnfMysqlserver..mysql..module-0
         profile:
           name: MysqlServerProfile
-          
+
          
 cloudRegions:
 # Istanbul Openstack
