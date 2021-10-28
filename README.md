@@ -15,6 +15,10 @@ Written By: Nebi Volkan UNLENEN ( unlenen@gmail.com )
 
 This project aims to call ONAP complex APIs easily with converting them basic rest APIs.
 
+## DOCKER Container Usage
+```
+    docker run --name onap-as-a-service -d -e ONAP_IP=192.168.135.171 -p 8080:8080 unlenen/onap-as-a-service
+```
 
 ## COMPILE
 ```
