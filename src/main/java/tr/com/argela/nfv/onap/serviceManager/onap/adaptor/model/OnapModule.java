@@ -31,6 +31,10 @@ public enum OnapModule {
         {"X-TransactionId", "get_aai_subscr"},
         {"Content-Type", "application/json"}
     }),
+    MSB("https://${ONAPIP}:30283/api/multicloud/v1", new String[][]{
+        {"Accept", "application/json"},
+        {"Content-Type", "application/json"}
+    }),
     SDC_CATALOG("https://${ONAPIP}:30204/sdc/v1/catalog", new String[][]{
         {"Content-Type", "application/json"},
         {"Accept", "application/json"},

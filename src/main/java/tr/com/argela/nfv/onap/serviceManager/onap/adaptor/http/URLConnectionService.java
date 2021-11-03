@@ -120,14 +120,19 @@ public class URLConnectionService {
     public ResponseEntity push(String methodType, String url, Map<String, String> headerMap, String data, String type) {
 
         HttpHeaders headers = new HttpHeaders();
-
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response;
+        HttpEntity<String> requestEntity;
         for (String header : headerMap.keySet()) {
             headers.add(header, headerMap.get(header));
         }
-        headers.setContentType(org.springframework.http.MediaType.parseMediaType(type));
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> requestEntity = new HttpEntity<>(data, headers);
-        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.valueOf(methodType), requestEntity, String.class);
+        if (type != null && data != null) {
+            headers.setContentType(org.springframework.http.MediaType.parseMediaType(type));
+            requestEntity = new HttpEntity<>(data, headers);
+        } else {
+            requestEntity = new HttpEntity<>(headers);
+        }
+        response = restTemplate.exchange(url, HttpMethod.valueOf(methodType), requestEntity, String.class);
         return response;
     }
 

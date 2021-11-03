@@ -96,8 +96,14 @@ public class CloudService {
     public ResponseEntity createOpenstackRegion(@PathVariable String cloudOwner, @PathVariable String name, @PathVariable String regionName, @PathVariable String complexName,
             @PathVariable String osDomain, @PathVariable String osDefaultProject,
             @RequestParam(name = "keystoneURL") String osKeystoneURL, @RequestParam(name = "user") String osUser, @RequestParam(name = "password") String osPassword) throws IOException {
+        String aaiResponse = createRegion(OnapRequest.CLOUD_REGION_CREATE.getPayloadFilePath(), name, regionName, cloudOwner, complexName, osDomain, osDefaultProject, osKeystoneURL, osUser, osPassword);
 
-        return ResponseEntity.ok(createRegion(OnapRequest.CLOUD_REGION_CREATE.getPayloadFilePath(), name, regionName, cloudOwner, complexName, osDomain, osDefaultProject, osKeystoneURL, osUser, osPassword));
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(OnapRequestParameters.CLOUD_NAME.name(), name);
+        parameters.put(OnapRequestParameters.CLOUD_OWNER.name(), cloudOwner);
+        adaptor.call(OnapRequest.CLOUD_REGION_CREATE_MSB, parameters);
+
+        return ResponseEntity.ok(aaiResponse);
     }
 
     public String createRegion(String payload, String name, String regionName, String cloudOwner, String complexName,
