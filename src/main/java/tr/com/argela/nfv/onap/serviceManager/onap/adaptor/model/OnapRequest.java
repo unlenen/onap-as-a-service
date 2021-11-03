@@ -35,7 +35,7 @@ public enum OnapRequest {
     CLOUD_REGION(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_NAME + "}", 200, HttpResponseType.JSONObject),
     CLOUD_REGION_COMPLEX_Relations(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/relationship-list/relationship", 200, HttpResponseType.STRING, "payloads/cloud/region_complex_relations.json", "application/json"),
     CLOUD_REGION_CREATE(HttpCallType.PUT, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_NAME + "}", 201, HttpResponseType.STRING, "payloads/cloud/region_openstack_create.json", "application/json"),
-    CLOUD_REGION_CREATE_MSB(HttpCallType.POST, OnapModule.MSB, "/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_NAME + "}/registry", 201, HttpResponseType.STRING),
+    CLOUD_REGION_CREATE_MSB(HttpCallType.POST, OnapModule.MSB, "/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_NAME + "}/registry", 202, HttpResponseType.STRING),
     CLOUD_K8S_MSB_ADD_KUBECONFIG(HttpCallType.POST_FILE, OnapModule.MULTICLOUD_K8S, "/v1/connectivity-info", 201, HttpResponseType.STRING),
     /*CLOUD Tenants*/
     CLOUD_TENANTS(HttpCallType.GET, OnapModule.AAI, "/cloud-infrastructure/cloud-regions/cloud-region/${" + OnapRequestParameters.CLOUD_OWNER + "}/${" + OnapRequestParameters.CLOUD_REGION + "}/tenants", 200, HttpResponseType.JSONObject),
